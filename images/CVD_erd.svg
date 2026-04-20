@@ -1,264 +1,1968 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1750" height="1400" style="background-color:#f7f6f2; font-family:sans-serif;">
-<defs>
-  <filter id="shadow" x="-5%" y="-5%" width="120%" height="120%">
-    <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#000000" flood-opacity="0.07"/>
-  </filter>
-  <marker id="start-one" markerWidth="16" markerHeight="20" refX="0" refY="10" orient="auto">
-    <path d="M 0,10 L 16,10 M 0,2 L 0,18 M 8,2 L 8,18" fill="none" stroke="#28251d" stroke-width="2"/>
-  </marker>
-  <marker id="end-one" markerWidth="16" markerHeight="20" refX="16" refY="10" orient="auto">
-    <path d="M 0,10 L 16,10 M 8,2 L 8,18 M 16,2 L 16,18" fill="none" stroke="#28251d" stroke-width="2"/>
-  </marker>
-  <marker id="start-many" markerWidth="16" markerHeight="20" refX="0" refY="10" orient="auto">
-    <path d="M 0,10 L 16,10 M 8,10 L 0,2 M 8,10 L 0,18 M 8,2 L 8,18" fill="none" stroke="#28251d" stroke-width="2"/>
-  </marker>
-  <marker id="end-many" markerWidth="16" markerHeight="20" refX="16" refY="10" orient="auto">
-    <path d="M 0,10 L 16,10 M 8,10 L 16,2 M 8,10 L 16,18 M 8,2 L 8,18" fill="none" stroke="#28251d" stroke-width="2"/>
-  </marker>
-</defs>
-<rect x="0" y="0" width="1750" height="80" fill="#01696f"/>
-<text x="30" y="50" font-size="26" font-weight="bold" fill="#ffffff" font-family="sans-serif">Entity Relationship Diagram (ERD) — CVD Clinic System</text>
-
-<rect x="100" y="120" width="280" height="124" rx="8" fill="#ffffff" stroke="#d4d1ca" stroke-width="1.2" filter="url(#shadow)"/>
-<path d="M 100 128 Q 100 120 108 120 L 372 120 Q 380 120 380 128 L 380 164 L 100 164 Z" fill="#01696f"/>
-<text x="240" y="148" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">MedicalRecords</text>
-<rect x="101" y="164" width="278" height="24" fill="#ffffff"/>
-<text x="108" y="180" font-family="sans-serif" font-size="12" font-weight="bold" fill="#da7101">PK</text>
-<text x="142" y="180" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">recordID</text>
-<text x="372" y="180" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="101" y="188" width="278" height="24" fill="#fbfbf9"/>
-<text x="108" y="204" font-family="sans-serif" font-size="12" font-weight="normal" fill="#7a7974">FK</text>
-<text x="142" y="204" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">patientID</text>
-<text x="372" y="204" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="101" y="212" width="278" height="24" fill="#ffffff"/>
-<text x="142" y="228" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">createdDate</text>
-<text x="372" y="228" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">DATE</text>
-<rect x="500" y="120" width="280" height="172" rx="8" fill="#ffffff" stroke="#d4d1ca" stroke-width="1.2" filter="url(#shadow)"/>
-<path d="M 500 128 Q 500 120 508 120 L 772 120 Q 780 120 780 128 L 780 164 L 500 164 Z" fill="#01696f"/>
-<text x="640" y="148" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">Patients</text>
-<rect x="501" y="164" width="278" height="24" fill="#ffffff"/>
-<text x="508" y="180" font-family="sans-serif" font-size="12" font-weight="bold" fill="#da7101">PK</text>
-<text x="542" y="180" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">patientID</text>
-<text x="772" y="180" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="501" y="188" width="278" height="24" fill="#fbfbf9"/>
-<text x="542" y="204" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">firstName</text>
-<text x="772" y="204" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(50)</text>
-<rect x="501" y="212" width="278" height="24" fill="#ffffff"/>
-<text x="542" y="228" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">lastName</text>
-<text x="772" y="228" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(50)</text>
-<rect x="501" y="236" width="278" height="24" fill="#fbfbf9"/>
-<text x="542" y="252" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">dateOfBirth</text>
-<text x="772" y="252" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">DATE</text>
-<rect x="501" y="260" width="278" height="24" fill="#ffffff"/>
-<text x="542" y="276" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">email</text>
-<text x="772" y="276" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(100)</text>
-<rect x="900" y="120" width="280" height="148" rx="8" fill="#ffffff" stroke="#d4d1ca" stroke-width="1.2" filter="url(#shadow)"/>
-<path d="M 900 128 Q 900 120 908 120 L 1172 120 Q 1180 120 1180 128 L 1180 164 L 900 164 Z" fill="#01696f"/>
-<text x="1040" y="148" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">AdminStaff</text>
-<rect x="901" y="164" width="278" height="24" fill="#ffffff"/>
-<text x="908" y="180" font-family="sans-serif" font-size="12" font-weight="bold" fill="#da7101">PK</text>
-<text x="942" y="180" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">adminID</text>
-<text x="1172" y="180" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="901" y="188" width="278" height="24" fill="#fbfbf9"/>
-<text x="942" y="204" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">firstName</text>
-<text x="1172" y="204" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(50)</text>
-<rect x="901" y="212" width="278" height="24" fill="#ffffff"/>
-<text x="942" y="228" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">lastName</text>
-<text x="1172" y="228" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(50)</text>
-<rect x="901" y="236" width="278" height="24" fill="#fbfbf9"/>
-<text x="942" y="252" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">role</text>
-<text x="1172" y="252" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="1300" y="120" width="280" height="148" rx="8" fill="#ffffff" stroke="#d4d1ca" stroke-width="1.2" filter="url(#shadow)"/>
-<path d="M 1300 128 Q 1300 120 1308 120 L 1572 120 Q 1580 120 1580 128 L 1580 164 L 1300 164 Z" fill="#01696f"/>
-<text x="1440" y="148" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">Consultants</text>
-<rect x="1301" y="164" width="278" height="24" fill="#ffffff"/>
-<text x="1308" y="180" font-family="sans-serif" font-size="12" font-weight="bold" fill="#da7101">PK</text>
-<text x="1342" y="180" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">consultantID</text>
-<text x="1572" y="180" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="1301" y="188" width="278" height="24" fill="#fbfbf9"/>
-<text x="1342" y="204" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">firstName</text>
-<text x="1572" y="204" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(50)</text>
-<rect x="1301" y="212" width="278" height="24" fill="#ffffff"/>
-<text x="1342" y="228" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">lastName</text>
-<text x="1572" y="228" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(50)</text>
-<rect x="1301" y="236" width="278" height="24" fill="#fbfbf9"/>
-<text x="1342" y="252" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">specialization</text>
-<text x="1572" y="252" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(100)</text>
-
-<!-- Modified MedicalForms -->
-<rect x="100" y="460" width="280" height="172" rx="8" fill="#ffffff" stroke="#d4d1ca" stroke-width="1.2" filter="url(#shadow)"/>
-<path d="M 100 468 Q 100 460 108 460 L 372 460 Q 380 460 380 468 L 380 504 L 100 504 Z" fill="#01696f"/>
-<text x="240" y="488" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">MedicalForms</text>
-<rect x="101" y="504" width="278" height="24" fill="#ffffff"/>
-<text x="108" y="520" font-family="sans-serif" font-size="12" font-weight="bold" fill="#da7101">PK</text>
-<text x="142" y="520" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">formID</text>
-<text x="372" y="520" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="101" y="528" width="278" height="24" fill="#fbfbf9"/>
-<text x="108" y="544" font-family="sans-serif" font-size="12" font-weight="normal" fill="#7a7974">FK</text>
-<text x="142" y="544" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">appointmentID</text>
-<text x="372" y="544" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="101" y="552" width="278" height="24" fill="#ffffff"/>
-<text x="108" y="568" font-family="sans-serif" font-size="12" font-weight="normal" fill="#7a7974">FK</text>
-<text x="142" y="568" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">recordID</text>
-<text x="372" y="568" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="101" y="576" width="278" height="24" fill="#fbfbf9"/>
-<text x="142" y="592" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">formType</text>
-<text x="372" y="592" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(50)</text>
-<rect x="101" y="600" width="278" height="24" fill="#ffffff"/>
-<text x="142" y="616" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">status</text>
-<text x="372" y="616" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-
-<rect x="500" y="460" width="280" height="220" rx="8" fill="#ffffff" stroke="#d4d1ca" stroke-width="1.2" filter="url(#shadow)"/>
-<path d="M 500 468 Q 500 460 508 460 L 772 460 Q 780 460 780 468 L 780 504 L 500 504 Z" fill="#01696f"/>
-<text x="640" y="488" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">Appointments</text>
-<rect x="501" y="504" width="278" height="24" fill="#ffffff"/>
-<text x="508" y="520" font-family="sans-serif" font-size="12" font-weight="bold" fill="#da7101">PK</text>
-<text x="542" y="520" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">appointmentID</text>
-<text x="772" y="520" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="501" y="528" width="278" height="24" fill="#fbfbf9"/>
-<text x="508" y="544" font-family="sans-serif" font-size="12" font-weight="normal" fill="#7a7974">FK</text>
-<text x="542" y="544" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">patientID</text>
-<text x="772" y="544" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="501" y="552" width="278" height="24" fill="#ffffff"/>
-<text x="508" y="568" font-family="sans-serif" font-size="12" font-weight="normal" fill="#7a7974">FK</text>
-<text x="542" y="568" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">adminID</text>
-<text x="772" y="568" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="501" y="576" width="278" height="24" fill="#fbfbf9"/>
-<text x="508" y="592" font-family="sans-serif" font-size="12" font-weight="normal" fill="#7a7974">FK</text>
-<text x="542" y="592" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">consultantID</text>
-<text x="772" y="592" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="501" y="600" width="278" height="24" fill="#ffffff"/>
-<text x="542" y="616" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">appointmentDate</text>
-<text x="772" y="616" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">DATETIME</text>
-<rect x="501" y="624" width="278" height="24" fill="#fbfbf9"/>
-<text x="542" y="640" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">status</text>
-<text x="772" y="640" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="501" y="648" width="278" height="24" fill="#ffffff"/>
-<text x="542" y="664" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">type</text>
-<text x="772" y="664" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(50)</text>
-<rect x="1300" y="460" width="280" height="172" rx="8" fill="#ffffff" stroke="#d4d1ca" stroke-width="1.2" filter="url(#shadow)"/>
-<path d="M 1300 468 Q 1300 460 1308 460 L 1572 460 Q 1580 460 1580 468 L 1580 504 L 1300 504 Z" fill="#01696f"/>
-<text x="1440" y="488" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">Prescriptions</text>
-<rect x="1301" y="504" width="278" height="24" fill="#ffffff"/>
-<text x="1308" y="520" font-family="sans-serif" font-size="12" font-weight="bold" fill="#da7101">PK</text>
-<text x="1342" y="520" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">prescriptionID</text>
-<text x="1572" y="520" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="1301" y="528" width="278" height="24" fill="#fbfbf9"/>
-<text x="1308" y="544" font-family="sans-serif" font-size="12" font-weight="normal" fill="#7a7974">FK</text>
-<text x="1342" y="544" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">consultantID</text>
-<text x="1572" y="544" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="1301" y="552" width="278" height="24" fill="#ffffff"/>
-<text x="1308" y="568" font-family="sans-serif" font-size="12" font-weight="normal" fill="#7a7974">FK</text>
-<text x="1342" y="568" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">formID</text>
-<text x="1572" y="568" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="1301" y="576" width="278" height="24" fill="#fbfbf9"/>
-<text x="1342" y="592" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">medications</text>
-<text x="1572" y="592" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">TEXT</text>
-<rect x="1301" y="600" width="278" height="24" fill="#ffffff"/>
-<text x="1342" y="616" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">dosage</text>
-<text x="1572" y="616" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">TEXT</text>
-<rect x="100" y="800" width="280" height="148" rx="8" fill="#ffffff" stroke="#d4d1ca" stroke-width="1.2" filter="url(#shadow)"/>
-<path d="M 100 808 Q 100 800 108 800 L 372 800 Q 380 800 380 808 L 380 844 L 100 844 Z" fill="#01696f"/>
-<text x="240" y="828" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">SectionOne</text>
-<rect x="101" y="844" width="278" height="24" fill="#ffffff"/>
-<text x="108" y="860" font-family="sans-serif" font-size="12" font-weight="bold" fill="#da7101">PK</text>
-<text x="142" y="860" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">sectionOneID</text>
-<text x="372" y="860" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="101" y="868" width="278" height="24" fill="#fbfbf9"/>
-<text x="108" y="884" font-family="sans-serif" font-size="12" font-weight="normal" fill="#7a7974">FK</text>
-<text x="142" y="884" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">formID</text>
-<text x="372" y="884" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="101" y="892" width="278" height="24" fill="#ffffff"/>
-<text x="142" y="908" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">symptoms</text>
-<text x="372" y="908" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">TEXT</text>
-<rect x="101" y="916" width="278" height="24" fill="#fbfbf9"/>
-<text x="142" y="932" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">allergies</text>
-<text x="372" y="932" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">TEXT</text>
-<rect x="500" y="800" width="280" height="196" rx="8" fill="#ffffff" stroke="#d4d1ca" stroke-width="1.2" filter="url(#shadow)"/>
-<path d="M 500 808 Q 500 800 508 800 L 772 800 Q 780 800 780 808 L 780 844 L 500 844 Z" fill="#01696f"/>
-<text x="640" y="828" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">VitalSigns</text>
-<rect x="501" y="844" width="278" height="24" fill="#ffffff"/>
-<text x="508" y="860" font-family="sans-serif" font-size="12" font-weight="bold" fill="#da7101">PK</text>
-<text x="542" y="860" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">vitalID</text>
-<text x="772" y="860" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="501" y="868" width="278" height="24" fill="#fbfbf9"/>
-<text x="508" y="884" font-family="sans-serif" font-size="12" font-weight="normal" fill="#7a7974">FK</text>
-<text x="542" y="884" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">appointmentID</text>
-<text x="772" y="884" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="501" y="892" width="278" height="24" fill="#ffffff"/>
-<text x="508" y="908" font-family="sans-serif" font-size="12" font-weight="normal" fill="#7a7974">FK</text>
-<text x="542" y="908" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">nurseID</text>
-<text x="772" y="908" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="501" y="916" width="278" height="24" fill="#fbfbf9"/>
-<text x="542" y="932" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">bpSystolic</text>
-<text x="772" y="932" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">INT</text>
-<rect x="501" y="940" width="278" height="24" fill="#ffffff"/>
-<text x="542" y="956" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">bpDiastolic</text>
-<text x="772" y="956" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">INT</text>
-<rect x="501" y="964" width="278" height="24" fill="#fbfbf9"/>
-<text x="542" y="980" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">bmi</text>
-<text x="772" y="980" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">DECIMAL(4,2)</text>
-<rect x="900" y="800" width="280" height="148" rx="8" fill="#ffffff" stroke="#d4d1ca" stroke-width="1.2" filter="url(#shadow)"/>
-<path d="M 900 808 Q 900 800 908 800 L 1172 800 Q 1180 800 1180 808 L 1180 844 L 900 844 Z" fill="#01696f"/>
-<text x="1040" y="828" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">Nurses</text>
-<rect x="901" y="844" width="278" height="24" fill="#ffffff"/>
-<text x="908" y="860" font-family="sans-serif" font-size="12" font-weight="bold" fill="#da7101">PK</text>
-<text x="942" y="860" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">nurseID</text>
-<text x="1172" y="860" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="901" y="868" width="278" height="24" fill="#fbfbf9"/>
-<text x="942" y="884" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">firstName</text>
-<text x="1172" y="884" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(50)</text>
-<rect x="901" y="892" width="278" height="24" fill="#ffffff"/>
-<text x="942" y="908" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">lastName</text>
-<text x="1172" y="908" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(50)</text>
-<rect x="901" y="916" width="278" height="24" fill="#fbfbf9"/>
-<text x="942" y="932" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">registrationNo</text>
-<text x="1172" y="932" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(50)</text>
-<rect x="500" y="1140" width="280" height="172" rx="8" fill="#ffffff" stroke="#d4d1ca" stroke-width="1.2" filter="url(#shadow)"/>
-<path d="M 500 1148 Q 500 1140 508 1140 L 772 1140 Q 780 1140 780 1148 L 780 1184 L 500 1184 Z" fill="#01696f"/>
-<text x="640" y="1168" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">SectionTwo</text>
-<rect x="501" y="1184" width="278" height="24" fill="#ffffff"/>
-<text x="508" y="1200" font-family="sans-serif" font-size="12" font-weight="bold" fill="#da7101">PK</text>
-<text x="542" y="1200" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">sectionTwoID</text>
-<text x="772" y="1200" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="501" y="1208" width="278" height="24" fill="#fbfbf9"/>
-<text x="508" y="1224" font-family="sans-serif" font-size="12" font-weight="normal" fill="#7a7974">FK</text>
-<text x="542" y="1224" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">formID</text>
-<text x="772" y="1224" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="501" y="1232" width="278" height="24" fill="#ffffff"/>
-<text x="508" y="1248" font-family="sans-serif" font-size="12" font-weight="normal" fill="#7a7974">FK</text>
-<text x="542" y="1248" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">consultantID</text>
-<text x="772" y="1248" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(20)</text>
-<rect x="501" y="1256" width="278" height="24" fill="#fbfbf9"/>
-<text x="542" y="1272" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">diagnosis</text>
-<text x="772" y="1272" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">VARCHAR(200)</text>
-<rect x="501" y="1280" width="278" height="24" fill="#ffffff"/>
-<text x="542" y="1296" font-family="monospace" font-size="13" font-weight="bold" fill="#28251d">clinicalNotes</text>
-<text x="772" y="1296" text-anchor="end" font-family="monospace" font-size="12" fill="#7a7974">TEXT</text>
-<!-- RELATIONSHIP LINES -->
-<polyline points="500,182 380,182" fill="none" stroke="#28251d" stroke-width="2" marker-start="url(#start-one)" marker-end="url(#end-one)"/>
-<polyline points="640,292 640,460" fill="none" stroke="#28251d" stroke-width="2" marker-start="url(#start-one)" marker-end="url(#end-many)"/>
-<polyline points="900,200 840,200 840,570 780,570" fill="none" stroke="#28251d" stroke-width="2" marker-start="url(#start-one)" marker-end="url(#end-many)"/>
-<polyline points="1300,200 1240,200 1240,420 860,420 860,600 780,600" fill="none" stroke="#28251d" stroke-width="2" marker-start="url(#start-one)" marker-end="url(#end-many)"/>
-<polyline points="1440,268 1440,460" fill="none" stroke="#28251d" stroke-width="2" marker-start="url(#start-one)" marker-end="url(#end-many)"/>
-<polyline points="1300,224 1260,224 1260,1226 780,1226" fill="none" stroke="#28251d" stroke-width="2" marker-start="url(#start-one)" marker-end="url(#end-many)"/>
-<polyline points="500,558 380,558" fill="none" stroke="#28251d" stroke-width="2" marker-start="url(#start-one)" marker-end="url(#end-one)"/>
-<polyline points="640,680 640,800" fill="none" stroke="#28251d" stroke-width="2" marker-start="url(#start-one)" marker-end="url(#end-one)"/>
-<polyline points="900,874 780,874" fill="none" stroke="#28251d" stroke-width="2" marker-start="url(#start-one)" marker-end="url(#end-many)"/>
-<polyline points="240,244 240,460" fill="none" stroke="#28251d" stroke-width="2" marker-start="url(#start-one)" marker-end="url(#end-many)"/>
-<polyline points="240,656 240,800" fill="none" stroke="#28251d" stroke-width="2" marker-start="url(#start-one)" marker-end="url(#end-one)"/>
-<polyline points="100,600 40,600 40,1226 500,1226" fill="none" stroke="#28251d" stroke-width="2" marker-start="url(#start-one)" marker-end="url(#end-one)"/>
-<polyline points="160,656 160,740 1220,740 1220,600 1300,600" fill="none" stroke="#28251d" stroke-width="2" marker-start="url(#start-one)" marker-end="url(#end-many)"/>
-<!-- LEGEND -->
-<rect x="1380" y="1140" width="320" height="170" rx="8" fill="#ffffff" stroke="#d4d1ca" stroke-width="1.2" filter="url(#shadow)"/>
-<path d="M 1380 1148 Q 1380 1140 1388 1140 L 1692 1140 Q 1700 1140 1700 1148 L 1700 1184 L 1380 1184 Z" fill="#01696f"/>
-<text x="1540" y="1168" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">ERD Legend</text>
-<line x1="1400" y1="1214" x2="1460" y2="1214" stroke="#28251d" stroke-width="2" marker-start="url(#start-one)" marker-end="url(#end-one)"/>
-<text x="1480" y="1219" font-family="sans-serif" font-size="14" fill="#28251d">One and only one (1:1)</text>
-<line x1="1400" y1="1244" x2="1460" y2="1244" stroke="#28251d" stroke-width="2" marker-start="url(#start-one)" marker-end="url(#end-many)"/>
-<text x="1480" y="1249" font-family="sans-serif" font-size="14" fill="#28251d">One to Many (1:N)</text>
-<text x="1400" y="1284" font-family="sans-serif" font-size="14" font-weight="bold" fill="#da7101">PK</text>
-<text x="1430" y="1284" font-family="sans-serif" font-size="14" fill="#28251d">Primary Key</text>
-<text x="1540" y="1284" font-family="sans-serif" font-size="14" font-weight="bold" fill="#7a7974">FK</text>
-<text x="1570" y="1284" font-family="sans-serif" font-size="14" fill="#28251d">Foreign Key</text>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="1750"
+   height="1400"
+   style="background-color:#f7f6f2; font-family:sans-serif;"
+   version="1.1"
+   id="svg161"
+   sodipodi:docname="CVD_erd.svg"
+   inkscape:version="1.4.3 (0d15f75042, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview161"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="0.74347227"
+     inkscape:cx="843.34013"
+     inkscape:cy="522.54807"
+     inkscape:window-width="1920"
+     inkscape:window-height="1080"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg161" />
+  <defs
+     id="defs4">
+    <filter
+       id="shadow"
+       x="-0.0021428572"
+       y="-0.0048387099"
+       width="1.0042857"
+       height="1.0096774">
+      <feDropShadow
+         dx="0"
+         dy="3"
+         stdDeviation="5"
+         flood-color="#000000"
+         flood-opacity="0.07" />
+    </filter>
+    <marker
+       id="start-one"
+       markerWidth="16"
+       markerHeight="20"
+       refX="0"
+       refY="10"
+       orient="auto">
+      <path
+         d="M 0,10 L 16,10 M 0,2 L 0,18 M 8,2 L 8,18"
+         fill="none"
+         stroke="#28251d"
+         stroke-width="2"
+         id="path1" />
+    </marker>
+    <marker
+       id="end-one"
+       markerWidth="16"
+       markerHeight="20"
+       refX="16"
+       refY="10"
+       orient="auto">
+      <path
+         d="M 0,10 L 16,10 M 8,2 L 8,18 M 16,2 L 16,18"
+         fill="none"
+         stroke="#28251d"
+         stroke-width="2"
+         id="path2" />
+    </marker>
+    <marker
+       id="start-many"
+       markerWidth="16"
+       markerHeight="20"
+       refX="0"
+       refY="10"
+       orient="auto">
+      <path
+         d="M 0,10 L 16,10 M 8,10 L 0,2 M 8,10 L 0,18 M 8,2 L 8,18"
+         fill="none"
+         stroke="#28251d"
+         stroke-width="2"
+         id="path3" />
+    </marker>
+    <marker
+       id="end-many"
+       markerWidth="16"
+       markerHeight="20"
+       refX="16"
+       refY="10"
+       orient="auto">
+      <path
+         d="M 0,10 L 16,10 M 8,10 L 16,2 M 8,10 L 16,18 M 8,2 L 8,18"
+         fill="none"
+         stroke="#28251d"
+         stroke-width="2"
+         id="path4" />
+    </marker>
+  </defs>
+  <rect
+     x="0"
+     y="0"
+     width="1750"
+     height="80"
+     fill="#01696f"
+     id="rect4" />
+  <text
+     x="30"
+     y="50"
+     font-size="26"
+     font-weight="bold"
+     fill="#ffffff"
+     font-family="sans-serif"
+     id="text4">Entity Relationship Diagram (ERD) — CVD Clinic System</text>
+  <rect
+     x="100"
+     y="120"
+     width="280"
+     height="124"
+     rx="8"
+     fill="#ffffff"
+     stroke="#d4d1ca"
+     stroke-width="1.2"
+     filter="url(#shadow)"
+     id="rect5" />
+  <path
+     d="M 100 128 Q 100 120 108 120 L 372 120 Q 380 120 380 128 L 380 164 L 100 164 Z"
+     fill="#01696f"
+     id="path5" />
+  <text
+     x="240"
+     y="148"
+     text-anchor="middle"
+     font-family="sans-serif"
+     font-size="16"
+     font-weight="bold"
+     fill="#ffffff"
+     id="text5">MedicalRecords</text>
+  <rect
+     x="101"
+     y="164"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect6" />
+  <text
+     x="108"
+     y="180"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="bold"
+     fill="#da7101"
+     id="text6">PK</text>
+  <text
+     x="142"
+     y="180"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text7">recordID</text>
+  <text
+     x="372"
+     y="180"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text8">VARCHAR(20)</text>
+  <rect
+     x="101"
+     y="188"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect8" />
+  <text
+     x="108"
+     y="204"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="normal"
+     fill="#7a7974"
+     id="text9">FK</text>
+  <text
+     x="142"
+     y="204"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text10">patientID</text>
+  <text
+     x="372"
+     y="204"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text11">VARCHAR(20)</text>
+  <rect
+     x="101"
+     y="212"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect11" />
+  <text
+     x="142"
+     y="228"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text12">createdDate</text>
+  <text
+     x="372"
+     y="228"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text13">DATE</text>
+  <rect
+     x="500"
+     y="120"
+     width="280"
+     height="172"
+     rx="8"
+     fill="#ffffff"
+     stroke="#d4d1ca"
+     stroke-width="1.2"
+     filter="url(#shadow)"
+     id="rect13" />
+  <path
+     d="M 500 128 Q 500 120 508 120 L 772 120 Q 780 120 780 128 L 780 164 L 500 164 Z"
+     fill="#01696f"
+     id="path13" />
+  <text
+     x="640"
+     y="148"
+     text-anchor="middle"
+     font-family="sans-serif"
+     font-size="16"
+     font-weight="bold"
+     fill="#ffffff"
+     id="text14">Patients</text>
+  <rect
+     x="501"
+     y="164"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect14" />
+  <text
+     x="508"
+     y="180"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="bold"
+     fill="#da7101"
+     id="text15">PK</text>
+  <text
+     x="542"
+     y="180"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text16">patientID</text>
+  <text
+     x="772"
+     y="180"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text17">VARCHAR(20)</text>
+  <rect
+     x="501"
+     y="188"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect17" />
+  <text
+     x="542"
+     y="204"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text18">firstName</text>
+  <text
+     x="772"
+     y="204"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text19">VARCHAR(50)</text>
+  <rect
+     x="501"
+     y="212"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect19" />
+  <text
+     x="542"
+     y="228"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text20">lastName</text>
+  <text
+     x="772"
+     y="228"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text21">VARCHAR(50)</text>
+  <rect
+     x="501"
+     y="236"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect21" />
+  <text
+     x="542"
+     y="252"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text22">dateOfBirth</text>
+  <text
+     x="772"
+     y="252"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text23">DATE</text>
+  <rect
+     x="501"
+     y="260"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect23" />
+  <text
+     x="542"
+     y="276"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text24">email</text>
+  <text
+     x="772"
+     y="276"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text25">VARCHAR(100)</text>
+  <rect
+     x="900"
+     y="120"
+     width="280"
+     height="148"
+     rx="8"
+     fill="#ffffff"
+     stroke="#d4d1ca"
+     stroke-width="1.2"
+     filter="url(#shadow)"
+     id="rect25" />
+  <path
+     d="M 900 128 Q 900 120 908 120 L 1172 120 Q 1180 120 1180 128 L 1180 164 L 900 164 Z"
+     fill="#01696f"
+     id="path25" />
+  <text
+     x="1040"
+     y="148"
+     text-anchor="middle"
+     font-family="sans-serif"
+     font-size="16"
+     font-weight="bold"
+     fill="#ffffff"
+     id="text26">AdminStaff</text>
+  <rect
+     x="901"
+     y="164"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect26" />
+  <text
+     x="908"
+     y="180"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="bold"
+     fill="#da7101"
+     id="text27">PK</text>
+  <text
+     x="942"
+     y="180"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text28">adminID</text>
+  <text
+     x="1172"
+     y="180"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text29">VARCHAR(20)</text>
+  <rect
+     x="901"
+     y="188"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect29" />
+  <text
+     x="942"
+     y="204"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text30">firstName</text>
+  <text
+     x="1172"
+     y="204"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text31">VARCHAR(50)</text>
+  <rect
+     x="901"
+     y="212"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect31" />
+  <text
+     x="942"
+     y="228"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text32">lastName</text>
+  <text
+     x="1172"
+     y="228"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text33">VARCHAR(50)</text>
+  <rect
+     x="901"
+     y="236"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect33" />
+  <text
+     x="942"
+     y="252"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text34">role</text>
+  <text
+     x="1172"
+     y="252"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text35">VARCHAR(20)</text>
+  <rect
+     x="1300"
+     y="120"
+     width="280"
+     height="148"
+     rx="8"
+     fill="#ffffff"
+     stroke="#d4d1ca"
+     stroke-width="1.2"
+     filter="url(#shadow)"
+     id="rect35" />
+  <path
+     d="M 1300 128 Q 1300 120 1308 120 L 1572 120 Q 1580 120 1580 128 L 1580 164 L 1300 164 Z"
+     fill="#01696f"
+     id="path35" />
+  <text
+     x="1440"
+     y="148"
+     text-anchor="middle"
+     font-family="sans-serif"
+     font-size="16"
+     font-weight="bold"
+     fill="#ffffff"
+     id="text36">Consultants</text>
+  <rect
+     x="1301"
+     y="164"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect36" />
+  <text
+     x="1308"
+     y="180"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="bold"
+     fill="#da7101"
+     id="text37">PK</text>
+  <text
+     x="1342"
+     y="180"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text38">consultantID</text>
+  <text
+     x="1572"
+     y="180"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text39">VARCHAR(20)</text>
+  <rect
+     x="1301"
+     y="188"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect39" />
+  <text
+     x="1342"
+     y="204"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text40">firstName</text>
+  <text
+     x="1572"
+     y="204"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text41">VARCHAR(50)</text>
+  <rect
+     x="1301"
+     y="212"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect41" />
+  <text
+     x="1342"
+     y="228"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text42">lastName</text>
+  <text
+     x="1572"
+     y="228"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text43">VARCHAR(50)</text>
+  <rect
+     x="1301"
+     y="236"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect43" />
+  <text
+     x="1342"
+     y="252"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text44">specialization</text>
+  <text
+     x="1572"
+     y="252"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text45">VARCHAR(100)</text>
+  <!-- Modified MedicalForms -->
+  <rect
+     x="100"
+     y="460"
+     width="280"
+     height="172"
+     rx="8"
+     fill="#ffffff"
+     stroke="#d4d1ca"
+     stroke-width="1.2"
+     filter="url(#shadow)"
+     id="rect45" />
+  <path
+     d="M 100 468 Q 100 460 108 460 L 372 460 Q 380 460 380 468 L 380 504 L 100 504 Z"
+     fill="#01696f"
+     id="path45" />
+  <text
+     x="240"
+     y="488"
+     text-anchor="middle"
+     font-family="sans-serif"
+     font-size="16"
+     font-weight="bold"
+     fill="#ffffff"
+     id="text46">MedicalForms</text>
+  <rect
+     x="101"
+     y="504"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect46" />
+  <text
+     x="108"
+     y="520"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="bold"
+     fill="#da7101"
+     id="text47">PK</text>
+  <text
+     x="142"
+     y="520"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text48">formID</text>
+  <text
+     x="372"
+     y="520"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text49">VARCHAR(20)</text>
+  <rect
+     x="101"
+     y="528"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect49" />
+  <text
+     x="108"
+     y="544"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="normal"
+     fill="#7a7974"
+     id="text50">FK</text>
+  <text
+     x="142"
+     y="544"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text51">appointmentID</text>
+  <text
+     x="372"
+     y="544"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text52">VARCHAR(20)</text>
+  <rect
+     x="101"
+     y="552"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect52" />
+  <text
+     x="108"
+     y="568"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="normal"
+     fill="#7a7974"
+     id="text53">FK</text>
+  <text
+     x="142"
+     y="568"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text54">recordID</text>
+  <text
+     x="372"
+     y="568"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text55">VARCHAR(20)</text>
+  <rect
+     x="101"
+     y="576"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect55" />
+  <text
+     x="142"
+     y="592"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text56">formType</text>
+  <text
+     x="372"
+     y="592"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text57">VARCHAR(50)</text>
+  <rect
+     x="101"
+     y="600"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect57" />
+  <text
+     x="142"
+     y="616"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text58">status</text>
+  <text
+     x="372"
+     y="616"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text59">VARCHAR(20)</text>
+  <rect
+     x="500"
+     y="460"
+     width="280"
+     height="220"
+     rx="8"
+     fill="#ffffff"
+     stroke="#d4d1ca"
+     stroke-width="1.2"
+     filter="url(#shadow)"
+     id="rect59" />
+  <path
+     d="M 500 468 Q 500 460 508 460 L 772 460 Q 780 460 780 468 L 780 504 L 500 504 Z"
+     fill="#01696f"
+     id="path59" />
+  <text
+     x="640"
+     y="488"
+     text-anchor="middle"
+     font-family="sans-serif"
+     font-size="16"
+     font-weight="bold"
+     fill="#ffffff"
+     id="text60">Appointments</text>
+  <rect
+     x="501"
+     y="504"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect60" />
+  <text
+     x="508"
+     y="520"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="bold"
+     fill="#da7101"
+     id="text61">PK</text>
+  <text
+     x="542"
+     y="520"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text62">appointmentID</text>
+  <text
+     x="772"
+     y="520"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text63">VARCHAR(20)</text>
+  <rect
+     x="501"
+     y="528"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect63" />
+  <text
+     x="508"
+     y="544"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="normal"
+     fill="#7a7974"
+     id="text64">FK</text>
+  <text
+     x="542"
+     y="544"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text65">patientID</text>
+  <text
+     x="772"
+     y="544"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text66">VARCHAR(20)</text>
+  <rect
+     x="501"
+     y="552"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect66" />
+  <text
+     x="508"
+     y="568"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="normal"
+     fill="#7a7974"
+     id="text67">FK</text>
+  <text
+     x="542"
+     y="568"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text68">adminID</text>
+  <text
+     x="772"
+     y="568"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text69">VARCHAR(20)</text>
+  <rect
+     x="501"
+     y="576"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect69" />
+  <text
+     x="508"
+     y="592"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="normal"
+     fill="#7a7974"
+     id="text70">FK</text>
+  <text
+     x="542"
+     y="592"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text71">consultantID</text>
+  <text
+     x="772"
+     y="592"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text72">VARCHAR(20)</text>
+  <rect
+     x="501"
+     y="600"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect72" />
+  <text
+     x="542"
+     y="616"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text73">appointmentDate</text>
+  <text
+     x="772"
+     y="616"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text74">DATETIME</text>
+  <rect
+     x="501"
+     y="624"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect74" />
+  <text
+     x="542"
+     y="640"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text75">status</text>
+  <text
+     x="772"
+     y="640"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text76">VARCHAR(20)</text>
+  <rect
+     x="501"
+     y="648"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect76" />
+  <text
+     x="542"
+     y="664"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text77">type</text>
+  <text
+     x="772"
+     y="664"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text78">VARCHAR(50)</text>
+  <rect
+     x="1300"
+     y="460"
+     width="280"
+     height="172"
+     rx="8"
+     fill="#ffffff"
+     stroke="#d4d1ca"
+     stroke-width="1.2"
+     filter="url(#shadow)"
+     id="rect78" />
+  <path
+     d="M 1300 468 Q 1300 460 1308 460 L 1572 460 Q 1580 460 1580 468 L 1580 504 L 1300 504 Z"
+     fill="#01696f"
+     id="path78" />
+  <text
+     x="1440"
+     y="488"
+     text-anchor="middle"
+     font-family="sans-serif"
+     font-size="16"
+     font-weight="bold"
+     fill="#ffffff"
+     id="text79">Prescriptions</text>
+  <rect
+     x="1301"
+     y="504"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect79" />
+  <text
+     x="1308"
+     y="520"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="bold"
+     fill="#da7101"
+     id="text80">PK</text>
+  <text
+     x="1342"
+     y="520"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text81">prescriptionID</text>
+  <text
+     x="1572"
+     y="520"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text82">VARCHAR(20)</text>
+  <rect
+     x="1301"
+     y="528"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect82" />
+  <text
+     x="1308"
+     y="544"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="normal"
+     fill="#7a7974"
+     id="text83">FK</text>
+  <text
+     x="1342"
+     y="544"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text84">consultantID</text>
+  <text
+     x="1572"
+     y="544"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text85">VARCHAR(20)</text>
+  <rect
+     x="1301"
+     y="552"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect85" />
+  <text
+     x="1308"
+     y="568"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="normal"
+     fill="#7a7974"
+     id="text86">FK</text>
+  <text
+     x="1342"
+     y="568"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text87">formID</text>
+  <text
+     x="1572"
+     y="568"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text88">VARCHAR(20)</text>
+  <rect
+     x="1301"
+     y="576"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect88" />
+  <text
+     x="1342"
+     y="592"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text89">medications</text>
+  <text
+     x="1572"
+     y="592"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text90">TEXT</text>
+  <rect
+     x="1301"
+     y="600"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect90" />
+  <text
+     x="1342"
+     y="616"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text91">dosage</text>
+  <text
+     x="1572"
+     y="616"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text92">TEXT</text>
+  <rect
+     x="100"
+     y="800"
+     width="280"
+     height="148"
+     rx="8"
+     fill="#ffffff"
+     stroke="#d4d1ca"
+     stroke-width="1.2"
+     filter="url(#shadow)"
+     id="rect92" />
+  <path
+     d="M 100 808 Q 100 800 108 800 L 372 800 Q 380 800 380 808 L 380 844 L 100 844 Z"
+     fill="#01696f"
+     id="path92" />
+  <text
+     x="240"
+     y="828"
+     text-anchor="middle"
+     font-family="sans-serif"
+     font-size="16"
+     font-weight="bold"
+     fill="#ffffff"
+     id="text93">SectionOne</text>
+  <rect
+     x="101"
+     y="844"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect93" />
+  <text
+     x="108"
+     y="860"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="bold"
+     fill="#da7101"
+     id="text94">PK</text>
+  <text
+     x="142"
+     y="860"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text95">sectionOneID</text>
+  <text
+     x="372"
+     y="860"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text96">VARCHAR(20)</text>
+  <rect
+     x="101"
+     y="868"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect96" />
+  <text
+     x="108"
+     y="884"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="normal"
+     fill="#7a7974"
+     id="text97">FK</text>
+  <text
+     x="142"
+     y="884"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text98">formID</text>
+  <text
+     x="372"
+     y="884"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text99">VARCHAR(20)</text>
+  <rect
+     x="101"
+     y="892"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect99" />
+  <text
+     x="142"
+     y="908"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text100">symptoms</text>
+  <text
+     x="372"
+     y="908"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text101">TEXT</text>
+  <rect
+     x="101"
+     y="916"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect101" />
+  <text
+     x="142"
+     y="932"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text102">allergies</text>
+  <text
+     x="372"
+     y="932"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text103">TEXT</text>
+  <rect
+     x="500"
+     y="800"
+     width="280"
+     height="196"
+     rx="8"
+     fill="#ffffff"
+     stroke="#d4d1ca"
+     stroke-width="1.2"
+     filter="url(#shadow)"
+     id="rect103" />
+  <path
+     d="M 500 808 Q 500 800 508 800 L 772 800 Q 780 800 780 808 L 780 844 L 500 844 Z"
+     fill="#01696f"
+     id="path103" />
+  <text
+     x="640"
+     y="828"
+     text-anchor="middle"
+     font-family="sans-serif"
+     font-size="16"
+     font-weight="bold"
+     fill="#ffffff"
+     id="text104">VitalSigns</text>
+  <rect
+     x="501"
+     y="844"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect104" />
+  <text
+     x="508"
+     y="860"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="bold"
+     fill="#da7101"
+     id="text105">PK</text>
+  <text
+     x="542"
+     y="860"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text106">vitalID</text>
+  <text
+     x="772"
+     y="860"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text107">VARCHAR(20)</text>
+  <rect
+     x="501"
+     y="868"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect107" />
+  <text
+     x="508"
+     y="884"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="normal"
+     fill="#7a7974"
+     id="text108">FK</text>
+  <text
+     x="542"
+     y="884"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text109">appointmentID</text>
+  <text
+     x="772"
+     y="884"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text110">VARCHAR(20)</text>
+  <rect
+     x="501"
+     y="892"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect110" />
+  <text
+     x="508"
+     y="908"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="normal"
+     fill="#7a7974"
+     id="text111">FK</text>
+  <text
+     x="542"
+     y="908"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text112">nurseID</text>
+  <text
+     x="772"
+     y="908"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text113">VARCHAR(20)</text>
+  <rect
+     x="501"
+     y="916"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect113" />
+  <text
+     x="542"
+     y="932"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text114">bpSystolic</text>
+  <text
+     x="772"
+     y="932"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text115">INT</text>
+  <rect
+     x="501"
+     y="940"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect115" />
+  <text
+     x="542"
+     y="956"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text116">bpDiastolic</text>
+  <text
+     x="772"
+     y="956"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text117">INT</text>
+  <rect
+     x="501"
+     y="964"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect117" />
+  <text
+     x="542"
+     y="980"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text118">bmi</text>
+  <text
+     x="772"
+     y="980"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text119">DECIMAL(4,2)</text>
+  <rect
+     x="900"
+     y="800"
+     width="280"
+     height="148"
+     rx="8"
+     fill="#ffffff"
+     stroke="#d4d1ca"
+     stroke-width="1.2"
+     filter="url(#shadow)"
+     id="rect119" />
+  <path
+     d="M 900 808 Q 900 800 908 800 L 1172 800 Q 1180 800 1180 808 L 1180 844 L 900 844 Z"
+     fill="#01696f"
+     id="path119" />
+  <text
+     x="1040"
+     y="828"
+     text-anchor="middle"
+     font-family="sans-serif"
+     font-size="16"
+     font-weight="bold"
+     fill="#ffffff"
+     id="text120">Nurses</text>
+  <rect
+     x="901"
+     y="844"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect120" />
+  <text
+     x="908"
+     y="860"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="bold"
+     fill="#da7101"
+     id="text121">PK</text>
+  <text
+     x="942"
+     y="860"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text122">nurseID</text>
+  <text
+     x="1172"
+     y="860"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text123">VARCHAR(20)</text>
+  <rect
+     x="901"
+     y="868"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect123" />
+  <text
+     x="942"
+     y="884"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text124">firstName</text>
+  <text
+     x="1172"
+     y="884"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text125">VARCHAR(50)</text>
+  <rect
+     x="901"
+     y="892"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect125" />
+  <text
+     x="942"
+     y="908"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text126">lastName</text>
+  <text
+     x="1172"
+     y="908"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text127">VARCHAR(50)</text>
+  <rect
+     x="901"
+     y="916"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect127" />
+  <text
+     x="942"
+     y="932"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text128">registrationNo</text>
+  <text
+     x="1172"
+     y="932"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text129">VARCHAR(50)</text>
+  <rect
+     x="500"
+     y="1140"
+     width="280"
+     height="172"
+     rx="8"
+     fill="#ffffff"
+     stroke="#d4d1ca"
+     stroke-width="1.2"
+     filter="url(#shadow)"
+     id="rect129" />
+  <path
+     d="M 500 1148 Q 500 1140 508 1140 L 772 1140 Q 780 1140 780 1148 L 780 1184 L 500 1184 Z"
+     fill="#01696f"
+     id="path129" />
+  <text
+     x="640"
+     y="1168"
+     text-anchor="middle"
+     font-family="sans-serif"
+     font-size="16"
+     font-weight="bold"
+     fill="#ffffff"
+     id="text130">SectionTwo</text>
+  <rect
+     x="501"
+     y="1184"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect130" />
+  <text
+     x="508"
+     y="1200"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="bold"
+     fill="#da7101"
+     id="text131">PK</text>
+  <text
+     x="542"
+     y="1200"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text132">sectionTwoID</text>
+  <text
+     x="772"
+     y="1200"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text133">VARCHAR(20)</text>
+  <rect
+     x="501"
+     y="1208"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect133" />
+  <text
+     x="508"
+     y="1224"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="normal"
+     fill="#7a7974"
+     id="text134">FK</text>
+  <text
+     x="542"
+     y="1224"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text135">formID</text>
+  <text
+     x="772"
+     y="1224"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text136">VARCHAR(20)</text>
+  <rect
+     x="501"
+     y="1232"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect136" />
+  <text
+     x="508"
+     y="1248"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="normal"
+     fill="#7a7974"
+     id="text137">FK</text>
+  <text
+     x="542"
+     y="1248"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text138">consultantID</text>
+  <text
+     x="772"
+     y="1248"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text139">VARCHAR(20)</text>
+  <rect
+     x="501"
+     y="1256"
+     width="278"
+     height="24"
+     fill="#fbfbf9"
+     id="rect139" />
+  <text
+     x="542"
+     y="1272"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text140">diagnosis</text>
+  <text
+     x="772"
+     y="1272"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text141">VARCHAR(200)</text>
+  <rect
+     x="501"
+     y="1280"
+     width="278"
+     height="24"
+     fill="#ffffff"
+     id="rect141" />
+  <text
+     x="542"
+     y="1296"
+     font-family="monospace"
+     font-size="13"
+     font-weight="bold"
+     fill="#28251d"
+     id="text142">clinicalNotes</text>
+  <text
+     x="772"
+     y="1296"
+     text-anchor="end"
+     font-family="monospace"
+     font-size="12"
+     fill="#7a7974"
+     id="text143">TEXT</text>
+  <!-- RELATIONSHIP LINES -->
+  <polyline
+     points="500,182 380,182"
+     fill="none"
+     stroke="#28251d"
+     stroke-width="2"
+     marker-start="url(#start-one)"
+     marker-end="url(#end-one)"
+     id="polyline143" />
+  <polyline
+     points="640,292 640,460"
+     fill="none"
+     stroke="#28251d"
+     stroke-width="2"
+     marker-start="url(#start-one)"
+     marker-end="url(#end-many)"
+     id="polyline144" />
+  <polyline
+     points="900,200 840,200 840,570 780,570"
+     fill="none"
+     stroke="#28251d"
+     stroke-width="2"
+     marker-start="url(#start-one)"
+     marker-end="url(#end-many)"
+     id="polyline145" />
+  <polyline
+     points="1300,200 1240,200 1240,420 860,420 860,600 780,600"
+     fill="none"
+     stroke="#28251d"
+     stroke-width="2"
+     marker-start="url(#start-one)"
+     marker-end="url(#end-many)"
+     id="polyline146" />
+  <polyline
+     points="1440,268 1440,460"
+     fill="none"
+     stroke="#28251d"
+     stroke-width="2"
+     marker-start="url(#start-one)"
+     marker-end="url(#end-many)"
+     id="polyline147" />
+  <polyline
+     points="1300,224 1260,224 1260,1226 780,1226"
+     fill="none"
+     stroke="#28251d"
+     stroke-width="2"
+     marker-start="url(#start-one)"
+     marker-end="url(#end-many)"
+     id="polyline148" />
+  <polyline
+     points="500,558 380,558"
+     fill="none"
+     stroke="#28251d"
+     stroke-width="2"
+     marker-start="url(#start-one)"
+     marker-end="url(#end-one)"
+     id="polyline149" />
+  <polyline
+     points="640,680 640,800"
+     fill="none"
+     stroke="#28251d"
+     stroke-width="2"
+     marker-start="url(#start-one)"
+     marker-end="url(#end-one)"
+     id="polyline150" />
+  <polyline
+     points="900,874 780,874"
+     fill="none"
+     stroke="#28251d"
+     stroke-width="2"
+     marker-start="url(#start-one)"
+     marker-end="url(#end-many)"
+     id="polyline151" />
+  <polyline
+     points="240,244 240,460"
+     fill="none"
+     stroke="#28251d"
+     stroke-width="2"
+     marker-start="url(#start-one)"
+     marker-end="url(#end-many)"
+     id="polyline152" />
+  <polyline
+     points="240,656 240,800"
+     fill="none"
+     stroke="#28251d"
+     stroke-width="2"
+     marker-start="url(#start-one)"
+     marker-end="url(#end-one)"
+     id="polyline153"
+     transform="matrix(1,0,0,1.1927879,0,-154.61589)" />
+  <polyline
+     points="100,600 40,600 40,1226 500,1226"
+     fill="none"
+     stroke="#28251d"
+     stroke-width="2"
+     marker-start="url(#start-one)"
+     marker-end="url(#end-one)"
+     id="polyline154" />
+  <polyline
+     points="160,656 160,740 1220,740 1220,600 1300,600"
+     fill="none"
+     stroke="#28251d"
+     stroke-width="2"
+     marker-start="url(#start-one)"
+     marker-end="url(#end-many)"
+     id="polyline155"
+     transform="translate(-0.8532609,-29.483696)" />
+  <!-- LEGEND -->
+  <rect
+     x="1380"
+     y="1140"
+     width="320"
+     height="170"
+     rx="8"
+     fill="#ffffff"
+     stroke="#d4d1ca"
+     stroke-width="1.2"
+     filter="url(#shadow)"
+     id="rect155" />
+  <path
+     d="M 1380 1148 Q 1380 1140 1388 1140 L 1692 1140 Q 1700 1140 1700 1148 L 1700 1184 L 1380 1184 Z"
+     fill="#01696f"
+     id="path155" />
+  <text
+     x="1540"
+     y="1168"
+     text-anchor="middle"
+     font-family="sans-serif"
+     font-size="16"
+     font-weight="bold"
+     fill="#ffffff"
+     id="text155">ERD Legend</text>
+  <line
+     x1="1400"
+     y1="1214"
+     x2="1460"
+     y2="1214"
+     stroke="#28251d"
+     stroke-width="2"
+     marker-start="url(#start-one)"
+     marker-end="url(#end-one)"
+     id="line155" />
+  <text
+     x="1480"
+     y="1219"
+     font-family="sans-serif"
+     font-size="14"
+     fill="#28251d"
+     id="text156">One and only one (1:1)</text>
+  <line
+     x1="1400"
+     y1="1244"
+     x2="1460"
+     y2="1244"
+     stroke="#28251d"
+     stroke-width="2"
+     marker-start="url(#start-one)"
+     marker-end="url(#end-many)"
+     id="line156" />
+  <text
+     x="1480"
+     y="1249"
+     font-family="sans-serif"
+     font-size="14"
+     fill="#28251d"
+     id="text157">One to Many (1:N)</text>
+  <text
+     x="1400"
+     y="1284"
+     font-family="sans-serif"
+     font-size="14"
+     font-weight="bold"
+     fill="#da7101"
+     id="text158">PK</text>
+  <text
+     x="1430"
+     y="1284"
+     font-family="sans-serif"
+     font-size="14"
+     fill="#28251d"
+     id="text159">Primary Key</text>
+  <text
+     x="1540"
+     y="1284"
+     font-family="sans-serif"
+     font-size="14"
+     font-weight="bold"
+     fill="#7a7974"
+     id="text160">FK</text>
+  <text
+     x="1570"
+     y="1284"
+     font-family="sans-serif"
+     font-size="14"
+     fill="#28251d"
+     id="text161">Foreign Key</text>
 </svg>
