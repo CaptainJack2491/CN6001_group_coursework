@@ -11,9 +11,11 @@ targetNamespace="http://bpmn.io/schema/bpmn">
 <participant id="Participant_Patient" name="Patient" processRef="Process_Patient"/>
 <participant id="Participant_Nurse" name="Nurse/Admin Staff" processRef="Process_Nurse"/>
 <participant id="Participant_Consultant" name="Consultant" processRef="Process_Consultant"/>
-<messageFlow id="MessageFlow_1" sourceRef="Task_VerifyIdentity" targetRef="Task_FillForm"/>
-<messageFlow id="MessageFlow_2" sourceRef="Task_RecordVitals" targetRef="Start_ConsultReady"/>
-<messageFlow id="MessageFlow_3" sourceRef="Task_EscortToConsultant" targetRef="Start_PatientReady"/>
+<!-- Message flows between pools -->
+<messageFlow id="MessageFlow_FormReady" sourceRef="Task_SubmitForm" targetRef="Start_PatientArrives"/>
+<messageFlow id="MessageFlow_VitalsReady" sourceRef="Task_RecordVitals" targetRef="Start_ConsultReady"/>
+<messageFlow id="MessageFlow_EscortPatient" sourceRef="Task_EscortToConsultant" targetRef="Catch_PatientArrived"/>
+<messageFlow id="MessageFlow_PrescriptionSent" sourceRef="Task_GeneratePrescription" targetRef="Catch_Prescription"/>
 </collaboration>
 
 <!-- Patient Process -->
@@ -39,23 +41,34 @@ targetNamespace="http://bpmn.io/schema/bpmn">
 <sequenceFlow id="Flow_6" sourceRef="Task_CompleteMissing" targetRef="Task_FillForm"/>
 
 <userTask id="Task_SubmitForm" name="Submit Form"/>
-<sequenceFlow id="Flow_7" sourceRef="Task_SubmitForm" targetRef="Task_WaitVitals"/>
+<sequenceFlow id="Flow_7" sourceRef="Task_SubmitForm" targetRef="Catch_WaitVitals"/>
 
-<userTask id="Task_WaitVitals" name="Wait for Vital Signs Check"/>
-<sequenceFlow id="Flow_8" sourceRef="Task_WaitVitals" targetRef="Task_Consultation"/>
+<!-- Patient waits for vitals check - receive task (intermediate catch) -->
+<intermediateCatchEvent id="Catch_WaitVitals" name="Wait for&#10;Vital Signs Check">
+<messageEventDefinition id="MsgDef_WaitVitals"/>
+</intermediateCatchEvent>
+<sequenceFlow id="Flow_8" sourceRef="Catch_WaitVitals" targetRef="Catch_Consultation"/>
 
-<userTask id="Task_Consultation" name="Consultation with Specialist"/>
-<sequenceFlow id="Flow_9" sourceRef="Task_Consultation" targetRef="Task_ReceivePrescription"/>
+<!-- Patient waits to be called for consultation -->
+<intermediateCatchEvent id="Catch_Consultation" name="Called for&#10;Consultation">
+<messageEventDefinition id="MsgDef_Consultation"/>
+</intermediateCatchEvent>
+<sequenceFlow id="Flow_9" sourceRef="Catch_Consultation" targetRef="Catch_ReceivePrescription"/>
 
-<userTask id="Task_ReceivePrescription" name="Receive Prescription"/>
-<sequenceFlow id="Flow_10" sourceRef="Task_ReceivePrescription" targetRef="End_Process"/>
+<!-- Patient receives prescription - receive task -->
+<intermediateCatchEvent id="Catch_ReceivePrescription" name="Receive&#10;Prescription">
+<messageEventDefinition id="MsgDef_Prescription"/>
+</intermediateCatchEvent>
+<sequenceFlow id="Flow_10" sourceRef="Catch_ReceivePrescription" targetRef="End_Process"/>
 
 <endEvent id="End_Process" name="Consultation Complete"/>
 </process>
 
 <!-- Nurse/Admin Process -->
 <process id="Process_Nurse" isExecutable="false">
-<startEvent id="Start_PatientArrives" name="Patient Arrives"/>
+<startEvent id="Start_PatientArrives" name="Patient Arrives">
+<messageEventDefinition id="MsgDef_PatientArrives"/>
+</startEvent>
 <sequenceFlow id="Flow_11" sourceRef="Start_PatientArrives" targetRef="Task_VerifyIdentity"/>
 
 <userTask id="Task_VerifyIdentity" name="Verify Patient Identity"/>
@@ -80,7 +93,8 @@ targetNamespace="http://bpmn.io/schema/bpmn">
 <parallelGateway id="Gateway_VitalsJoin" name="All Vitals Recorded?"/>
 <sequenceFlow id="Flow_15" sourceRef="Gateway_VitalsJoin" targetRef="Task_RecordVitals"/>
 
-<userTask id="Task_RecordVitals" name="Record Vital Signs in System"/>
+<!-- Service task - automated system recording -->
+<serviceTask id="Task_RecordVitals" name="Record Vital Signs in System"/>
 <sequenceFlow id="Flow_16" sourceRef="Task_RecordVitals" targetRef="Task_EscortToConsultant"/>
 
 <userTask id="Task_EscortToConsultant" name="Escort to Consultant"/>
@@ -91,52 +105,62 @@ targetNamespace="http://bpmn.io/schema/bpmn">
 
 <!-- Consultant Process -->
 <process id="Process_Consultant" isExecutable="false">
+<!-- Start event triggered by message from nurse - patient is ready -->
 <startEvent id="Start_ConsultReady" name="Patient Ready for Consultation">
-<messageEventDefinition id="MessageEventDef_1"/>
+<messageEventDefinition id="MsgDef_ConsultReady"/>
 </startEvent>
-<sequenceFlow id="Flow_20" sourceRef="Start_ConsultReady" targetRef="Task_ReviewSection1"/>
+<sequenceFlow id="Flow_20" sourceRef="Start_ConsultReady" targetRef="Catch_PatientArrived"/>
+
+<!-- Intermediate catch - consultant waits for patient to arrive -->
+<intermediateCatchEvent id="Catch_PatientArrived" name="Patient&#10;Arrived">
+<messageEventDefinition id="MsgDef_PatientHere"/>
+</intermediateCatchEvent>
+<sequenceFlow id="Flow_21" sourceRef="Catch_PatientArrived" targetRef="Task_ReviewSection1"/>
 
 <userTask id="Task_ReviewSection1" name="Review Section 1&#10;(Patient Data)"/>
-<sequenceFlow id="Flow_21" sourceRef="Task_ReviewSection1" targetRef="Task_ConductExam"/>
+<sequenceFlow id="Flow_22" sourceRef="Task_ReviewSection1" targetRef="Task_ConductExam"/>
 
 <userTask id="Task_ConductExam" name="Conduct Examination"/>
-<sequenceFlow id="Flow_22" sourceRef="Task_ConductExam" targetRef="Task_CompleteSection2"/>
+<sequenceFlow id="Flow_23" sourceRef="Task_ConductExam" targetRef="Task_CompleteSection2"/>
 
 <userTask id="Task_CompleteSection2" name="Complete Section 2&#10;(Consultant Notes)"/>
-<sequenceFlow id="Flow_23" sourceRef="Task_CompleteSection2" targetRef="Gateway_Diagnosis"/>
+<sequenceFlow id="Flow_24" sourceRef="Task_CompleteSection2" targetRef="Gateway_ConditionType"/>
 
-<exclusiveGateway id="Gateway_Diagnosis" name="Diagnosis Required?"/>
-<sequenceFlow id="Flow_24a" name="Hypertension" sourceRef="Gateway_Diagnosis" targetRef="Task_HypertensionPlan">
+<!-- Exclusive gateway - condition type determines treatment path -->
+<exclusiveGateway id="Gateway_ConditionType" name="Condition Type?"/>
+<sequenceFlow id="Flow_25a" name="Hypertension" sourceRef="Gateway_ConditionType" targetRef="Task_HypertensionPlan">
 <conditionExpression xsi:type="tFormalExpression">${diagnosis == 'Hypertension'}</conditionExpression>
 </sequenceFlow>
-<sequenceFlow id="Flow_24b" name="Hypotension" sourceRef="Gateway_Diagnosis" targetRef="Task_HypotensionPlan">
+<sequenceFlow id="Flow_25b" name="Hypotension" sourceRef="Gateway_ConditionType" targetRef="Task_HypotensionPlan">
 <conditionExpression xsi:type="tFormalExpression">${diagnosis == 'Hypotension'}</conditionExpression>
 </sequenceFlow>
-<sequenceFlow id="Flow_24c" name="Diabetes" sourceRef="Gateway_Diagnosis" targetRef="Task_DiabetesPlan">
+<sequenceFlow id="Flow_25c" name="Diabetes" sourceRef="Gateway_ConditionType" targetRef="Task_DiabetesPlan">
 <conditionExpression xsi:type="tFormalExpression">${diagnosis == 'Diabetes'}</conditionExpression>
 </sequenceFlow>
 
 <userTask id="Task_HypertensionPlan" name="Hypertension Treatment Plan"/>
-<sequenceFlow id="Flow_25a" sourceRef="Task_HypertensionPlan" targetRef="Gateway_DiagnosisJoin"/>
+<sequenceFlow id="Flow_26a" sourceRef="Task_HypertensionPlan" targetRef="Gateway_TreatmentJoin"/>
 
 <userTask id="Task_HypotensionPlan" name="Hypotension Treatment Plan"/>
-<sequenceFlow id="Flow_25b" sourceRef="Task_HypotensionPlan" targetRef="Gateway_DiagnosisJoin"/>
+<sequenceFlow id="Flow_26b" sourceRef="Task_HypotensionPlan" targetRef="Gateway_TreatmentJoin"/>
 
 <userTask id="Task_DiabetesPlan" name="Diabetes Management Plan"/>
-<sequenceFlow id="Flow_25c" sourceRef="Task_DiabetesPlan" targetRef="Gateway_DiagnosisJoin"/>
+<sequenceFlow id="Flow_26c" sourceRef="Task_DiabetesPlan" targetRef="Gateway_TreatmentJoin"/>
 
-<!-- CONVERGING GATEWAY: Join diagnosis branches -->
-<parallelGateway id="Gateway_DiagnosisJoin" name="Treatment Planned"/>
-<sequenceFlow id="Flow_26" sourceRef="Gateway_DiagnosisJoin" targetRef="Task_GeneratePrescription"/>
+<!-- CONVERGING EXCLUSIVE GATEWAY: Join diagnosis branches (only one path taken) -->
+<exclusiveGateway id="Gateway_TreatmentJoin" name="Treatment Planned"/>
+<sequenceFlow id="Flow_27" sourceRef="Gateway_TreatmentJoin" targetRef="Task_GeneratePrescription"/>
 
+<!-- Service task - automated prescription generation -->
 <serviceTask id="Task_GeneratePrescription" name="Generate Prescription"/>
-<sequenceFlow id="Flow_27" sourceRef="Task_GeneratePrescription" targetRef="Task_ScheduleFollowup"/>
+<sequenceFlow id="Flow_28" sourceRef="Task_GeneratePrescription" targetRef="Task_ScheduleFollowup"/>
 
 <userTask id="Task_ScheduleFollowup" name="Schedule Follow-up"/>
-<sequenceFlow id="Flow_28" sourceRef="Task_ScheduleFollowup" targetRef="Task_SaveRecord"/>
+<sequenceFlow id="Flow_29" sourceRef="Task_ScheduleFollowup" targetRef="Task_SaveRecord"/>
 
+<!-- Service task - automated database save -->
 <serviceTask id="Task_SaveRecord" name="Save Medical Record"/>
-<sequenceFlow id="Flow_29" sourceRef="Task_SaveRecord" targetRef="End_Consultant"/>
+<sequenceFlow id="Flow_30" sourceRef="Task_SaveRecord" targetRef="End_Consultant"/>
 
 <endEvent id="End_Consultant" name="Consultation Complete"/>
 </process>
@@ -146,7 +170,7 @@ targetNamespace="http://bpmn.io/schema/bpmn">
 
 <!-- Patient Pool -->
 <bpmndi:BPMNShape id="Participant_Patient_di" bpmnElement="Participant_Patient" isHorizontal="true">
-<omgdc:Bounds x="0" y="0" width="1400" height="250"/>
+<omgdc:Bounds x="0" y="0" width="1400" height="280"/>
 </bpmndi:BPMNShape>
 
 <bpmndi:BPMNShape id="Start_Arrive_di" bpmnElement="Start_Arrive">
@@ -167,101 +191,113 @@ targetNamespace="http://bpmn.io/schema/bpmn">
 <bpmndi:BPMNShape id="Task_SubmitForm_di" bpmnElement="Task_SubmitForm">
 <omgdc:Bounds x="560" y="78" width="100" height="80"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_WaitVitals_di" bpmnElement="Task_WaitVitals">
-<omgdc:Bounds x="700" y="78" width="120" height="80"/>
+
+<!-- Receive task for waiting -->
+<bpmndi:BPMNShape id="Catch_WaitVitals_di" bpmnElement="Catch_WaitVitals">
+<omgdc:Bounds x="700" y="100" width="36" height="36"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_Consultation_di" bpmnElement="Task_Consultation">
-<omgdc:Bounds x="860" y="78" width="120" height="80"/>
+
+<!-- Receive task for consultation call -->
+<bpmndi:BPMNShape id="Catch_Consultation_di" bpmnElement="Catch_Consultation">
+<omgdc:Bounds x="860" y="100" width="36" height="36"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_ReceivePrescription_di" bpmnElement="Task_ReceivePrescription">
-<omgdc:Bounds x="1020" y="78" width="120" height="80"/>
+
+<!-- Receive task for prescription -->
+<bpmndi:BPMNShape id="Catch_ReceivePrescription_di" bpmnElement="Catch_ReceivePrescription">
+<omgdc:Bounds x="1020" y="100" width="36" height="36"/>
 </bpmndi:BPMNShape>
+
 <bpmndi:BPMNShape id="End_Process_di" bpmnElement="End_Process">
 <omgdc:Bounds x="1180" y="100" width="36" height="36"/>
 </bpmndi:BPMNShape>
 
 <!-- Nurse Pool -->
 <bpmndi:BPMNShape id="Participant_Nurse_di" bpmnElement="Participant_Nurse" isHorizontal="true">
-<omgdc:Bounds x="0" y="250" width="1400" height="280"/>
+<omgdc:Bounds x="0" y="280" width="1400" height="280"/>
 </bpmndi:BPMNShape>
 
 <bpmndi:BPMNShape id="Start_PatientArrives_di" bpmnElement="Start_PatientArrives">
-<omgdc:Bounds x="50" y="360" width="36" height="36"/>
+<omgdc:Bounds x="50" y="400" width="36" height="36"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="Task_VerifyIdentity_di" bpmnElement="Task_VerifyIdentity">
-<omgdc:Bounds x="130" y="338" width="120" height="80"/>
+<omgdc:Bounds x="130" y="378" width="120" height="80"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="Gateway_VitalsSplit_di" bpmnElement="Gateway_VitalsSplit" isMarkerVisible="true">
-<omgdc:Bounds x="290" y="353" width="50" height="50"/>
+<omgdc:Bounds x="290" y="393" width="50" height="50"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="Task_CheckBP_di" bpmnElement="Task_CheckBP">
-<omgdc:Bounds x="380" y="260" width="120" height="70"/>
+<omgdc:Bounds x="380" y="300" width="120" height="70"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="Task_CheckBMI_di" bpmnElement="Task_CheckBMI">
-<omgdc:Bounds x="380" y="350" width="120" height="70"/>
+<omgdc:Bounds x="380" y="390" width="120" height="70"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="Task_CheckBloodSugar_di" bpmnElement="Task_CheckBloodSugar">
-<omgdc:Bounds x="380" y="440" width="120" height="70"/>
+<omgdc:Bounds x="380" y="480" width="120" height="70"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="Gateway_VitalsJoin_di" bpmnElement="Gateway_VitalsJoin" isMarkerVisible="true">
-<omgdc:Bounds x="540" y="353" width="50" height="50"/>
+<omgdc:Bounds x="540" y="393" width="50" height="50"/>
 </bpmndi:BPMNShape>
+
+<!-- Service task for automated recording -->
 <bpmndi:BPMNShape id="Task_RecordVitals_di" bpmnElement="Task_RecordVitals">
-<omgdc:Bounds x="630" y="338" width="120" height="80"/>
+<omgdc:Bounds x="630" y="378" width="120" height="80"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="Task_EscortToConsultant_di" bpmnElement="Task_EscortToConsultant">
-<omgdc:Bounds x="800" y="338" width="120" height="80"/>
+<omgdc:Bounds x="800" y="378" width="120" height="80"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="End_Nurse_di" bpmnElement="End_Nurse">
-<omgdc:Bounds x="960" y="358" width="36" height="36"/>
+<omgdc:Bounds x="960" y="398" width="36" height="36"/>
 </bpmndi:BPMNShape>
 
 <!-- Consultant Pool -->
 <bpmndi:BPMNShape id="Participant_Consultant_di" bpmnElement="Participant_Consultant" isHorizontal="true">
-<omgdc:Bounds x="0" y="530" width="1400" height="350"/>
+<omgdc:Bounds x="0" y="560" width="1400" height="380"/>
 </bpmndi:BPMNShape>
 
 <bpmndi:BPMNShape id="Start_ConsultReady_di" bpmnElement="Start_ConsultReady">
-<omgdc:Bounds x="50" y="660" width="36" height="36"/>
+<omgdc:Bounds x="50" y="650" width="36" height="36"/>
+</bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="Catch_PatientArrived_di" bpmnElement="Catch_PatientArrived">
+<omgdc:Bounds x="130" y="650" width="36" height="36"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="Task_ReviewSection1_di" bpmnElement="Task_ReviewSection1">
-<omgdc:Bounds x="130" y="638" width="120" height="80"/>
+<omgdc:Bounds x="210" y="628" width="120" height="80"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="Task_ConductExam_di" bpmnElement="Task_ConductExam">
-<omgdc:Bounds x="290" y="638" width="120" height="80"/>
+<omgdc:Bounds x="370" y="628" width="120" height="80"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="Task_CompleteSection2_di" bpmnElement="Task_CompleteSection2">
-<omgdc:Bounds x="450" y="638" width="120" height="80"/>
+<omgdc:Bounds x="530" y="628" width="120" height="80"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Gateway_Diagnosis_di" bpmnElement="Gateway_Diagnosis" isMarkerVisible="true">
-<omgdc:Bounds x="610" y="653" width="50" height="50"/>
+<bpmndi:BPMNShape id="Gateway_ConditionType_di" bpmnElement="Gateway_ConditionType" isMarkerVisible="true">
+<omgdc:Bounds x="690" y="643" width="50" height="50"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="Task_HypertensionPlan_di" bpmnElement="Task_HypertensionPlan">
-<omgdc:Bounds x="700" y="550" width="140" height="70"/>
+<omgdc:Bounds x="780" y="540" width="140" height="70"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="Task_HypotensionPlan_di" bpmnElement="Task_HypotensionPlan">
-<omgdc:Bounds x="700" y="640" width="140" height="70"/>
+<omgdc:Bounds x="780" y="630" width="140" height="70"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="Task_DiabetesPlan_di" bpmnElement="Task_DiabetesPlan">
-<omgdc:Bounds x="700" y="730" width="140" height="70"/>
+<omgdc:Bounds x="780" y="720" width="140" height="70"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Gateway_DiagnosisJoin_di" bpmnElement="Gateway_DiagnosisJoin" isMarkerVisible="true">
-<omgdc:Bounds x="880" y="653" width="50" height="50"/>
+<bpmndi:BPMNShape id="Gateway_TreatmentJoin_di" bpmnElement="Gateway_TreatmentJoin" isMarkerVisible="true">
+<omgdc:Bounds x="960" y="643" width="50" height="50"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="Task_GeneratePrescription_di" bpmnElement="Task_GeneratePrescription">
-<omgdc:Bounds x="970" y="638" width="120" height="80"/>
+<omgdc:Bounds x="1050" y="628" width="120" height="80"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="Task_ScheduleFollowup_di" bpmnElement="Task_ScheduleFollowup">
-<omgdc:Bounds x="1130" y="638" width="120" height="80"/>
+<omgdc:Bounds x="1210" y="628" width="120" height="80"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="Task_SaveRecord_di" bpmnElement="Task_SaveRecord">
-<omgdc:Bounds x="970" y="740" width="120" height="70"/>
+<omgdc:Bounds x="1050" y="730" width="120" height="70"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="End_Consultant_di" bpmnElement="End_Consultant">
-<omgdc:Bounds x="1130" y="755" width="36" height="36"/>
+<omgdc:Bounds x="1210" y="745" width="36" height="36"/>
 </bpmndi:BPMNShape>
 
-<!-- Sequence Flows -->
+<!-- Sequence Flows Patient -->
 <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
 <omgdi:waypoint x="86" y="118"/>
 <omgdi:waypoint x="120" y="118"/>
@@ -293,143 +329,151 @@ targetNamespace="http://bpmn.io/schema/bpmn">
 <omgdi:waypoint x="700" y="118"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
-<omgdi:waypoint x="820" y="118"/>
+<omgdi:waypoint x="718" y="118"/>
 <omgdi:waypoint x="860" y="118"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9">
-<omgdi:waypoint x="980" y="118"/>
+<omgdi:waypoint x="878" y="118"/>
 <omgdi:waypoint x="1020" y="118"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10">
-<omgdi:waypoint x="1140" y="118"/>
+<omgdi:waypoint x="1038" y="118"/>
 <omgdi:waypoint x="1180" y="118"/>
 </bpmndi:BPMNEdge>
 
 <!-- Nurse Flows -->
 <bpmndi:BPMNEdge id="Flow_11_di" bpmnElement="Flow_11">
-<omgdi:waypoint x="86" y="378"/>
-<omgdi:waypoint x="130" y="378"/>
+<omgdi:waypoint x="68" y="418"/>
+<omgdi:waypoint x="130" y="418"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_12_di" bpmnElement="Flow_12">
-<omgdi:waypoint x="190" y="378"/>
-<omgdi:waypoint x="290" y="378"/>
+<omgdi:waypoint x="190" y="418"/>
+<omgdi:waypoint x="290" y="418"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_13a_di" bpmnElement="Flow_13a">
-<omgdi:waypoint x="315" y="378"/>
-<omgdi:waypoint x="315" y="295"/>
-<omgdi:waypoint x="380" y="295"/>
+<omgdi:waypoint x="315" y="418"/>
+<omgdi:waypoint x="315" y="335"/>
+<omgdi:waypoint x="380" y="335"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_13b_di" bpmnElement="Flow_13b">
-<omgdi:waypoint x="340" y="378"/>
-<omgdi:waypoint x="440" y="385"/>
+<omgdi:waypoint x="340" y="418"/>
+<omgdi:waypoint x="440" y="425"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_13c_di" bpmnElement="Flow_13c">
-<omgdi:waypoint x="315" y="403"/>
-<omgdi:waypoint x="315" y="475"/>
-<omgdi:waypoint x="380" y="475"/>
+<omgdi:waypoint x="315" y="443"/>
+<omgdi:waypoint x="315" y="515"/>
+<omgdi:waypoint x="380" y="515"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_14a_di" bpmnElement="Flow_14a">
-<omgdi:waypoint x="440" y="295"/>
-<omgdi:waypoint x="510" y="295"/>
-<omgdi:waypoint x="565" y="378"/>
+<omgdi:waypoint x="440" y="335"/>
+<omgdi:waypoint x="510" y="335"/>
+<omgdi:waypoint x="565" y="418"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_14b_di" bpmnElement="Flow_14b">
-<omgdi:waypoint x="440" y="385"/>
-<omgdi:waypoint x="540" y="385"/>
-<omgdi:waypoint x="565" y="378"/>
+<omgdi:waypoint x="440" y="425"/>
+<omgdi:waypoint x="540" y="425"/>
+<omgdi:waypoint x="565" y="418"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_14c_di" bpmnElement="Flow_14c">
-<omgdi:waypoint x="440" y="475"/>
-<omgdi:waypoint x="510" y="475"/>
-<omgdi:waypoint x="565" y="403"/>
+<omgdi:waypoint x="440" y="515"/>
+<omgdi:waypoint x="510" y="515"/>
+<omgdi:waypoint x="565" y="443"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_15_di" bpmnElement="Flow_15">
-<omgdi:waypoint x="590" y="378"/>
-<omgdi:waypoint x="630" y="378"/>
+<omgdi:waypoint x="590" y="418"/>
+<omgdi:waypoint x="630" y="418"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_16_di" bpmnElement="Flow_16">
-<omgdi:waypoint x="690" y="378"/>
-<omgdi:waypoint x="800" y="378"/>
+<omgdi:waypoint x="690" y="418"/>
+<omgdi:waypoint x="800" y="418"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_17_di" bpmnElement="Flow_17">
-<omgdi:waypoint x="860" y="378"/>
-<omgdi:waypoint x="960" y="378"/>
+<omgdi:waypoint x="860" y="418"/>
+<omgdi:waypoint x="960" y="418"/>
 </bpmndi:BPMNEdge>
 
 <!-- Consultant Flows -->
 <bpmndi:BPMNEdge id="Flow_20_di" bpmnElement="Flow_20">
-<omgdi:waypoint x="86" y="678"/>
-<omgdi:waypoint x="130" y="678"/>
+<omgdi:waypoint x="86" y="668"/>
+<omgdi:waypoint x="130" y="668"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_21_di" bpmnElement="Flow_21">
-<omgdi:waypoint x="190" y="678"/>
-<omgdi:waypoint x="290" y="678"/>
+<omgdi:waypoint x="148" y="668"/>
+<omgdi:waypoint x="210" y="668"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_22_di" bpmnElement="Flow_22">
-<omgdi:waypoint x="350" y="678"/>
-<omgdi:waypoint x="450" y="678"/>
+<omgdi:waypoint x="270" y="668"/>
+<omgdi:waypoint x="370" y="668"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_23_di" bpmnElement="Flow_23">
-<omgdi:waypoint x="510" y="678"/>
-<omgdi:waypoint x="610" y="678"/>
+<omgdi:waypoint x="430" y="668"/>
+<omgdi:waypoint x="530" y="668"/>
 </bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_24a_di" bpmnElement="Flow_24a">
-<omgdi:waypoint x="635" y="653"/>
-<omgdi:waypoint x="635" y="585"/>
-<omgdi:waypoint x="700" y="585"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_24b_di" bpmnElement="Flow_24b">
-<omgdi:waypoint x="660" y="678"/>
-<omgdi:waypoint x="770" y="675"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_24c_di" bpmnElement="Flow_24c">
-<omgdi:waypoint x="635" y="703"/>
-<omgdi:waypoint x="635" y="765"/>
-<omgdi:waypoint x="700" y="765"/>
+<bpmndi:BPMNEdge id="Flow_24_di" bpmnElement="Flow_24">
+<omgdi:waypoint x="590" y="668"/>
+<omgdi:waypoint x="690" y="668"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_25a_di" bpmnElement="Flow_25a">
-<omgdi:waypoint x="770" y="585"/>
-<omgdi:waypoint x="855" y="585"/>
-<omgdi:waypoint x="905" y="678"/>
+<omgdi:waypoint x="715" y="643"/>
+<omgdi:waypoint x="715" y="575"/>
+<omgdi:waypoint x="780" y="575"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_25b_di" bpmnElement="Flow_25b">
-<omgdi:waypoint x="840" y="675"/>
-<omgdi:waypoint x="855" y="678"/>
+<omgdi:waypoint x="740" y="668"/>
+<omgdi:waypoint x="850" y="665"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_25c_di" bpmnElement="Flow_25c">
-<omgdi:waypoint x="840" y="765"/>
-<omgdi:waypoint x="855" y="765"/>
-<omgdi:waypoint x="905" y="703"/>
+<omgdi:waypoint x="715" y="693"/>
+<omgdi:waypoint x="715" y="755"/>
+<omgdi:waypoint x="780" y="755"/>
 </bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_26_di" bpmnElement="Flow_26">
-<omgdi:waypoint x="930" y="678"/>
-<omgdi:waypoint x="970" y="678"/>
+<bpmndi:BPMNEdge id="Flow_26a_di" bpmnElement="Flow_26a">
+<omgdi:waypoint x="850" y="575"/>
+<omgdi:waypoint x="935" y="575"/>
+<omgdi:waypoint x="985" y="668"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="Flow_26b_di" bpmnElement="Flow_26b">
+<omgdi:waypoint x="920" y="665"/>
+<omgdi:waypoint x="985" y="668"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="Flow_26c_di" bpmnElement="Flow_26c">
+<omgdi:waypoint x="850" y="755"/>
+<omgdi:waypoint x="935" y="755"/>
+<omgdi:waypoint x="985" y="693"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_27_di" bpmnElement="Flow_27">
-<omgdi:waypoint x="1030" y="678"/>
-<omgdi:waypoint x="1130" y="678"/>
+<omgdi:waypoint x="1010" y="668"/>
+<omgdi:waypoint x="1050" y="668"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_28_di" bpmnElement="Flow_28">
-<omgdi:waypoint x="1190" y="678"/>
-<omgdi:waypoint x="1030" y="678"/>
+<omgdi:waypoint x="1110" y="668"/>
+<omgdi:waypoint x="1210" y="668"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_29_di" bpmnElement="Flow_29">
-<omgdi:waypoint x="1030" y="775"/>
-<omgdi:waypoint x="1148" y="775"/>
+<omgdi:waypoint x="1270" y="668"/>
+<omgdi:waypoint x="1110" y="668"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="Flow_30_di" bpmnElement="Flow_30">
+<omgdi:waypoint x="1110" y="765"/>
+<omgdi:waypoint x="1228" y="763"/>
 </bpmndi:BPMNEdge>
 
 <!-- Message Flows -->
-<bpmndi:BPMNEdge id="MessageFlow_1_di" bpmnElement="MessageFlow_1">
-<omgdi:waypoint x="250" y="338"/>
-<omgdi:waypoint x="280" y="158"/>
+<bpmndi:BPMNEdge id="MessageFlow_FormReady_di" bpmnElement="MessageFlow_FormReady">
+<omgdi:waypoint x="660" y="158"/>
+<omgdi:waypoint x="68" y="400"/>
 </bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="MessageFlow_2_di" bpmnElement="MessageFlow_2">
-<omgdi:waypoint x="690" y="418"/>
-<omgdi:waypoint x="68" y="660"/>
+<bpmndi:BPMNEdge id="MessageFlow_VitalsReady_di" bpmnElement="MessageFlow_VitalsReady">
+<omgdi:waypoint x="690" y="458"/>
+<omgdi:waypoint x="68" y="650"/>
 </bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="MessageFlow_3_di" bpmnElement="MessageFlow_3">
-<omgdi:waypoint x="860" y="418"/>
-<omgdi:waypoint x="86" y="530"/>
+<bpmndi:BPMNEdge id="MessageFlow_EscortPatient_di" bpmnElement="MessageFlow_EscortPatient">
+<omgdi:waypoint x="860" y="458"/>
+<omgdi:waypoint x="148" y="668"/>
+</bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="MessageFlow_PrescriptionSent_di" bpmnElement="MessageFlow_PrescriptionSent">
+<omgdi:waypoint x="1110" y="628"/>
+<omgdi:waypoint x="1038" y="100"/>
 </bpmndi:BPMNEdge>
 
 </bpmndi:BPMNPlane>

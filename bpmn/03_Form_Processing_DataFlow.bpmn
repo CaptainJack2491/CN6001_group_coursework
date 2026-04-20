@@ -12,91 +12,104 @@ targetNamespace="http://bpmn.io/schema/bpmn">
 <participant id="Participant_ExternalPatient" name="Patient (External)" processRef="Process_ExternalPatient"/>
 <participant id="Participant_ExternalConsultant" name="Consultant (External)" processRef="Process_ExternalConsultant"/>
 
-<messageFlow id="MF_1" sourceRef="Task_MakeAvailableToPatient" targetRef="Start_PatientNotified"/>
-<messageFlow id="MF_2" sourceRef="Task_PatientCreatesSection1" targetRef="Start_Section1Received"/>
-<messageFlow id="MF_3" sourceRef="Task_AssignToConsultant" targetRef="Start_ConsultantNotified"/>
-<messageFlow id="MF_4" sourceRef="Task_NotifyPatientComplete" targetRef="Start_PatientFormComplete"/>
+<messageFlow id="MF_FormAvailable" sourceRef="Service_MakeAvailable" targetRef="Start_PatientNotified"/>
+<messageFlow id="MF_Section1Submitted" sourceRef="User_PatientCreatesSection1" targetRef="Catch_Section1Received"/>
+<messageFlow id="MF_AssignedToConsultant" sourceRef="Service_AssignToConsultant" targetRef="Start_ConsultantNotified"/>
+<messageFlow id="MF_ProcessComplete" sourceRef="Service_NotifyPatientComplete" targetRef="Start_PatientFormComplete"/>
 </collaboration>
 
 <!-- Main System Process -->
 <process id="Process_FormFlow" isExecutable="false">
 <startEvent id="Start_FormProcess" name="New Form&#10;Process Started"/>
-<sequenceFlow id="Flow_50" sourceRef="Start_FormProcess" targetRef="Task_CreateFormInstance"/>
+<sequenceFlow id="Flow_50" sourceRef="Start_FormProcess" targetRef="Service_CreateFormInstance"/>
 
-<serviceTask id="Task_CreateFormInstance" name="Create Form Instance&#10;(Generate Form ID)"/>
-<sequenceFlow id="Flow_51" sourceRef="Task_CreateFormInstance" targetRef="Task_AttachSection1Template"/>
+<!-- Service task - automated form instance creation -->
+<serviceTask id="Service_CreateFormInstance" name="Create Form Instance&#10;(Generate Form ID)"/>
+<sequenceFlow id="Flow_51" sourceRef="Service_CreateFormInstance" targetRef="Service_AttachSection1Template"/>
 
-<serviceTask id="Task_AttachSection1Template" name="Attach Section 1 Template&#10;(Patient Input Fields)"/>
-<sequenceFlow id="Flow_52" sourceRef="Task_AttachSection1Template" targetRef="Task_MakeAvailableToPatient"/>
+<!-- Service task - automated template attachment -->
+<serviceTask id="Service_AttachSection1Template" name="Attach Section 1 Template&#10;(Patient Input Fields)"/>
+<sequenceFlow id="Flow_52" sourceRef="Service_AttachSection1Template" targetRef="Service_MakeAvailable"/>
 
-<userTask id="Task_MakeAvailableToPatient" name="Make Available to&#10;Patient Portal"/>
+<!-- Service task - automated system action to publish to portal -->
+<serviceTask id="Service_MakeAvailable" name="Make Available to&#10;Patient Portal"/>
+<sequenceFlow id="Flow_53" sourceRef="Service_MakeAvailable" targetRef="Catch_WaitForSection1"/>
 
-<!-- Wait for Section 1 completion - intermediate catch -->
-<sequenceFlow id="Flow_53" sourceRef="Task_MakeAvailableToPatient" targetRef="Task_WaitForSection1"/>
-
-<intermediateCatchEvent id="Task_WaitForSection1" name="Wait for&#10;Section 1">
-<messageEventDefinition id="MessageEventDef_1"/>
+<!-- Intermediate catch - wait for Section 1 completion -->
+<intermediateCatchEvent id="Catch_WaitForSection1" name="Wait for&#10;Section 1 Completion">
+<messageEventDefinition id="MsgDef_Section1"/>
 </intermediateCatchEvent>
-<sequenceFlow id="Flow_54" sourceRef="Task_WaitForSection1" targetRef="Task_ValidateSection1"/>
+<sequenceFlow id="Flow_54" sourceRef="Catch_WaitForSection1" targetRef="Service_ValidateSection1"/>
 
-<serviceTask id="Task_ValidateSection1" name="Validate Section 1&#10;(Required Fields Check)"/>
-<sequenceFlow id="Flow_55" sourceRef="Task_ValidateSection1" targetRef="Gateway_Section1Valid"/>
+<!-- Service task - automated validation -->
+<serviceTask id="Service_ValidateSection1" name="Validate Section 1&#10;(Required Fields Check)"/>
+<sequenceFlow id="Flow_55" sourceRef="Service_ValidateSection1" targetRef="Gateway_Section1Valid"/>
 
 <exclusiveGateway id="Gateway_Section1Valid" name="Section 1 Valid?"/>
-<sequenceFlow id="Flow_56" name="No" sourceRef="Gateway_Section1Valid" targetRef="Task_RequestCorrections">
+<sequenceFlow id="Flow_56" name="No" sourceRef="Gateway_Section1Valid" targetRef="User_RequestCorrections">
 <conditionExpression xsi:type="tFormalExpression">${!section1Valid}</conditionExpression>
 </sequenceFlow>
-<sequenceFlow id="Flow_57" name="Yes" sourceRef="Gateway_Section1Valid" targetRef="Task_SaveSection1Data">
+<sequenceFlow id="Flow_57" name="Yes" sourceRef="Gateway_Section1Valid" targetRef="Service_SaveSection1Data">
 <conditionExpression xsi:type="tFormalExpression">${section1Valid}</conditionExpression>
 </sequenceFlow>
 
-<userTask id="Task_RequestCorrections" name="Request Corrections&#10;from Patient"/>
-<sequenceFlow id="Flow_58" sourceRef="Task_RequestCorrections" targetRef="Task_WaitForSection1"/>
+<!-- User task - staff requests corrections -->
+<userTask id="User_RequestCorrections" name="Request Corrections&#10;from Patient"/>
+<sequenceFlow id="Flow_58" sourceRef="User_RequestCorrections" targetRef="Catch_WaitForSection1"/>
 
-<serviceTask id="Task_SaveSection1Data" name="Save Section 1 Data&#10;(Patient Database)"/>
-<sequenceFlow id="Flow_59" sourceRef="Task_SaveSection1Data" targetRef="Task_AttachSection2Template"/>
+<!-- Service task - automated database save -->
+<serviceTask id="Service_SaveSection1Data" name="Save Section 1 Data&#10;(Patient Database)"/>
+<sequenceFlow id="Flow_59" sourceRef="Service_SaveSection1Data" targetRef="Service_AttachSection2Template"/>
 
-<serviceTask id="Task_AttachSection2Template" name="Attach Section 2 Template&#10;(Clinical Assessment Fields)"/>
-<sequenceFlow id="Flow_60" sourceRef="Task_AttachSection2Template" targetRef="Task_AssignToConsultant"/>
+<!-- Service task - automated template attachment -->
+<serviceTask id="Service_AttachSection2Template" name="Attach Section 2 Template&#10;(Clinical Assessment Fields)"/>
+<sequenceFlow id="Flow_60" sourceRef="Service_AttachSection2Template" targetRef="Service_AssignToConsultant"/>
 
-<userTask id="Task_AssignToConsultant" name="Assign to Consultant&#10;(Add to Work Queue)"/>
+<!-- Service task - automated work queue assignment -->
+<serviceTask id="Service_AssignToConsultant" name="Assign to Consultant&#10;(Add to Work Queue)"/>
+<sequenceFlow id="Flow_61" sourceRef="Service_AssignToConsultant" targetRef="Catch_WaitForSection2"/>
 
-<!-- Wait for Section 2 completion -->
-<sequenceFlow id="Flow_61" sourceRef="Task_AssignToConsultant" targetRef="Task_WaitForSection2"/>
-
-<intermediateCatchEvent id="Task_WaitForSection2" name="Wait for&#10;Section 2">
-<messageEventDefinition id="MessageEventDef_2"/>
+<!-- Intermediate catch - wait for Section 2 completion -->
+<intermediateCatchEvent id="Catch_WaitForSection2" name="Wait for&#10;Section 2 Completion">
+<messageEventDefinition id="MsgDef_Section2"/>
 </intermediateCatchEvent>
-<sequenceFlow id="Flow_62" sourceRef="Task_WaitForSection2" targetRef="Task_ValidateSection2"/>
+<sequenceFlow id="Flow_62" sourceRef="Catch_WaitForSection2" targetRef="Service_ValidateSection2"/>
 
-<serviceTask id="Task_ValidateSection2" name="Validate Section 2&#10;(Clinical Notes, Diagnosis)"/>
-<sequenceFlow id="Flow_63" sourceRef="Task_ValidateSection2" targetRef="Gateway_Section2Valid"/>
+<!-- Service task - automated validation -->
+<serviceTask id="Service_ValidateSection2" name="Validate Section 2&#10;(Clinical Notes, Diagnosis)"/>
+<sequenceFlow id="Flow_63" sourceRef="Service_ValidateSection2" targetRef="Gateway_Section2Valid"/>
 
 <exclusiveGateway id="Gateway_Section2Valid" name="Section 2 Valid?"/>
-<sequenceFlow id="Flow_64a" name="No" sourceRef="Gateway_Section2Valid" targetRef="Task_RequestSection2Corr">
+<sequenceFlow id="Flow_64a" name="No" sourceRef="Gateway_Section2Valid" targetRef="User_RequestSection2Corr">
 <conditionExpression xsi:type="tFormalExpression">${!section2Valid}</conditionExpression>
 </sequenceFlow>
-<sequenceFlow id="Flow_64b" name="Yes" sourceRef="Gateway_Section2Valid" targetRef="Task_SaveSection2Data">
+<sequenceFlow id="Flow_64b" name="Yes" sourceRef="Gateway_Section2Valid" targetRef="Service_SaveSection2Data">
 <conditionExpression xsi:type="tFormalExpression">${section2Valid}</conditionExpression>
 </sequenceFlow>
 
-<userTask id="Task_RequestSection2Corr" name="Request Section 2&#10;Corrections from Consultant"/>
-<sequenceFlow id="Flow_64c" sourceRef="Task_RequestSection2Corr" targetRef="Task_WaitForSection2"/>
+<!-- User task - staff requests corrections -->
+<userTask id="User_RequestSection2Corr" name="Request Section 2&#10;Corrections from Consultant"/>
+<sequenceFlow id="Flow_64c" sourceRef="User_RequestSection2Corr" targetRef="Catch_WaitForSection2"/>
 
-<serviceTask id="Task_SaveSection2Data" name="Save Section 2 Data&#10;(Clinical Database)"/>
-<sequenceFlow id="Flow_65" sourceRef="Task_SaveSection2Data" targetRef="Task_MergeSections"/>
+<!-- Service task - automated database save -->
+<serviceTask id="Service_SaveSection2Data" name="Save Section 2 Data&#10;(Clinical Database)"/>
+<sequenceFlow id="Flow_65" sourceRef="Service_SaveSection2Data" targetRef="Service_MergeSections"/>
 
-<serviceTask id="Task_MergeSections" name="Merge Section 1 + Section 2&#10;(Create Complete Record)"/>
-<sequenceFlow id="Flow_66" sourceRef="Task_MergeSections" targetRef="Task_UpdateMedicalRecord"/>
+<!-- Service task - automated data merge -->
+<serviceTask id="Service_MergeSections" name="Merge Section 1 + Section 2&#10;(Create Complete Record)"/>
+<sequenceFlow id="Flow_66" sourceRef="Service_MergeSections" targetRef="Service_UpdateMedicalRecord"/>
 
-<serviceTask id="Task_UpdateMedicalRecord" name="Update Patient&#10;Medical Record"/>
-<sequenceFlow id="Flow_67" sourceRef="Task_UpdateMedicalRecord" targetRef="Task_GeneratePrescriptionData"/>
+<!-- Service task - automated record update -->
+<serviceTask id="Service_UpdateMedicalRecord" name="Update Patient&#10;Medical Record"/>
+<sequenceFlow id="Flow_67" sourceRef="Service_UpdateMedicalRecord" targetRef="Service_GeneratePrescriptionData"/>
 
-<serviceTask id="Task_GeneratePrescriptionData" name="Generate Prescription&#10;(if required)"/>
-<sequenceFlow id="Flow_68" sourceRef="Task_GeneratePrescriptionData" targetRef="Task_NotifyPatientComplete"/>
+<!-- Service task - automated prescription generation -->
+<serviceTask id="Service_GeneratePrescriptionData" name="Generate Prescription&#10;(if required)"/>
+<sequenceFlow id="Flow_68" sourceRef="Service_GeneratePrescriptionData" targetRef="Service_NotifyPatientComplete"/>
 
-<serviceTask id="Task_NotifyPatientComplete" name="Notify Patient&#10;(Form Complete)"/>
-<sequenceFlow id="Flow_69" sourceRef="Task_NotifyPatientComplete" targetRef="End_FormProcessComplete"/>
+<!-- Service task - automated notification -->
+<serviceTask id="Service_NotifyPatientComplete" name="Notify Patient&#10;(Form Complete)"/>
+<sequenceFlow id="Flow_69" sourceRef="Service_NotifyPatientComplete" targetRef="End_FormProcessComplete"/>
 
 <endEvent id="End_FormProcessComplete" name="Medical Record&#10;Updated"/>
 
@@ -116,18 +129,19 @@ targetNamespace="http://bpmn.io/schema/bpmn">
 <!-- External Patient Process -->
 <process id="Process_ExternalPatient" isExecutable="false">
 <startEvent id="Start_PatientNotified" name="Form Available&#10;Notification">
-<messageEventDefinition id="MessageEventDef_Patient1"/>
+<messageEventDefinition id="MsgDef_PatientNotified"/>
 </startEvent>
-<sequenceFlow id="Flow_70" sourceRef="Start_PatientNotified" targetRef="Task_PatientCreatesSection1"/>
+<sequenceFlow id="Flow_70" sourceRef="Start_PatientNotified" targetRef="User_PatientCreatesSection1"/>
 
-<userTask id="Task_PatientCreatesSection1" name="Patient Fills Section 1&#10;(Submit Data)"/>
-<sequenceFlow id="Flow_71" sourceRef="Task_PatientCreatesSection1" targetRef="End_PatientDone"/>
+<!-- User task - patient actively fills form -->
+<userTask id="User_PatientCreatesSection1" name="Patient Fills Section 1&#10;(Submit Data)"/>
+<sequenceFlow id="Flow_71" sourceRef="User_PatientCreatesSection1" targetRef="End_PatientDone"/>
 
 <endEvent id="End_PatientDone" name="Section 1&#10;Submitted"/>
 
 <!-- Catch for final notification -->
 <startEvent id="Start_PatientFormComplete" name="Form Process&#10;Complete">
-<messageEventDefinition id="MessageEventDef_Patient2"/>
+<messageEventDefinition id="MsgDef_ProcessComplete"/>
 </startEvent>
 <sequenceFlow id="Flow_72" sourceRef="Start_PatientFormComplete" targetRef="End_PatientComplete"/>
 
@@ -137,15 +151,17 @@ targetNamespace="http://bpmn.io/schema/bpmn">
 <!-- External Consultant Process -->
 <process id="Process_ExternalConsultant" isExecutable="false">
 <startEvent id="Start_ConsultantNotified" name="Assigned to Review">
-<messageEventDefinition id="MessageEventDef_Consult"/>
+<messageEventDefinition id="MsgDef_ConsultantNotified"/>
 </startEvent>
-<sequenceFlow id="Flow_80" sourceRef="Start_ConsultantNotified" targetRef="Task_ConsultantReviews"/>
+<sequenceFlow id="Flow_80" sourceRef="Start_ConsultantNotified" targetRef="User_ConsultantReviews"/>
 
-<userTask id="Task_ConsultantReviews" name="Review Section 1&#10;(Patient Data)"/>
-<sequenceFlow id="Flow_81" sourceRef="Task_ConsultantReviews" targetRef="Task_ConsultantCreatesSection2"/>
+<!-- User task - consultant reviews patient data -->
+<userTask id="User_ConsultantReviews" name="Review Section 1&#10;(Patient Data)"/>
+<sequenceFlow id="Flow_81" sourceRef="User_ConsultantReviews" targetRef="User_ConsultantCreatesSection2"/>
 
-<userTask id="Task_ConsultantCreatesSection2" name="Complete Section 2&#10;(Clinical Assessment)"/>
-<sequenceFlow id="Flow_82" sourceRef="Task_ConsultantCreatesSection2" targetRef="End_ConsultantDone"/>
+<!-- User task - consultant completes assessment -->
+<userTask id="User_ConsultantCreatesSection2" name="Complete Section 2&#10;(Clinical Assessment)"/>
+<sequenceFlow id="Flow_82" sourceRef="User_ConsultantCreatesSection2" targetRef="End_ConsultantDone"/>
 
 <endEvent id="End_ConsultantDone" name="Section 2&#10;Submitted"/>
 </process>
@@ -161,63 +177,63 @@ targetNamespace="http://bpmn.io/schema/bpmn">
 <bpmndi:BPMNShape id="Start_FormProcess_di" bpmnElement="Start_FormProcess">
 <omgdc:Bounds x="50" y="200" width="36" height="36"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_CreateFormInstance_di" bpmnElement="Task_CreateFormInstance">
+<bpmndi:BPMNShape id="Service_CreateFormInstance_di" bpmnElement="Service_CreateFormInstance">
 <omgdc:Bounds x="120" y="178" width="120" height="80"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_AttachSection1Template_di" bpmnElement="Task_AttachSection1Template">
+<bpmndi:BPMNShape id="Service_AttachSection1Template_di" bpmnElement="Service_AttachSection1Template">
 <omgdc:Bounds x="280" y="178" width="120" height="80"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_MakeAvailableToPatient_di" bpmnElement="Task_MakeAvailableToPatient">
+<bpmndi:BPMNShape id="Service_MakeAvailable_di" bpmnElement="Service_MakeAvailable">
 <omgdc:Bounds x="440" y="178" width="120" height="80"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_WaitForSection1_di" bpmnElement="Task_WaitForSection1">
+<bpmndi:BPMNShape id="Catch_WaitForSection1_di" bpmnElement="Catch_WaitForSection1">
 <omgdc:Bounds x="600" y="200" width="36" height="36"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_ValidateSection1_di" bpmnElement="Task_ValidateSection1">
+<bpmndi:BPMNShape id="Service_ValidateSection1_di" bpmnElement="Service_ValidateSection1">
 <omgdc:Bounds x="680" y="178" width="120" height="80"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="Gateway_Section1Valid_di" bpmnElement="Gateway_Section1Valid" isMarkerVisible="true">
 <omgdc:Bounds x="840" y="195" width="50" height="50"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_RequestCorrections_di" bpmnElement="Task_RequestCorrections">
+<bpmndi:BPMNShape id="User_RequestCorrections_di" bpmnElement="User_RequestCorrections">
 <omgdc:Bounds x="805" y="300" width="120" height="60"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_SaveSection1Data_di" bpmnElement="Task_SaveSection1Data">
+<bpmndi:BPMNShape id="Service_SaveSection1Data_di" bpmnElement="Service_SaveSection1Data">
 <omgdc:Bounds x="940" y="178" width="120" height="80"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_AttachSection2Template_di" bpmnElement="Task_AttachSection2Template">
+<bpmndi:BPMNShape id="Service_AttachSection2Template_di" bpmnElement="Service_AttachSection2Template">
 <omgdc:Bounds x="1100" y="178" width="120" height="80"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_AssignToConsultant_di" bpmnElement="Task_AssignToConsultant">
+<bpmndi:BPMNShape id="Service_AssignToConsultant_di" bpmnElement="Service_AssignToConsultant">
 <omgdc:Bounds x="1260" y="178" width="120" height="80"/>
 </bpmndi:BPMNShape>
 
 <!-- Second Row -->
-<bpmndi:BPMNShape id="Task_WaitForSection2_di" bpmnElement="Task_WaitForSection2">
+<bpmndi:BPMNShape id="Catch_WaitForSection2_di" bpmnElement="Catch_WaitForSection2">
 <omgdc:Bounds x="50" y="350" width="36" height="36"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_ValidateSection2_di" bpmnElement="Task_ValidateSection2">
+<bpmndi:BPMNShape id="Service_ValidateSection2_di" bpmnElement="Service_ValidateSection2">
 <omgdc:Bounds x="120" y="328" width="120" height="80"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="Gateway_Section2Valid_di" bpmnElement="Gateway_Section2Valid" isMarkerVisible="true">
 <omgdc:Bounds x="280" y="345" width="50" height="50"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_RequestSection2Corr_di" bpmnElement="Task_RequestSection2Corr">
+<bpmndi:BPMNShape id="User_RequestSection2Corr_di" bpmnElement="User_RequestSection2Corr">
 <omgdc:Bounds x="245" y="420" width="120" height="50"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_SaveSection2Data_di" bpmnElement="Task_SaveSection2Data">
+<bpmndi:BPMNShape id="Service_SaveSection2Data_di" bpmnElement="Service_SaveSection2Data">
 <omgdc:Bounds x="370" y="328" width="120" height="80"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_MergeSections_di" bpmnElement="Task_MergeSections">
+<bpmndi:BPMNShape id="Service_MergeSections_di" bpmnElement="Service_MergeSections">
 <omgdc:Bounds x="530" y="328" width="120" height="80"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_UpdateMedicalRecord_di" bpmnElement="Task_UpdateMedicalRecord">
+<bpmndi:BPMNShape id="Service_UpdateMedicalRecord_di" bpmnElement="Service_UpdateMedicalRecord">
 <omgdc:Bounds x="690" y="328" width="120" height="80"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_GeneratePrescriptionData_di" bpmnElement="Task_GeneratePrescriptionData">
+<bpmndi:BPMNShape id="Service_GeneratePrescriptionData_di" bpmnElement="Service_GeneratePrescriptionData">
 <omgdc:Bounds x="850" y="328" width="120" height="80"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_NotifyPatientComplete_di" bpmnElement="Task_NotifyPatientComplete">
+<bpmndi:BPMNShape id="Service_NotifyPatientComplete_di" bpmnElement="Service_NotifyPatientComplete">
 <omgdc:Bounds x="1010" y="328" width="120" height="80"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="End_FormProcessComplete_di" bpmnElement="End_FormProcessComplete">
@@ -246,7 +262,7 @@ targetNamespace="http://bpmn.io/schema/bpmn">
 <bpmndi:BPMNShape id="Start_PatientNotified_di" bpmnElement="Start_PatientNotified">
 <omgdc:Bounds x="50" y="530" width="36" height="36"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_PatientCreatesSection1_di" bpmnElement="Task_PatientCreatesSection1">
+<bpmndi:BPMNShape id="User_PatientCreatesSection1_di" bpmnElement="User_PatientCreatesSection1">
 <omgdc:Bounds x="140" y="508" width="120" height="80"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="End_PatientDone_di" bpmnElement="End_PatientDone">
@@ -269,10 +285,10 @@ targetNamespace="http://bpmn.io/schema/bpmn">
 <bpmndi:BPMNShape id="Start_ConsultantNotified_di" bpmnElement="Start_ConsultantNotified">
 <omgdc:Bounds x="750" y="530" width="36" height="36"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_ConsultantReviews_di" bpmnElement="Task_ConsultantReviews">
+<bpmndi:BPMNShape id="User_ConsultantReviews_di" bpmnElement="User_ConsultantReviews">
 <omgdc:Bounds x="840" y="508" width="120" height="80"/>
 </bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_ConsultantCreatesSection2_di" bpmnElement="Task_ConsultantCreatesSection2">
+<bpmndi:BPMNShape id="User_ConsultantCreatesSection2_di" bpmnElement="User_ConsultantCreatesSection2">
 <omgdc:Bounds x="1000" y="508" width="120" height="80"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="End_ConsultantDone_di" bpmnElement="End_ConsultantDone">
@@ -402,19 +418,19 @@ targetNamespace="http://bpmn.io/schema/bpmn">
 </bpmndi:BPMNEdge>
 
 <!-- Message Flows -->
-<bpmndi:BPMNEdge id="MF_1_di" bpmnElement="MF_1">
+<bpmndi:BPMNEdge id="MF_FormAvailable_di" bpmnElement="MF_FormAvailable">
 <omgdi:waypoint x="500" y="258"/>
 <omgdi:waypoint x="86" y="530"/>
 </bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="MF_2_di" bpmnElement="MF_2">
+<bpmndi:BPMNEdge id="MF_Section1Submitted_di" bpmnElement="MF_Section1Submitted">
 <omgdi:waypoint x="200" y="588"/>
 <omgdi:waypoint x="618" y="236"/>
 </bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="MF_3_di" bpmnElement="MF_3">
+<bpmndi:BPMNEdge id="MF_AssignedToConsultant_di" bpmnElement="MF_AssignedToConsultant">
 <omgdi:waypoint x="1320" y="258"/>
 <omgdi:waypoint x="786" y="548"/>
 </bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="MF_4_di" bpmnElement="MF_4">
+<bpmndi:BPMNEdge id="MF_ProcessComplete_di" bpmnElement="MF_ProcessComplete">
 <omgdi:waypoint x="1070" y="408"/>
 <omgdi:waypoint x="486" y="530"/>
 </bpmndi:BPMNEdge>

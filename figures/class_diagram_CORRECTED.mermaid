@@ -1,0 +1,210 @@
+classDiagram
+    %% ──────────────────────────────────────────────
+    %% Staff Hierarchy (abstract superclass + subtypes)
+    %% ──────────────────────────────────────────────
+    class Staff {
+        <<abstract>>
+        -String staffID
+        -String firstName
+        -String lastName
+        -String email
+        -String phone
+        -String passwordHash
+        -String role
+        +login() Boolean
+        +logout() void
+        +updateProfile() void
+    }
+
+    class Consultant {
+        -String specialization
+        -String licenseNumber
+        +examinePatient(patientID String) void
+        +completeSectionTwo(formID String) void
+        +generatePrescription(patientID String) Prescription
+        +viewPatientHistory(patientID String) List
+    }
+
+    class Nurse {
+        +recordVitalSigns(patientID String, appointmentID String) VitalSigns
+        +verifyPatientIdentity(patientID String) Boolean
+        +escortPatient(patientID String) void
+    }
+
+    class Admin {
+        +scheduleAppointment(patientID String, consultantID String) Appointment
+        +cancelAppointment(appointmentID String) void
+        +generateReport() void
+    }
+
+    Staff <|-- Consultant : extends
+    Staff <|-- Nurse : extends
+    Staff <|-- Admin : extends
+
+    %% ──────────────────────────────────────────────
+    %% Patient
+    %% ──────────────────────────────────────────────
+    class Patient {
+        -String patientID
+        -String firstName
+        -String lastName
+        -Date dateOfBirth
+        -String gender
+        -String phoneNumber
+        -String email
+        -String address
+        -String emergencyContact
+        -String nhsNumber
+        -String passwordHash
+        -Date registrationDate
+        +register() void
+        +login() Boolean
+        +updateProfile() void
+        +viewHistory() List
+        +bookAppointment(date DateTime, consultantID String) Appointment
+    }
+
+    %% ──────────────────────────────────────────────
+    %% Appointment
+    %% ──────────────────────────────────────────────
+    class Appointment {
+        -String appointmentID
+        -String patientID
+        -String consultantID
+        -Date appointmentDate
+        -Time appointmentTime
+        -Integer durationMinutes
+        -String type
+        -String status
+        -String roomNumber
+        +scheduleAppointment() void
+        +reschedule(newDate DateTime) void
+        +cancel(reason String) void
+        +sendReminder() void
+    }
+
+    %% ──────────────────────────────────────────────
+    %% Medical Form (with composed sections)
+    %% ──────────────────────────────────────────────
+    class MedicalForm {
+        -String formID
+        -String patientID
+        -String consultantID
+        -String appointmentID
+        -String formType
+        -DateTime dateCreated
+        -String status
+        +submitForm() void
+        +editForm() void
+        +validateForm() Boolean
+    }
+
+    class SectionOne {
+        -String sectionOneID
+        -String formID
+        -String symptoms
+        -String currentMedications
+        -String allergies
+        -String familyHistory
+        -String lifestyleSmoking
+        -String lifestyleExercise
+        -String patientSignature
+        -DateTime submittedDate
+        +autoFillFromHistory(patientID String) void
+        +validateRequiredFields() Boolean
+    }
+
+    class SectionTwo {
+        -String sectionTwoID
+        -String formID
+        -String consultantID
+        -String clinicalNotes
+        -String diagnosis
+        -String severity
+        -DateTime examinationDate
+        -String consultantSignature
+        +addClinicalNotes(notes String) void
+        +setDiagnosis(diagnosis String, severity String) void
+    }
+
+    %% ──────────────────────────────────────────────
+    %% VitalSigns
+    %% ──────────────────────────────────────────────
+    class VitalSigns {
+        -String vitalID
+        -String patientID
+        -String appointmentID
+        -String recordedBy
+        -DateTime recordedDate
+        -Integer bloodPressureSystolic
+        -Integer bloodPressureDiastolic
+        -Float bmi
+        -Float weightKg
+        -Float heightCm
+        -Float bloodSugar
+        -Integer heartRate
+        +calculateBMI(weight Float, height Float) Float
+        +flagAbnormalValues() List
+        +compareWithPrevious(patientID String) String
+    }
+
+    %% ──────────────────────────────────────────────
+    %% Prescription
+    %% ──────────────────────────────────────────────
+    class Prescription {
+        -String prescriptionID
+        -String patientID
+        -String consultantID
+        -String formID
+        -Date issueDate
+        -String medications
+        -String dosage
+        -String frequency
+        -String duration
+        -String instructions
+        -String status
+        +generatePrescription() void
+        +sendToPharmacy() void
+        +emailToPatient() void
+        +printPrescription() void
+    }
+
+    %% ──────────────────────────────────────────────
+    %% MedicalRecord (patient summary — no single vitalID/prescriptionID FKs)
+    %% ──────────────────────────────────────────────
+    class MedicalRecord {
+        -String recordID
+        -String patientID
+        -Date createdDate
+        -DateTime lastUpdated
+        +compileCompleteRecord() void
+        +exportToPDF() File
+        +shareWithSpecialist(consultantID String) void
+    }
+
+    %% ──────────────────────────────────────────────
+    %% Associations
+    %% ──────────────────────────────────────────────
+
+    %% Patient owns all their data (composition)
+    Patient "1" *-- "*" Appointment   : books
+    Patient "1" *-- "*" MedicalForm   : has
+    Patient "1" *-- "*" VitalSigns    : has
+    Patient "1" *-- "*" Prescription  : receives
+    Patient "1" *-- "1" MedicalRecord : owns
+
+    %% MedicalForm is composed of one SectionOne and an optional SectionTwo
+    MedicalForm "1" *-- "1" SectionOne    : contains
+    MedicalForm "1" *-- "0..1" SectionTwo : contains
+
+    %% Consultant conducts appointments, completes Section 2, issues prescriptions
+    Consultant "1" --> "*" Appointment : conducts
+    Consultant "1" --> "*" SectionTwo  : completes
+    Consultant "1" --> "*" Prescription : issues
+
+    %% Nurse records vital signs
+    Nurse "1" --> "*" VitalSigns : records
+
+    %% Appointment triggers form creation and vital signs recording
+    Appointment "1" --> "0..1" MedicalForm : generates
+    Appointment "1" --> "0..1" VitalSigns  : triggers

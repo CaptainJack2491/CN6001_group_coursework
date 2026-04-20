@@ -1,0 +1,153 @@
+erDiagram
+
+    %% ── Core patient table ──────────────────────────────
+    PATIENTS {
+        string  patientID        PK
+        string  firstName
+        string  lastName
+        date    dateOfBirth
+        string  gender
+        string  phoneNumber
+        string  email
+        text    address
+        string  emergencyContact
+        string  nhsNumber        "UNIQUE NOT NULL"
+        string  passwordHash
+        date    registrationDate
+    }
+
+    %% ── Staff supertype (covers Consultants, Nurses, Admins) ──
+    STAFF {
+        string  staffID          PK
+        string  firstName
+        string  lastName
+        string  email
+        string  phone
+        string  passwordHash
+        string  role             "Consultant | Nurse | Admin"
+    }
+
+    %% ── Consultant subtype (specialised staff) ──────────
+    CONSULTANTS {
+        string  consultantID     PK
+        string  staffID          FK  "References STAFF.staffID (1:1)"
+        string  specialization
+        string  licenseNumber    "UNIQUE NOT NULL"
+    }
+
+    %% ── Appointments ─────────────────────────────────────
+    APPOINTMENTS {
+        string  appointmentID    PK
+        string  patientID        FK
+        string  consultantID     FK
+        date    appointmentDate
+        time    appointmentTime
+        int     durationMinutes
+        string  type             "Initial | Follow-up | Emergency"
+        string  status           "Scheduled | Completed | Cancelled | No-show"
+        string  roomNumber
+    }
+
+    %% ── Medical Forms (one per appointment/visit) ────────
+    MEDICAL_FORMS {
+        string   formID          PK
+        string   patientID       FK
+        string   consultantID    FK  "Set when consultant is assigned"
+        string   appointmentID   FK  "Links form to the appointment"
+        string   formType        "Hypertension | Hypotension | Diabetes | General"
+        datetime dateCreated
+        string   status          "Draft | Submitted | Completed"
+    }
+
+    %% ── Section 1 — patient-completed ───────────────────
+    SECTION_ONE {
+        string   sectionOneID    PK
+        string   formID          FK  "UNIQUE — exactly one per form"
+        text     symptoms
+        text     currentMedications
+        text     allergies
+        text     familyHistory
+        string   lifestyleSmoking
+        string   lifestyleExercise
+        string   patientSignature
+        datetime submittedDate
+    }
+
+    %% ── Section 2 — consultant-completed ────────────────
+    SECTION_TWO {
+        string   sectionTwoID    PK
+        string   formID          FK  "UNIQUE — exactly one per form"
+        string   consultantID    FK
+        text     clinicalNotes
+        string   diagnosis
+        string   severity        "Mild | Moderate | Severe"
+        datetime examinationDate
+        string   consultantSignature
+    }
+
+    %% ── Vital Signs ──────────────────────────────────────
+    VITAL_SIGNS {
+        string   vitalID         PK
+        string   patientID       FK
+        string   appointmentID   FK
+        string   recordedBy      FK  "References STAFF.staffID (nurse)"
+        int      bpSystolic
+        int      bpDiastolic
+        int      heartRate
+        decimal  weightKg
+        decimal  heightCm
+        decimal  bmi
+        decimal  bloodSugar
+        datetime recordedDate
+    }
+
+    %% ── Prescriptions ────────────────────────────────────
+    PRESCRIPTIONS {
+        string  prescriptionID   PK
+        string  patientID        FK
+        string  consultantID     FK
+        string  formID           FK
+        date    issueDate
+        text    medications
+        text    dosage
+        text    frequency
+        text    duration
+        text    instructions
+        string  status           "Active | Completed | Cancelled"
+    }
+
+    %% ── Medical Record (patient summary header) ──────────
+    %% Note: child records (vitals, forms, prescriptions) are
+    %% retrieved via patientID FK in their own tables — not
+    %% via single FKs here (which would break 1:N semantics)
+    MEDICAL_RECORDS {
+        string  recordID         PK
+        string  patientID        FK  "UNIQUE — one record per patient"
+        date    createdDate
+        datetime lastUpdated
+    }
+
+    %% ── Relationships ─────────────────────────────────────
+
+    %% Patient core relationships
+    PATIENTS    ||--o{  APPOINTMENTS    : "books"
+    PATIENTS    ||--o{  MEDICAL_FORMS   : "submits"
+    PATIENTS    ||--o{  VITAL_SIGNS     : "has"
+    PATIENTS    ||--o{  PRESCRIPTIONS   : "receives"
+    PATIENTS    ||--o|  MEDICAL_RECORDS : "has"
+
+    %% Staff / Consultant relationships
+    STAFF       ||--||  CONSULTANTS     : "specialises as"
+    CONSULTANTS ||--o{  APPOINTMENTS    : "conducts"
+    CONSULTANTS ||--o{  PRESCRIPTIONS   : "issues"
+    CONSULTANTS ||--o{  SECTION_TWO     : "completes"
+    STAFF       ||--o{  VITAL_SIGNS     : "records (nurse)"
+
+    %% Form structure
+    MEDICAL_FORMS ||--||  SECTION_ONE   : "contains"
+    MEDICAL_FORMS ||--o|  SECTION_TWO   : "contains (optional until consulted)"
+    MEDICAL_FORMS ||--o{  PRESCRIPTIONS : "leads to"
+
+    %% Appointment links
+    APPOINTMENTS ||--o|  MEDICAL_FORMS  : "generates"
+    APPOINTMENTS ||--o|  VITAL_SIGNS    : "triggers"
