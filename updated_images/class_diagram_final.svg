@@ -1,0 +1,313 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1650" height="1300" style="background-color:#f7f6f2; font-family:sans-serif;">
+<defs>
+<filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+  <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.06"/>
+</filter>
+<marker id="arrow-open" markerWidth="12" markerHeight="8" refX="10" refY="4" orient="auto">
+  <polyline points="0,0 10,4 0,8" fill="none" stroke="#28251d" stroke-width="1.5"/>
+</marker>
+</defs>
+
+<!-- Title -->
+<rect x="0" y="0" width="1650" height="60" fill="#01696f"/>
+<text x="30" y="38" font-size="24" font-weight="bold" fill="#ffffff">UML Class Diagram: CVD Clinic System</text>
+
+<!-- Lines (drawn under boxes) -->
+<g fill="none" stroke="#28251d" stroke-width="2">
+  <!-- Patient to MedicalRecord -->
+  <polyline points="350,218 310,218"/>
+  <!-- Patient to Appointment -->
+  <polyline points="480,260 480,450"/>
+  <!-- AdminStaff to Appointment -->
+  <polyline points="780,260 780,370 550,370 550,450"/>
+  <!-- Consultant to Appointment -->
+  <polyline points="1380,280 1380,410 590,410 590,450"/>
+  <!-- Nurse to VitalSigns -->
+  <polyline points="1080,260 1080,439"/>
+  <!-- Consultant to Prescription -->
+  <polyline points="1380,280 1380,450"/>
+  <!-- Appointment to MedicalForm -->
+  <polyline points="480,640 480,750"/>
+  <!-- Appointment to VitalSigns -->
+  <polyline points="610,540 950,540"/>
+
+  <!-- MedicalForm to SectionOne (Composition) -->
+  <polyline points="450,930 450,980 330,980 330,1030"/>
+  <!-- MedicalForm to SectionTwo (Composition) -->
+  <polyline points="510,930 510,980 630,980 630,1030"/>
+
+  <!-- MedicalRecord to MedicalForm (Aggregation) -->
+  <polyline points="180,280 180,846 350,846"/>
+  <!-- Consultant to SectionTwo -->
+  <polyline points="1510,218 1560,218 1560,1115 760,1115"/>
+</g>
+
+<!-- Line Arrows and Diamonds -->
+<g fill="#28251d" stroke="#28251d" stroke-width="2">
+  <!-- MF to S1 Composition Diamond -->
+  <polygon points="450,914 455,922 450,930 445,922"/>
+  <!-- MF to S2 Composition Diamond -->
+  <polygon points="510,914 515,922 510,930 505,922"/>
+</g>
+<g fill="#ffffff" stroke="#28251d" stroke-width="2">
+  <!-- MR to MF Aggregation Diamond -->
+  <polygon points="180,264 185,272 180,280 175,272"/>
+</g>
+<g fill="none" stroke="#28251d" stroke-width="1.5">
+  <!-- Arrow heads on associations -->
+  <polyline points="318,214 310,218 318,222"/> <!-- Pat->MR -->
+  <polyline points="476,442 480,450 484,442"/> <!-- Pat->Appt -->
+  <polyline points="546,442 550,450 554,442"/> <!-- Admin->Appt -->
+  <polyline points="586,442 590,450 594,442"/> <!-- Cons->Appt -->
+  <polyline points="1076,431 1080,439 1084,431"/> <!-- Nurse->Vitals -->
+  <polyline points="1376,442 1380,450 1384,442"/> <!-- Cons->Presc -->
+  <polyline points="476,742 480,750 484,742"/> <!-- Appt->MF -->
+  <polyline points="942,536 950,540 942,544"/> <!-- Appt->Vitals -->
+  <polyline points="342,842 350,846 342,850"/> <!-- MR->MF -->
+  <polyline points="768,1111 760,1115 768,1119"/> <!-- Cons->S2 -->
+</g>
+
+<!-- Multiplicities Text -->
+<g font-size="14" fill="#28251d" font-weight="bold">
+  <!-- Pat to MR -->
+  <text x="330" y="210">1</text> <text x="290" y="210">1</text>
+  <!-- Pat to Appt -->
+  <text x="490" y="285">1</text> <text x="490" y="435">1..*</text>
+  <!-- Admin to Appt -->
+  <text x="790" y="285">1</text> <text x="560" y="435">*</text>
+  <!-- Nurse to Vitals -->
+  <text x="1090" y="285">1</text> <text x="1090" y="425">*</text>
+  <!-- Cons to Presc -->
+  <text x="1390" y="305">1</text> <text x="1390" y="435">*</text>
+  <!-- Cons to Appt -->
+  <text x="1390" y="400">1</text> <text x="600" y="435">*</text>
+  <!-- Appt to MF -->
+  <text x="490" y="665">1</text> <text x="490" y="735">1</text>
+  <!-- Appt to Vitals -->
+  <text x="620" y="530">1</text> <text x="930" y="530">1</text>
+  <!-- MF to S1 -->
+  <text x="460" y="940">1</text> <text x="340" y="1015">1</text>
+  <!-- MF to S2 -->
+  <text x="520" y="940">1</text> <text x="640" y="1015">1</text>
+  <!-- MR to MF -->
+  <text x="190" y="305">1</text> <text x="330" y="835">*</text>
+  <!-- Cons to S2 -->
+  <text x="1520" y="205">1</text> <text x="770" y="1105">*</text>
+</g>
+
+<!-- Verb Labels -->
+<g font-size="13" font-style="italic" fill="#01696f" font-family="sans-serif">
+  <!-- Pat to MR -->
+  <text x="330" y="235" text-anchor="middle">owns</text>
+  <!-- Pat to Appt -->
+  <text x="490" y="355">schedules</text>
+  <!-- Admin to Appt -->
+  <text x="665" y="362" text-anchor="middle">manages</text>
+  <!-- Cons to Appt -->
+  <text x="985" y="402" text-anchor="middle">conducts</text>
+  <!-- Nurse to Vitals -->
+  <text x="1090" y="355">records</text>
+  <!-- Cons to Presc -->
+  <text x="1390" y="365">issues</text>
+  <!-- Appt to MF -->
+  <text x="490" y="700">produces</text>
+  <!-- Appt to Vitals -->
+  <text x="780" y="532" text-anchor="middle">generates</text>
+  <!-- MF to S1 & S2 -->
+  <text x="480" y="975" text-anchor="middle">composed of</text>
+  <!-- MR to MF -->
+  <text x="190" y="563">contains</text>
+  <!-- Cons to S2 -->
+  <text x="1570" y="666" text-anchor="start">completes</text>
+</g>
+
+<!-- CLASS BOXES -->
+
+    <!-- Patient -->
+    <rect x="350" y="100" width="260" height="235" fill="#ffffff" stroke="#d4d1ca" stroke-width="1" rx="8" filter="url(#shadow)"/>
+    <path d="M 350 108 Q 350 100 358 100 L 602 100 Q 610 100 610 108 L 610 140 L 350 140 Z" fill="#01696f"/>
+    <text x="480" y="126" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">Patient</text>
+    <rect x="351" y="146" width="258" height="22" fill="#ffffff"/>
+<text x="360" y="162" font-family="monospace" font-size="12" fill="#28251d">- patientID: String</text>
+<rect x="351" y="168" width="258" height="22" fill="#fbfbf9"/>
+<text x="360" y="184" font-family="monospace" font-size="12" fill="#28251d">- firstName: String</text>
+<rect x="351" y="190" width="258" height="22" fill="#ffffff"/>
+<text x="360" y="206" font-family="monospace" font-size="12" fill="#28251d">- lastName: String</text>
+<rect x="351" y="212" width="258" height="22" fill="#fbfbf9"/>
+<text x="360" y="228" font-family="monospace" font-size="12" fill="#28251d">- dateOfBirth: Date</text>
+<rect x="351" y="234" width="258" height="22" fill="#ffffff"/>
+<text x="360" y="250" font-family="monospace" font-size="12" fill="#28251d">- email: String</text>
+<line x1="350" y1="260" x2="610" y2="260" stroke="#dcd9d5" stroke-width="1"/>
+<rect x="351" y="266" width="258" height="22" fill="#ffffff"/>
+<text x="360" y="282" font-family="monospace" font-size="12" fill="#28251d">+ register(data: DTO): void</text>
+<rect x="351" y="288" width="258" height="22" fill="#fbfbf9"/>
+<text x="360" y="304" font-family="monospace" font-size="12" fill="#28251d">+ bookAppt(date: Date): Appointment</text>
+
+    <!-- MedicalRecord -->
+    <rect x="50" y="133" width="260" height="169" fill="#ffffff" stroke="#d4d1ca" stroke-width="1" rx="8" filter="url(#shadow)"/>
+    <path d="M 50 141 Q 50 133 58 133 L 302 133 Q 310 133 310 141 L 310 173 L 50 173 Z" fill="#01696f"/>
+    <text x="180" y="159" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">MedicalRecord</text>
+    <rect x="51" y="179" width="258" height="22" fill="#ffffff"/>
+<text x="60" y="195" font-family="monospace" font-size="12" fill="#28251d">- recordID: String</text>
+<rect x="51" y="201" width="258" height="22" fill="#fbfbf9"/>
+<text x="60" y="217" font-family="monospace" font-size="12" fill="#28251d">- createdDate: Date</text>
+<line x1="50" y1="227" x2="310" y2="227" stroke="#dcd9d5" stroke-width="1"/>
+<rect x="51" y="233" width="258" height="22" fill="#ffffff"/>
+<text x="60" y="249" font-family="monospace" font-size="12" fill="#28251d">+ compileCompleteRecord(): void</text>
+<rect x="51" y="255" width="258" height="22" fill="#fbfbf9"/>
+<text x="60" y="271" font-family="monospace" font-size="12" fill="#28251d">+ exportToPDF(): File</text>
+
+    <!-- AdminStaff -->
+    <rect x="650" y="100" width="260" height="213" fill="#ffffff" stroke="#d4d1ca" stroke-width="1" rx="8" filter="url(#shadow)"/>
+    <path d="M 650 108 Q 650 100 658 100 L 902 100 Q 910 100 910 108 L 910 140 L 650 140 Z" fill="#01696f"/>
+    <text x="780" y="126" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">AdminStaff</text>
+    <rect x="651" y="146" width="258" height="22" fill="#ffffff"/>
+<text x="660" y="162" font-family="monospace" font-size="12" fill="#28251d">- adminID: String</text>
+<rect x="651" y="168" width="258" height="22" fill="#fbfbf9"/>
+<text x="660" y="184" font-family="monospace" font-size="12" fill="#28251d">- firstName: String</text>
+<rect x="651" y="190" width="258" height="22" fill="#ffffff"/>
+<text x="660" y="206" font-family="monospace" font-size="12" fill="#28251d">- lastName: String</text>
+<rect x="651" y="212" width="258" height="22" fill="#fbfbf9"/>
+<text x="660" y="228" font-family="monospace" font-size="12" fill="#28251d">- role: String</text>
+<line x1="650" y1="238" x2="910" y2="238" stroke="#dcd9d5" stroke-width="1"/>
+<rect x="651" y="244" width="258" height="22" fill="#ffffff"/>
+<text x="660" y="260" font-family="monospace" font-size="12" fill="#28251d">+ checkSchedule(): List&lt;Appt&gt;</text>
+<rect x="651" y="266" width="258" height="22" fill="#fbfbf9"/>
+<text x="660" y="282" font-family="monospace" font-size="12" fill="#28251d">+ confirmBooking(a: Appt): void</text>
+
+    <!-- Nurse -->
+    <rect x="950" y="100" width="270" height="191" fill="#ffffff" stroke="#d4d1ca" stroke-width="1" rx="8" filter="url(#shadow)"/>
+    <path d="M 950 108 Q 950 100 958 100 L 1212 100 Q 1220 100 1220 108 L 1220 140 L 950 140 Z" fill="#01696f"/>
+    <text x="1085" y="126" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">Nurse</text>
+    <rect x="951" y="146" width="268" height="22" fill="#ffffff"/>
+<text x="960" y="162" font-family="monospace" font-size="12" fill="#28251d">- nurseID: String</text>
+<rect x="951" y="168" width="268" height="22" fill="#fbfbf9"/>
+<text x="960" y="184" font-family="monospace" font-size="12" fill="#28251d">- firstName: String</text>
+<rect x="951" y="190" width="268" height="22" fill="#ffffff"/>
+<text x="960" y="206" font-family="monospace" font-size="12" fill="#28251d">- lastName: String</text>
+<line x1="950" y1="216" x2="1220" y2="216" stroke="#dcd9d5" stroke-width="1"/>
+<rect x="951" y="222" width="268" height="22" fill="#ffffff"/>
+<text x="960" y="238" font-family="monospace" font-size="12" fill="#28251d">+ verifyIdentity(p: Patient): Boolean</text>
+<rect x="951" y="244" width="268" height="22" fill="#fbfbf9"/>
+<text x="960" y="260" font-family="monospace" font-size="12" fill="#28251d">+ recordVitals(appID: Str, v: Data): void</text>
+
+    <!-- Consultant -->
+    <rect x="1250" y="100" width="270" height="235" fill="#ffffff" stroke="#d4d1ca" stroke-width="1" rx="8" filter="url(#shadow)"/>
+    <path d="M 1250 108 Q 1250 100 1258 100 L 1512 100 Q 1520 100 1520 108 L 1520 140 L 1250 140 Z" fill="#01696f"/>
+    <text x="1385" y="126" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">Consultant</text>
+    <rect x="1251" y="146" width="268" height="22" fill="#ffffff"/>
+<text x="1260" y="162" font-family="monospace" font-size="12" fill="#28251d">- consultantID: String</text>
+<rect x="1251" y="168" width="268" height="22" fill="#fbfbf9"/>
+<text x="1260" y="184" font-family="monospace" font-size="12" fill="#28251d">- firstName: String</text>
+<rect x="1251" y="190" width="268" height="22" fill="#ffffff"/>
+<text x="1260" y="206" font-family="monospace" font-size="12" fill="#28251d">- lastName: String</text>
+<rect x="1251" y="212" width="268" height="22" fill="#fbfbf9"/>
+<text x="1260" y="228" font-family="monospace" font-size="12" fill="#28251d">- specialization: String</text>
+<line x1="1250" y1="238" x2="1520" y2="238" stroke="#dcd9d5" stroke-width="1"/>
+<rect x="1251" y="244" width="268" height="22" fill="#ffffff"/>
+<text x="1260" y="260" font-family="monospace" font-size="12" fill="#28251d">+ conductExam(a: Appt): void</text>
+<rect x="1251" y="266" width="268" height="22" fill="#fbfbf9"/>
+<text x="1260" y="282" font-family="monospace" font-size="12" fill="#28251d">+ completeSecTwo(f: MedForm): void</text>
+<rect x="1251" y="288" width="268" height="22" fill="#ffffff"/>
+<text x="1260" y="304" font-family="monospace" font-size="12" fill="#28251d">+ generatePrescription(m: Str): Presc</text>
+
+    <!-- Appointment -->
+    <rect x="350" y="450" width="260" height="213" fill="#ffffff" stroke="#d4d1ca" stroke-width="1" rx="8" filter="url(#shadow)"/>
+    <path d="M 350 458 Q 350 450 358 450 L 602 450 Q 610 450 610 458 L 610 490 L 350 490 Z" fill="#01696f"/>
+    <text x="480" y="476" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">Appointment</text>
+    <rect x="351" y="496" width="258" height="22" fill="#ffffff"/>
+<text x="360" y="512" font-family="monospace" font-size="12" fill="#28251d">- appointmentID: String</text>
+<rect x="351" y="518" width="258" height="22" fill="#fbfbf9"/>
+<text x="360" y="534" font-family="monospace" font-size="12" fill="#28251d">- appointmentDate: DateTime</text>
+<rect x="351" y="540" width="258" height="22" fill="#ffffff"/>
+<text x="360" y="556" font-family="monospace" font-size="12" fill="#28251d">- status: String</text>
+<rect x="351" y="562" width="258" height="22" fill="#fbfbf9"/>
+<text x="360" y="578" font-family="monospace" font-size="12" fill="#28251d">- type: String</text>
+<line x1="350" y1="588" x2="610" y2="588" stroke="#dcd9d5" stroke-width="1"/>
+<rect x="351" y="594" width="258" height="22" fill="#ffffff"/>
+<text x="360" y="610" font-family="monospace" font-size="12" fill="#28251d">+ reschedule(newDate: Date): Boolean</text>
+<rect x="351" y="616" width="258" height="22" fill="#fbfbf9"/>
+<text x="360" y="632" font-family="monospace" font-size="12" fill="#28251d">+ cancel(): void</text>
+
+    <!-- VitalSigns -->
+    <rect x="950" y="439" width="260" height="235" fill="#ffffff" stroke="#d4d1ca" stroke-width="1" rx="8" filter="url(#shadow)"/>
+    <path d="M 950 447 Q 950 439 958 439 L 1202 439 Q 1210 439 1210 447 L 1210 479 L 950 479 Z" fill="#01696f"/>
+    <text x="1080" y="465" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">VitalSigns</text>
+    <rect x="951" y="485" width="258" height="22" fill="#ffffff"/>
+<text x="960" y="501" font-family="monospace" font-size="12" fill="#28251d">- vitalID: String</text>
+<rect x="951" y="507" width="258" height="22" fill="#fbfbf9"/>
+<text x="960" y="523" font-family="monospace" font-size="12" fill="#28251d">- appointmentID: String</text>
+<rect x="951" y="529" width="258" height="22" fill="#ffffff"/>
+<text x="960" y="545" font-family="monospace" font-size="12" fill="#28251d">- bpSystolic: Int</text>
+<rect x="951" y="551" width="258" height="22" fill="#fbfbf9"/>
+<text x="960" y="567" font-family="monospace" font-size="12" fill="#28251d">- bpDiastolic: Int</text>
+<rect x="951" y="573" width="258" height="22" fill="#ffffff"/>
+<text x="960" y="589" font-family="monospace" font-size="12" fill="#28251d">- bmi: Float</text>
+<line x1="950" y1="599" x2="1210" y2="599" stroke="#dcd9d5" stroke-width="1"/>
+<rect x="951" y="605" width="258" height="22" fill="#ffffff"/>
+<text x="960" y="621" font-family="monospace" font-size="12" fill="#28251d">+ calculateBMI(): Float</text>
+<rect x="951" y="627" width="258" height="22" fill="#fbfbf9"/>
+<text x="960" y="643" font-family="monospace" font-size="12" fill="#28251d">+ flagAbnormal(): Boolean</text>
+
+    <!-- Prescription -->
+    <rect x="1250" y="450" width="260" height="213" fill="#ffffff" stroke="#d4d1ca" stroke-width="1" rx="8" filter="url(#shadow)"/>
+    <path d="M 1250 458 Q 1250 450 1258 450 L 1502 450 Q 1510 450 1510 458 L 1510 490 L 1250 490 Z" fill="#01696f"/>
+    <text x="1380" y="476" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">Prescription</text>
+    <rect x="1251" y="496" width="258" height="22" fill="#ffffff"/>
+<text x="1260" y="512" font-family="monospace" font-size="12" fill="#28251d">- prescriptionID: String</text>
+<rect x="1251" y="518" width="258" height="22" fill="#fbfbf9"/>
+<text x="1260" y="534" font-family="monospace" font-size="12" fill="#28251d">- formID: String</text>
+<rect x="1251" y="540" width="258" height="22" fill="#ffffff"/>
+<text x="1260" y="556" font-family="monospace" font-size="12" fill="#28251d">- medications: String</text>
+<rect x="1251" y="562" width="258" height="22" fill="#fbfbf9"/>
+<text x="1260" y="578" font-family="monospace" font-size="12" fill="#28251d">- dosage: String</text>
+<line x1="1250" y1="588" x2="1510" y2="588" stroke="#dcd9d5" stroke-width="1"/>
+<rect x="1251" y="594" width="258" height="22" fill="#ffffff"/>
+<text x="1260" y="610" font-family="monospace" font-size="12" fill="#28251d">+ printPrescription(): void</text>
+<rect x="1251" y="616" width="258" height="22" fill="#fbfbf9"/>
+<text x="1260" y="632" font-family="monospace" font-size="12" fill="#28251d">+ emailToPatient(): void</text>
+
+    <!-- MedicalForm -->
+    <rect x="350" y="750" width="260" height="191" fill="#ffffff" stroke="#d4d1ca" stroke-width="1" rx="8" filter="url(#shadow)"/>
+    <path d="M 350 758 Q 350 750 358 750 L 602 750 Q 610 750 610 758 L 610 790 L 350 790 Z" fill="#01696f"/>
+    <text x="480" y="776" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">MedicalForm</text>
+    <rect x="351" y="796" width="258" height="22" fill="#ffffff"/>
+<text x="360" y="812" font-family="monospace" font-size="12" fill="#28251d">- formID: String</text>
+<rect x="351" y="818" width="258" height="22" fill="#fbfbf9"/>
+<text x="360" y="834" font-family="monospace" font-size="12" fill="#28251d">- formType: String</text>
+<rect x="351" y="840" width="258" height="22" fill="#ffffff"/>
+<text x="360" y="856" font-family="monospace" font-size="12" fill="#28251d">- status: String</text>
+<line x1="350" y1="866" x2="610" y2="866" stroke="#dcd9d5" stroke-width="1"/>
+<rect x="351" y="872" width="258" height="22" fill="#ffffff"/>
+<text x="360" y="888" font-family="monospace" font-size="12" fill="#28251d">+ validateForm(): Boolean</text>
+<rect x="351" y="894" width="258" height="22" fill="#fbfbf9"/>
+<text x="360" y="910" font-family="monospace" font-size="12" fill="#28251d">+ submitForm(): void</text>
+
+    <!-- SectionOne -->
+    <rect x="200" y="1030" width="260" height="169" fill="#ffffff" stroke="#d4d1ca" stroke-width="1" rx="8" filter="url(#shadow)"/>
+    <path d="M 200 1038 Q 200 1030 208 1030 L 452 1030 Q 460 1030 460 1038 L 460 1070 L 200 1070 Z" fill="#01696f"/>
+    <text x="330" y="1056" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">SectionOne</text>
+    <rect x="201" y="1076" width="258" height="22" fill="#ffffff"/>
+<text x="210" y="1092" font-family="monospace" font-size="12" fill="#28251d">- sectionOneID: String</text>
+<rect x="201" y="1098" width="258" height="22" fill="#fbfbf9"/>
+<text x="210" y="1114" font-family="monospace" font-size="12" fill="#28251d">- symptoms: String</text>
+<rect x="201" y="1120" width="258" height="22" fill="#ffffff"/>
+<text x="210" y="1136" font-family="monospace" font-size="12" fill="#28251d">- allergies: String</text>
+<line x1="200" y1="1146" x2="460" y2="1146" stroke="#dcd9d5" stroke-width="1"/>
+<rect x="201" y="1152" width="258" height="22" fill="#ffffff"/>
+<text x="210" y="1168" font-family="monospace" font-size="12" fill="#28251d">+ autoFillFromHistory(): void</text>
+
+    <!-- SectionTwo -->
+    <rect x="500" y="1030" width="270" height="169" fill="#ffffff" stroke="#d4d1ca" stroke-width="1" rx="8" filter="url(#shadow)"/>
+    <path d="M 500 1038 Q 500 1030 508 1030 L 762 1030 Q 770 1030 770 1038 L 770 1070 L 500 1070 Z" fill="#01696f"/>
+    <text x="635" y="1056" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">SectionTwo</text>
+    <rect x="501" y="1076" width="268" height="22" fill="#ffffff"/>
+<text x="510" y="1092" font-family="monospace" font-size="12" fill="#28251d">- sectionTwoID: String</text>
+<rect x="501" y="1098" width="268" height="22" fill="#fbfbf9"/>
+<text x="510" y="1114" font-family="monospace" font-size="12" fill="#28251d">- diagnosis: String</text>
+<rect x="501" y="1120" width="268" height="22" fill="#ffffff"/>
+<text x="510" y="1136" font-family="monospace" font-size="12" fill="#28251d">- clinicalNotes: String</text>
+<line x1="500" y1="1146" x2="770" y2="1146" stroke="#dcd9d5" stroke-width="1"/>
+<rect x="501" y="1152" width="268" height="22" fill="#ffffff"/>
+<text x="510" y="1168" font-family="monospace" font-size="12" fill="#28251d">+ setDiagnosis(diag: String): void</text>
+</svg>
