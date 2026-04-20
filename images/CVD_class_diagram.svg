@@ -40,6 +40,10 @@
   <polyline points="180,280 180,846 350,846"/>
   <!-- Consultant to SectionTwo -->
   <polyline points="1510,218 1560,218 1560,1115 760,1115"/>
+  <!-- Patient to SectionOne -->
+  <polyline points="380,335 380,1030"/>
+  <!-- Appointment to Prescription -->
+  <polyline points="610,480 640,480 640,425 1230,425 1230,480 1250,480"/>
 </g>
 
 <!-- Line Arrows and Diamonds -->
@@ -65,6 +69,10 @@
   <polyline points="942,536 950,540 942,544"/> <!-- Appt->Vitals -->
   <polyline points="342,842 350,846 342,850"/> <!-- MR->MF -->
   <polyline points="768,1111 760,1115 768,1119"/> <!-- Cons->S2 -->
+  <!-- Pat->S1 -->
+  <polyline points="376,1022 380,1030 384,1022"/>
+  <!-- Appt->Presc -->
+  <polyline points="1242,476 1250,480 1242,484"/>
 </g>
 
 <!-- Multiplicities Text -->
@@ -93,6 +101,10 @@
   <text x="190" y="305">1</text> <text x="330" y="835">*</text>
   <!-- Cons to S2 -->
   <text x="1520" y="205">1</text> <text x="770" y="1105">*</text>
+  <!-- Pat to S1 -->
+  <text x="390" y="350">1</text> <text x="390" y="1020">1..*</text>
+  <!-- Appt to Presc -->
+  <text x="620" y="475">1</text> <text x="1230" y="475">*</text>
 </g>
 
 <!-- Verb Labels -->
@@ -119,6 +131,10 @@
   <text x="190" y="563">contains</text>
   <!-- Cons to S2 -->
   <text x="1570" y="666" text-anchor="start">completes</text>
+  <!-- Pat to S1 -->
+  <text x="390" y="680" text-anchor="start">fills</text>
+  <!-- Appt to Presc -->
+  <text x="940" y="420" text-anchor="middle">results in</text>
 </g>
 
 <!-- CLASS BOXES -->
@@ -230,42 +246,38 @@
 <text x="360" y="632" font-family="monospace" font-size="12" fill="#28251d">+ cancel(): void</text>
 
     <!-- VitalSigns -->
-    <rect x="950" y="439" width="260" height="235" fill="#ffffff" stroke="#d4d1ca" stroke-width="1" rx="8" filter="url(#shadow)"/>
+    <rect x="950" y="439" width="260" height="213" fill="#ffffff" stroke="#d4d1ca" stroke-width="1" rx="8" filter="url(#shadow)"/>
     <path d="M 950 447 Q 950 439 958 439 L 1202 439 Q 1210 439 1210 447 L 1210 479 L 950 479 Z" fill="#01696f"/>
     <text x="1080" y="465" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">VitalSigns</text>
     <rect x="951" y="485" width="258" height="22" fill="#ffffff"/>
 <text x="960" y="501" font-family="monospace" font-size="12" fill="#28251d">- vitalID: String</text>
 <rect x="951" y="507" width="258" height="22" fill="#fbfbf9"/>
-<text x="960" y="523" font-family="monospace" font-size="12" fill="#28251d">- appointmentID: String</text>
+<text x="960" y="523" font-family="monospace" font-size="12" fill="#28251d">- bpSystolic: Int</text>
 <rect x="951" y="529" width="258" height="22" fill="#ffffff"/>
-<text x="960" y="545" font-family="monospace" font-size="12" fill="#28251d">- bpSystolic: Int</text>
+<text x="960" y="545" font-family="monospace" font-size="12" fill="#28251d">- bpDiastolic: Int</text>
 <rect x="951" y="551" width="258" height="22" fill="#fbfbf9"/>
-<text x="960" y="567" font-family="monospace" font-size="12" fill="#28251d">- bpDiastolic: Int</text>
-<rect x="951" y="573" width="258" height="22" fill="#ffffff"/>
-<text x="960" y="589" font-family="monospace" font-size="12" fill="#28251d">- bmi: Float</text>
-<line x1="950" y1="599" x2="1210" y2="599" stroke="#dcd9d5" stroke-width="1"/>
-<rect x="951" y="605" width="258" height="22" fill="#ffffff"/>
-<text x="960" y="621" font-family="monospace" font-size="12" fill="#28251d">+ calculateBMI(): Float</text>
-<rect x="951" y="627" width="258" height="22" fill="#fbfbf9"/>
-<text x="960" y="643" font-family="monospace" font-size="12" fill="#28251d">+ flagAbnormal(): Boolean</text>
+<text x="960" y="567" font-family="monospace" font-size="12" fill="#28251d">- bmi: Float</text>
+<line x1="950" y1="577" x2="1210" y2="577" stroke="#dcd9d5" stroke-width="1"/>
+<rect x="951" y="583" width="258" height="22" fill="#ffffff"/>
+<text x="960" y="599" font-family="monospace" font-size="12" fill="#28251d">+ calculateBMI(): Float</text>
+<rect x="951" y="605" width="258" height="22" fill="#fbfbf9"/>
+<text x="960" y="621" font-family="monospace" font-size="12" fill="#28251d">+ flagAbnormal(): Boolean</text>
 
     <!-- Prescription -->
-    <rect x="1250" y="450" width="260" height="213" fill="#ffffff" stroke="#d4d1ca" stroke-width="1" rx="8" filter="url(#shadow)"/>
+    <rect x="1250" y="450" width="260" height="191" fill="#ffffff" stroke="#d4d1ca" stroke-width="1" rx="8" filter="url(#shadow)"/>
     <path d="M 1250 458 Q 1250 450 1258 450 L 1502 450 Q 1510 450 1510 458 L 1510 490 L 1250 490 Z" fill="#01696f"/>
     <text x="1380" y="476" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">Prescription</text>
     <rect x="1251" y="496" width="258" height="22" fill="#ffffff"/>
 <text x="1260" y="512" font-family="monospace" font-size="12" fill="#28251d">- prescriptionID: String</text>
 <rect x="1251" y="518" width="258" height="22" fill="#fbfbf9"/>
-<text x="1260" y="534" font-family="monospace" font-size="12" fill="#28251d">- formID: String</text>
+<text x="1260" y="534" font-family="monospace" font-size="12" fill="#28251d">- medications: String</text>
 <rect x="1251" y="540" width="258" height="22" fill="#ffffff"/>
-<text x="1260" y="556" font-family="monospace" font-size="12" fill="#28251d">- medications: String</text>
-<rect x="1251" y="562" width="258" height="22" fill="#fbfbf9"/>
-<text x="1260" y="578" font-family="monospace" font-size="12" fill="#28251d">- dosage: String</text>
-<line x1="1250" y1="588" x2="1510" y2="588" stroke="#dcd9d5" stroke-width="1"/>
-<rect x="1251" y="594" width="258" height="22" fill="#ffffff"/>
-<text x="1260" y="610" font-family="monospace" font-size="12" fill="#28251d">+ printPrescription(): void</text>
-<rect x="1251" y="616" width="258" height="22" fill="#fbfbf9"/>
-<text x="1260" y="632" font-family="monospace" font-size="12" fill="#28251d">+ emailToPatient(): void</text>
+<text x="1260" y="556" font-family="monospace" font-size="12" fill="#28251d">- dosage: String</text>
+<line x1="1250" y1="566" x2="1510" y2="566" stroke="#dcd9d5" stroke-width="1"/>
+<rect x="1251" y="572" width="258" height="22" fill="#ffffff"/>
+<text x="1260" y="588" font-family="monospace" font-size="12" fill="#28251d">+ printPrescription(): void</text>
+<rect x="1251" y="594" width="258" height="22" fill="#fbfbf9"/>
+<text x="1260" y="610" font-family="monospace" font-size="12" fill="#28251d">+ emailToPatient(): void</text>
 
     <!-- MedicalForm -->
     <rect x="350" y="750" width="260" height="191" fill="#ffffff" stroke="#d4d1ca" stroke-width="1" rx="8" filter="url(#shadow)"/>
