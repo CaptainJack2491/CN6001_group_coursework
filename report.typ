@@ -905,6 +905,27 @@ Furthermore, I was responsible for generating all high-fidelity UML, BPMN, and C
 === Application of Enterprise Architecture Concepts
 This project solidified my understanding of Enterprise Architecture, specifically the transition from monolithic local applications to scalable, cloud-deployed service-oriented architectures. Designing the AWS VPC, configuring security groups for the RDS instance, and managing state across dual-portals taught me the practical realities of building fault-tolerant enterprise systems. If we were to continue developing this system, my next step would be implementing a CI/CD pipeline using GitHub Actions and Docker containerization to automate our deployment process and eliminate "it works on my machine" discrepancies.
 
+== Individual Reflection: Jayrup Nakawala (Product Owner & Consultant)
+
+=== Personal Contribution & Challenges
+In this project, I took on the role of Product Owner and focused heavily on the Consultant dashboard functionality. My main development task was implementing the Section 2 medical evaluation logic. I designed the interface that allows consultants to review the patient's pre-visit form and vital signs in a read-only format, and then append diagnosis data, severity markers, and clinical notes. I also built the prescription generation module which unifies all data points into a final medical record.
+
+The primary challenge I faced was ensuring data integrity when linking Section 1 (from the patient portal) with Section 2 (from the staff portal). Since multiple patients could have the same name, I had to ensure strict adherence to relational database keys (`appointmentID` and `patientID`) to prevent cross-contamination of medical records. Through this project, I gained a deep appreciation for the complexities of Service-Oriented Architecture (SOA) and the importance of strictly defining requirements and acceptance criteria during our Agile sprint planning sessions.
+
+== Individual Reflection: Fatema Doctor (Frontend Developer)
+
+=== Personal Contribution & Challenges
+My primary responsibility was designing and implementing the Frontend UI for the Patient Portal. I developed the CSS design system from scratch, ensuring a modern, glassmorphic aesthetic that feels premium and trustworthy for a medical clinic. I built the secure patient registration flow, the login portal, and the dynamic appointment booking interface using HTML, CSS, and Flask templating (Jinja2). I also created the Pre-Visit Form (Section 1), which dynamically populates based on the user's session.
+
+A major challenge was building the dynamic date picker and ensuring the appointment booking system accurately reflected available slots without allowing double-bookings. I solved this by implementing both client-side JavaScript validation and server-side SQLAlchemy constraints. This coursework significantly improved my skills in responsive web design, session management, and understanding how frontend interfaces securely interact with backend APIs in a cloud environment.
+
+== Individual Reflection: Sangeet Kaur (QA & Database Engineer)
+
+=== Personal Contribution & Challenges
+As the QA lead and backend contributor, my focus was on system reliability, database integration, and building the Admin/Nurse interfaces. I worked closely with Hard to migrate our local SQLite models to the AWS RDS PostgreSQL instance, ensuring all foreign key relationships were strictly enforced. For the UI, I developed the Nurse Dashboard, specifically the interface for recording and validating vital signs (BP, BMI, Sugar, Heart Rate) before a consultant's examination.
+
+Testing the deployed Elastic Beanstalk environment was my biggest challenge. I authored our end-to-end test cases and discovered several edge cases, such as the system crashing if a consultant tried to generate a prescription before vital signs were logged. I resolved this by implementing strict conditional rendering and error handling. This module taught me the critical importance of rigorous QA in enterprise cloud deployments, where a small localized bug can cascade across distributed services.
+
 == Cloud Technology Analysis
 
 Evaluate the cloud technologies used for the design and implementation of the CSS. Compare AWS and Azure based on the following criteria:
