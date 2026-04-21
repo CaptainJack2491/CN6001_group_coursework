@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Record - CVD Clinic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .record-header { border-bottom: 3px solid var(--primary); padding-bottom: 1rem; margin-bottom: 2rem; }
+        .data-section { margin-bottom: 2rem; }
+        .data-section h3 { background: #eee; padding: 5px 15px; border-radius: 4px; margin-bottom: 10px; font-size: 1rem; color: var(--primary); }
+        .data-grid { display: grid; grid-template-columns: 150px 1fr; gap: 10px; padding: 0 15px; }
+        .label { font-weight: 600; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+    <div class="container" style="max-width: 800px;">
+        <div class="card">
+            <div class="record-header">
+                <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                    <div>
+                        <h1 style="color: var(--primary);">Official Medical Record</h1>
+                        <p style="color: var(--text-muted);">CVD Clinic Patient Management System</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <strong>Visit ID:</strong> {{ appt.appointmentID }}<br>
+                        <strong>Date:</strong> {{ appt.appointmentDate.strftime('%Y-%m-%d') }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-section">
+                <h3>Patient Information</h3>
+                <div class="data-grid">
+                    <div class="label">Name:</div> <div>{{ patient.firstName }} {{ patient.lastName }}</div>
+                    <div class="label">Patient ID:</div> <div>{{ patient.patientID }}</div>
+                    <div class="label">Date of Birth:</div> <div>{{ patient.dateOfBirth }}</div>
+                    <div class="label">Email:</div> <div>{{ patient.email }}</div>
+                </div>
+            </div>
+
+            <div class="data-section">
+                <h3>Section 1: Patient Self-Assessment</h3>
+                {% if sec1 %}
+                <div class="data-grid">
+                    <div class="label">Symptoms:</div> <div>{{ sec1.symptoms }}</div>
+                    <div class="label">Allergies:</div> <div>{{ sec1.allergies }}</div>
+                </div>
+                {% else %}
+                <p style="padding: 0 15px; color: var(--accent);">Pending patient submission...</p>
+                {% endif %}
+            </div>
+
+            <div class="data-section">
+                <h3>Vitals (Recorded by Nurse)</h3>
+                {% if vitals %}
+                <div class="data-grid">
+                    <div class="label">Blood Pressure:</div> <div>{{ vitals.bpSystolic }} / {{ vitals.bpDiastolic }} mmHg</div>
+                    <div class="label">BMI:</div> <div>{{ vitals.bmi }}</div>
+                </div>
+                {% else %}
+                <p style="padding: 0 15px; color: var(--accent);">Pending nurse recording...</p>
+                {% endif %}
+            </div>
+
+            <div class="data-section">
+                <h3>Section 2: Consultant Evaluation</h3>
+                {% if sec2 %}
+                <div class="data-grid">
+                    <div class="label">Diagnosis:</div> <div style="font-weight: bold; color: var(--accent);">{{ sec2.diagnosis }}</div>
+                    <div class="label">Clinical Notes:</div> <div>{{ sec2.clinicalNotes }}</div>
+                </div>
+                {% else %}
+                <p style="padding: 0 15px; color: var(--accent);">Consultation in progress...</p>
+                {% endif %}
+            </div>
+
+            <div style="margin-top: 3rem; text-align: center; border-top: 1px solid #ddd; padding-top: 1rem;">
+                <button onclick="window.print()" class="no-print">Print Medical Record</button>
+                <button onclick="window.history.back()" style="background: var(--text-muted);" class="no-print">Back</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
