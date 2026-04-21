@@ -1,2 +1,1419 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<svg baseProfile="full" height="600px" version="1.1" viewBox="0 0 1200 600" width="1200px" xmlns="http://www.w3.org/2000/svg" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><marker id="id46" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#6c757d" points="0,0 6,3 0,6" /></marker><marker id="id47" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#6c757d" points="0,0 6,3 0,6" /></marker><marker id="id48" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#e94560" points="0,0 6,3 0,6" /></marker><marker id="id49" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#6c757d" points="0,0 6,3 0,6" /></marker><marker id="id50" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#1976d2" points="0,0 6,3 0,6" /></marker><marker id="id51" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#6c757d" points="0,0 6,3 0,6" /></marker><marker id="id52" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#0f3460" points="0,0 6,3 0,6" /></marker><marker id="id53" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#6c757d" points="0,0 6,3 0,6" /></marker><marker id="id54" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#1976d2" points="0,0 6,3 0,6" /></marker><marker id="id55" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#1976d2" points="0,0 6,3 0,6" /></marker><marker id="id56" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#1976d2" points="0,0 6,3 0,6" /></marker><marker id="id57" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#6c757d" points="0,0 6,3 0,6" /></marker><marker id="id58" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#6c757d" points="0,0 6,3 0,6" /></marker><marker id="id59" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#1976d2" points="0,0 6,3 0,6" /></marker><marker id="id60" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#6c757d" points="0,0 6,3 0,6" /></marker><marker id="id61" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#1976d2" points="0,0 6,3 0,6" /></marker><marker id="id62" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#1976d2" points="0,0 6,3 0,6" /></marker><marker id="id63" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#6c757d" points="0,0 6,3 0,6" /></marker><marker id="id64" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#1976d2" points="0,0 6,3 0,6" /></marker><marker id="id65" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#0f3460" points="0,0 6,3 0,6" /></marker><marker id="id66" markerHeight="6" markerUnits="strokeWidth" markerWidth="8" orient="auto" refX="6" refY="3"><polygon fill="#1976d2" points="0,0 6,3 0,6" /></marker></defs><rect fill="#ffffff" height="600" width="1200" x="0" y="0" /><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" x="600.0" y="28">BPMN Diagram 3: Form Processing &amp; Data Flow</text><line stroke="#e94560" stroke-width="1.5" x1="150" x2="1050" y1="38" y2="38" /><rect fill="#0f3460" height="30" rx="4" ry="4" width="1180" x="10" y="50" /><text fill="#ffffff" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" x="600.0" y="70">CVD Clinic — Form Processing &amp; Data Flow</text><rect fill="#eef2f7" height="155" opacity="0.5" stroke="#0f3460" stroke-width="0.5" width="1180" x="10" y="85" /><rect fill="#0f3460" height="155" opacity="0.12" stroke="none" width="35" x="10" y="85" /><line opacity="0.4" stroke="#0f3460" stroke-width="0.5" x1="45" x2="45" y1="85" y2="240" /><text fill="#0f3460" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" transform="rotate(-90, 27.5, 162.5)" x="27.5" y="162.5">Patient</text><rect fill="#f7f0ee" height="155" opacity="0.5" stroke="#0f3460" stroke-width="0.5" width="1180" x="10" y="240" /><rect fill="#0f3460" height="155" opacity="0.12" stroke="none" width="35" x="10" y="240" /><line opacity="0.4" stroke="#0f3460" stroke-width="0.5" x1="45" x2="45" y1="240" y2="395" /><text fill="#0f3460" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" transform="rotate(-90, 27.5, 317.5)" x="27.5" y="317.5">Nurse</text><rect fill="#eef7f0" height="250" opacity="0.5" stroke="#0f3460" stroke-width="0.5" width="1180" x="10" y="395" /><rect fill="#0f3460" height="250" opacity="0.12" stroke="none" width="35" x="10" y="395" /><line opacity="0.4" stroke="#0f3460" stroke-width="0.5" x1="45" x2="45" y1="395" y2="645" /><text fill="#0f3460" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" transform="rotate(-90, 27.5, 520.0)" x="27.5" y="520.0">Consultant</text><circle cx="80" cy="162.5" fill="#e8f5e9" r="14" stroke="#388e3c" stroke-width="2.5" /><polygon fill="#388e3c" opacity="0.6" points="76,156.5 76,168.5 86,162.5" /><rect fill="#ffffff" height="50" rx="8" ry="8" stroke="#0f3460" stroke-width="2" width="140" x="125" y="137.5" /><circle cx="135" cy="147.5" fill="none" r="4" stroke="#0f3460" stroke-width="1" /><line stroke="#0f3460" stroke-width="1" x1="135" x2="135" y1="151.5" y2="157.5" /><line stroke="#0f3460" stroke-width="1" x1="131" x2="139" y1="154.5" y2="154.5" /><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="195.0" y="151.5">Fill Section 1:</text><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="195.0" y="165.5">Personal Info,</text><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="195.0" y="179.5">Symptoms</text><line marker-end="url(#id46)" stroke="#6c757d" stroke-dasharray="none" stroke-width="1.5" x1="94" x2="125" y1="162.5" y2="162.5" /><polygon fill="#fff8e1" points="300,142.5 320,162.5 300,182.5 280,162.5" stroke="#f57c00" stroke-width="2" /><line stroke="#f57c00" stroke-width="2.5" x1="293" x2="307" y1="155.5" y2="169.5" /><line stroke="#f57c00" stroke-width="2.5" x1="307" x2="293" y1="155.5" y2="169.5" /><text fill="#6c757d" font-family="Helvetica, Arial, sans-serif" font-size="9" font-style="italic" text-anchor="middle" x="300" y="198.5">Valid?</text><line marker-end="url(#id47)" stroke="#6c757d" stroke-dasharray="none" stroke-width="1.5" x1="265" x2="280" y1="162.5" y2="162.5" /><polyline fill="none" marker-end="url(#id48)" points="300,142.5 300,112.5 195,112.5 195,137.5" stroke="#e94560" stroke-dasharray="none" stroke-width="1.5" /><text fill="#f57c00" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="600" text-anchor="start" x="252.5" y="135.0">No</text><rect fill="#f3e5f5" height="50" rx="8" ry="8" stroke="#7b1fa2" stroke-width="2" width="120" x="355" y="137.5" /><circle cx="367" cy="149.5" fill="none" r="5" stroke="#7b1fa2" stroke-width="1.5" /><circle cx="367" cy="149.5" fill="#7b1fa2" r="2" /><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="415.0" y="158.5">Submit Section</text><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="415.0" y="172.5">1</text><line marker-end="url(#id49)" stroke="#6c757d" stroke-dasharray="none" stroke-width="1.5" x1="320" x2="355" y1="162.5" y2="162.5" /><rect fill="#ffffff" height="14" opacity="0.9" rx="3" ry="3" width="50" x="312.5" y="152.5" /><text fill="#f57c00" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="600" text-anchor="middle" x="337.5" y="162.5">Yes</text><path d="M495,132.5 L540,132.5 L550,142.5 L550,192.5 L495,192.5 Z" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.5" /><path d="M540,132.5 L540,142.5 L550,142.5" fill="none" stroke="#1976d2" stroke-width="1.5" /><text fill="#1976d2" font-family="Helvetica, Arial, sans-serif" font-size="9" text-anchor="middle" x="522.5" y="206.5">Section 1</text><text fill="#1976d2" font-family="Helvetica, Arial, sans-serif" font-size="9" text-anchor="middle" x="522.5" y="218.5">Data</text><line marker-end="url(#id50)" stroke="#1976d2" stroke-dasharray="6,3" stroke-width="1.5" x1="475" x2="495" y1="162.5" y2="162.5" /><rect fill="#ffffff" height="50" rx="8" ry="8" stroke="#0f3460" stroke-width="2" width="140" x="775" y="137.5" /><circle cx="785" cy="147.5" fill="none" r="4" stroke="#0f3460" stroke-width="1" /><line stroke="#0f3460" stroke-width="1" x1="785" x2="785" y1="151.5" y2="157.5" /><line stroke="#0f3460" stroke-width="1" x1="781" x2="789" y1="154.5" y2="154.5" /><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="845.0" y="158.5">Receive Complete</text><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="845.0" y="172.5">Medical Record</text><circle cx="950" cy="162.5" fill="#ffebee" r="14" stroke="#e94560" stroke-width="3.5" /><rect fill="#e94560" height="7" opacity="0.7" rx="1" ry="1" width="7" x="946.5" y="159.0" /><line marker-end="url(#id51)" stroke="#6c757d" stroke-dasharray="none" stroke-width="1.5" x1="915" x2="936" y1="162.5" y2="162.5" /><rect fill="#ffffff" height="50" rx="8" ry="8" stroke="#0f3460" stroke-width="2" width="140" x="125" y="292.5" /><circle cx="135" cy="302.5" fill="none" r="4" stroke="#0f3460" stroke-width="1" /><line stroke="#0f3460" stroke-width="1" x1="135" x2="135" y1="306.5" y2="312.5" /><line stroke="#0f3460" stroke-width="1" x1="131" x2="139" y1="309.5" y2="309.5" /><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="195.0" y="313.5">Record Vital Signs</text><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="195.0" y="327.5">(BP, BMI, Sugar)</text><polyline fill="none" marker-end="url(#id52)" points="415,187.5 415,272.5 195,272.5 195,292.5" stroke="#0f3460" stroke-dasharray="6,3" stroke-width="1.5" /><rect fill="#f3e5f5" height="50" rx="8" ry="8" stroke="#7b1fa2" stroke-width="2" width="130" x="300" y="292.5" /><circle cx="312" cy="304.5" fill="none" r="5" stroke="#7b1fa2" stroke-width="1.5" /><circle cx="312" cy="304.5" fill="#7b1fa2" r="2" /><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="365.0" y="313.5">Store Vitals in</text><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="365.0" y="327.5">System</text><line marker-end="url(#id53)" stroke="#6c757d" stroke-dasharray="none" stroke-width="1.5" x1="265" x2="300" y1="317.5" y2="317.5" /><path d="M455,287.5 L500,287.5 L510,297.5 L510,347.5 L455,347.5 Z" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.5" /><path d="M500,287.5 L500,297.5 L510,297.5" fill="none" stroke="#1976d2" stroke-width="1.5" /><text fill="#1976d2" font-family="Helvetica, Arial, sans-serif" font-size="9" text-anchor="middle" x="482.5" y="361.5">Vital</text><text fill="#1976d2" font-family="Helvetica, Arial, sans-serif" font-size="9" text-anchor="middle" x="482.5" y="373.5">Signs Data</text><line marker-end="url(#id54)" stroke="#1976d2" stroke-dasharray="6,3" stroke-width="1.5" x1="430" x2="455" y1="317.5" y2="317.5" /><rect fill="#ffffff" height="55" rx="8" ry="8" stroke="#0f3460" stroke-width="2" width="150" x="125" y="490.0" /><circle cx="135" cy="500.0" fill="none" r="4" stroke="#0f3460" stroke-width="1" /><line stroke="#0f3460" stroke-width="1" x1="135" x2="135" y1="504.0" y2="510.0" /><line stroke="#0f3460" stroke-width="1" x1="131" x2="139" y1="507.0" y2="507.0" /><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="200.0" y="513.5">Review Section 1 +</text><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="200.0" y="527.5">Vital Signs Data</text><polyline fill="none" marker-end="url(#id55)" points="522,192.5 522,460.0 200,460.0 200,490.0" stroke="#1976d2" stroke-dasharray="6,3" stroke-width="1.5" /><polyline fill="none" marker-end="url(#id56)" points="482,347.5 482,450.0 225,450.0 225,490.0" stroke="#1976d2" stroke-dasharray="6,3" stroke-width="1.5" /><rect fill="#ffffff" height="50" rx="8" ry="8" stroke="#0f3460" stroke-width="2" width="130" x="310" y="495.0" /><circle cx="320" cy="505.0" fill="none" r="4" stroke="#0f3460" stroke-width="1" /><line stroke="#0f3460" stroke-width="1" x1="320" x2="320" y1="509.0" y2="515.0" /><line stroke="#0f3460" stroke-width="1" x1="316" x2="324" y1="512.0" y2="512.0" /><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="375.0" y="516.0">Conduct</text><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="375.0" y="530.0">Examination</text><line marker-end="url(#id57)" stroke="#6c757d" stroke-dasharray="none" stroke-width="1.5" x1="275" x2="310" y1="520.0" y2="520.0" /><rect fill="#ffffff" height="50" rx="8" ry="8" stroke="#0f3460" stroke-width="2" width="140" x="475" y="495.0" /><circle cx="485" cy="505.0" fill="none" r="4" stroke="#0f3460" stroke-width="1" /><line stroke="#0f3460" stroke-width="1" x1="485" x2="485" y1="509.0" y2="515.0" /><line stroke="#0f3460" stroke-width="1" x1="481" x2="489" y1="512.0" y2="512.0" /><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="545.0" y="509.0">Complete Section</text><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="545.0" y="523.0">2: Diagnosis &amp;</text><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="545.0" y="537.0">Notes</text><line marker-end="url(#id58)" stroke="#6c757d" stroke-dasharray="none" stroke-width="1.5" x1="440" x2="475" y1="520.0" y2="520.0" /><path d="M640,490.0 L685,490.0 L695,500.0 L695,550.0 L640,550.0 Z" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.5" /><path d="M685,490.0 L685,500.0 L695,500.0" fill="none" stroke="#1976d2" stroke-width="1.5" /><text fill="#1976d2" font-family="Helvetica, Arial, sans-serif" font-size="9" text-anchor="middle" x="667.5" y="564.0">Section 2</text><text fill="#1976d2" font-family="Helvetica, Arial, sans-serif" font-size="9" text-anchor="middle" x="667.5" y="576.0">Data</text><line marker-end="url(#id59)" stroke="#1976d2" stroke-dasharray="6,3" stroke-width="1.5" x1="615" x2="640" y1="520.0" y2="520.0" /><rect fill="#f3e5f5" height="50" rx="8" ry="8" stroke="#7b1fa2" stroke-width="2" width="140" x="735" y="495.0" /><circle cx="747" cy="507.0" fill="none" r="5" stroke="#7b1fa2" stroke-width="1.5" /><circle cx="747" cy="507.0" fill="#7b1fa2" r="2" /><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="805.0" y="516.0">Compile Complete</text><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="805.0" y="530.0">Medical Record</text><line marker-end="url(#id60)" stroke="#6c757d" stroke-dasharray="none" stroke-width="1.5" x1="695" x2="735" y1="520.0" y2="520.0" /><polyline fill="none" marker-end="url(#id61)" points="550,192.5 575,212.5 575,580.0 805,580.0 805,545.0" stroke="#1976d2" stroke-dasharray="6,3" stroke-width="1.5" /><text fill="#f57c00" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="600" text-anchor="start" x="682.5" y="363.75">Section 1</text><polyline fill="none" marker-end="url(#id62)" points="510,347.5 535,367.5 535,590.0 835,590.0 835,545.0" stroke="#1976d2" stroke-dasharray="6,3" stroke-width="1.5" /><text fill="#f57c00" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="600" text-anchor="start" x="677.5" y="441.25">Vitals</text><rect fill="#f3e5f5" height="50" rx="8" ry="8" stroke="#7b1fa2" stroke-width="2" width="130" x="910" y="495.0" /><circle cx="922" cy="507.0" fill="none" r="5" stroke="#7b1fa2" stroke-width="1.5" /><circle cx="922" cy="507.0" fill="#7b1fa2" r="2" /><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="975.0" y="516.0">Generate</text><text fill="#1a1a2e" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="975.0" y="530.0">Prescription</text><line marker-end="url(#id63)" stroke="#6c757d" stroke-dasharray="none" stroke-width="1.5" x1="875" x2="910" y1="520.0" y2="520.0" /><path d="M775,800.0 L825,800.0 L835,810.0 L835,850.0 L775,850.0 Z" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.5" /><path d="M825,800.0 L825,810.0 L835,810.0" fill="none" stroke="#1976d2" stroke-width="1.5" /><text fill="#1976d2" font-family="Helvetica, Arial, sans-serif" font-size="9" text-anchor="middle" x="805.0" y="864.0">Complete</text><text fill="#1976d2" font-family="Helvetica, Arial, sans-serif" font-size="9" text-anchor="middle" x="805.0" y="876.0">Medical</text><text fill="#1976d2" font-family="Helvetica, Arial, sans-serif" font-size="9" text-anchor="middle" x="805.0" y="888.0">Record</text><line marker-end="url(#id64)" stroke="#1976d2" stroke-dasharray="6,3" stroke-width="1.5" x1="805" x2="805" y1="495.0" y2="850.0" /><polyline fill="none" marker-end="url(#id65)" points="975,495.0 975,222.5 845,222.5 845,187.5" stroke="#0f3460" stroke-dasharray="6,3" stroke-width="1.5" /><path d="M930,560.0 L970,560.0 L980,570.0 L980,610.0 L930,610.0 Z" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.5" /><path d="M970,560.0 L970,570.0 L980,570.0" fill="none" stroke="#1976d2" stroke-width="1.5" /><text fill="#1976d2" font-family="Helvetica, Arial, sans-serif" font-size="9" text-anchor="middle" x="955.0" y="624.0">Prescription</text><polyline fill="none" marker-end="url(#id66)" points="975,545.0 955,560.0" stroke="#1976d2" stroke-dasharray="6,3" stroke-width="1.5" /></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   height="600px"
+   version="1.1"
+   viewBox="0 0 1200 600"
+   width="1200px"
+   id="svg72"
+   sodipodi:docname="bpmn-dataflow.svg"
+   inkscape:version="1.4.3 (0d15f75042, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview72"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="1.28"
+     inkscape:cx="709.76563"
+     inkscape:cy="505.46875"
+     inkscape:window-width="1325"
+     inkscape:window-height="1070"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg72" />
+  <defs
+     id="defs21">
+    <marker
+       id="id46"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#6c757d"
+         points="0,0 6,3 0,6"
+         id="polygon1" />
+    </marker>
+    <marker
+       id="id47"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#6c757d"
+         points="0,0 6,3 0,6"
+         id="polygon2" />
+    </marker>
+    <marker
+       id="id48"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#e94560"
+         points="0,0 6,3 0,6"
+         id="polygon3" />
+    </marker>
+    <marker
+       id="id49"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#6c757d"
+         points="0,0 6,3 0,6"
+         id="polygon4" />
+    </marker>
+    <marker
+       id="id50"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#1976d2"
+         points="0,0 6,3 0,6"
+         id="polygon5" />
+    </marker>
+    <marker
+       id="id51"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#6c757d"
+         points="0,0 6,3 0,6"
+         id="polygon6" />
+    </marker>
+    <marker
+       id="id52"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#0f3460"
+         points="0,0 6,3 0,6"
+         id="polygon7" />
+    </marker>
+    <marker
+       id="id53"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#6c757d"
+         points="0,0 6,3 0,6"
+         id="polygon8" />
+    </marker>
+    <marker
+       id="id54"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#1976d2"
+         points="0,0 6,3 0,6"
+         id="polygon9" />
+    </marker>
+    <marker
+       id="id55"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#1976d2"
+         points="0,0 6,3 0,6"
+         id="polygon10" />
+    </marker>
+    <marker
+       id="id56"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#1976d2"
+         points="0,0 6,3 0,6"
+         id="polygon11" />
+    </marker>
+    <marker
+       id="id57"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#6c757d"
+         points="0,0 6,3 0,6"
+         id="polygon12" />
+    </marker>
+    <marker
+       id="id58"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#6c757d"
+         points="0,0 6,3 0,6"
+         id="polygon13" />
+    </marker>
+    <marker
+       id="id59"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#1976d2"
+         points="0,0 6,3 0,6"
+         id="polygon14" />
+    </marker>
+    <marker
+       id="id60"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#6c757d"
+         points="0,0 6,3 0,6"
+         id="polygon15" />
+    </marker>
+    <marker
+       id="id61"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#1976d2"
+         points="0,0 6,3 0,6"
+         id="polygon16" />
+    </marker>
+    <marker
+       id="id62"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#1976d2"
+         points="0,0 6,3 0,6"
+         id="polygon17" />
+    </marker>
+    <marker
+       id="id63"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#6c757d"
+         points="0,0 6,3 0,6"
+         id="polygon18" />
+    </marker>
+    <marker
+       id="id64"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#1976d2"
+         points="0,0 6,3 0,6"
+         id="polygon19" />
+    </marker>
+    <marker
+       id="id65"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#0f3460"
+         points="0,0 6,3 0,6"
+         id="polygon20" />
+    </marker>
+    <marker
+       id="id66"
+       markerHeight="6"
+       markerUnits="strokeWidth"
+       markerWidth="8"
+       orient="auto"
+       refX="6"
+       refY="3">
+      <polygon
+         fill="#1976d2"
+         points="0,0 6,3 0,6"
+         id="polygon21" />
+    </marker>
+  </defs>
+  <rect
+     fill="#ffffff"
+     height="600"
+     width="1200"
+     x="0"
+     y="0"
+     id="rect21" />
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="16"
+     font-weight="bold"
+     text-anchor="middle"
+     x="600.0"
+     y="28"
+     id="text21">BPMN Diagram 3: Form Processing &amp; Data Flow</text>
+  <line
+     stroke="#e94560"
+     stroke-width="1.5"
+     x1="150"
+     x2="1050"
+     y1="38"
+     y2="38"
+     id="line21" />
+  <rect
+     fill="#0f3460"
+     height="30"
+     rx="4"
+     ry="4"
+     width="1180"
+     x="10"
+     y="50"
+     id="rect22" />
+  <text
+     fill="#ffffff"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="14"
+     font-weight="bold"
+     text-anchor="middle"
+     x="600.0"
+     y="70"
+     id="text22">CVD Clinic — Form Processing &amp; Data Flow</text>
+  <rect
+     fill="#eef2f7"
+     height="155"
+     opacity="0.5"
+     stroke="#0f3460"
+     stroke-width="0.5"
+     width="1180"
+     x="10"
+     y="85"
+     id="rect23" />
+  <rect
+     fill="#0f3460"
+     height="155"
+     opacity="0.12"
+     stroke="none"
+     width="35"
+     x="10"
+     y="85"
+     id="rect24" />
+  <line
+     opacity="0.4"
+     stroke="#0f3460"
+     stroke-width="0.5"
+     x1="45"
+     x2="45"
+     y1="85"
+     y2="240"
+     id="line24" />
+  <text
+     fill="#0f3460"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="13"
+     font-weight="bold"
+     text-anchor="middle"
+     transform="rotate(-90, 27.5, 162.5)"
+     x="27.5"
+     y="162.5"
+     id="text24">Patient</text>
+  <rect
+     fill="#f7f0ee"
+     height="155"
+     opacity="0.5"
+     stroke="#0f3460"
+     stroke-width="0.5"
+     width="1180"
+     x="10"
+     y="240"
+     id="rect25" />
+  <rect
+     fill="#0f3460"
+     height="155"
+     opacity="0.12"
+     stroke="none"
+     width="35"
+     x="10"
+     y="240"
+     id="rect26" />
+  <line
+     opacity="0.4"
+     stroke="#0f3460"
+     stroke-width="0.5"
+     x1="45"
+     x2="45"
+     y1="240"
+     y2="395"
+     id="line26" />
+  <text
+     fill="#0f3460"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="13"
+     font-weight="bold"
+     text-anchor="middle"
+     transform="rotate(-90, 27.5, 317.5)"
+     x="27.5"
+     y="317.5"
+     id="text26">Nurse</text>
+  <rect
+     fill="#eef7f0"
+     height="200.05272"
+     opacity="0.5"
+     stroke="#0f3460"
+     stroke-width="0.447283"
+     width="1180.0527"
+     x="9.9736414"
+     y="394.97363"
+     id="rect27" />
+  <rect
+     fill="#0f3460"
+     height="200.05272"
+     opacity="0.12"
+     stroke="none"
+     width="35.001564"
+     x="9.9736414"
+     y="394.97363"
+     id="rect28"
+     style="stroke-width:0.894565" />
+  <line
+     opacity="0.4"
+     stroke="#0f3460"
+     stroke-width="0.5"
+     x1="45"
+     x2="45"
+     y1="395"
+     y2="645"
+     id="line28" />
+  <text
+     fill="#0f3460"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="13"
+     font-weight="bold"
+     text-anchor="middle"
+     transform="rotate(-90, 27.5, 520.0)"
+     x="27.5"
+     y="520.0"
+     id="text28">Consultant</text>
+  <circle
+     cx="80"
+     cy="162.5"
+     fill="#e8f5e9"
+     r="14"
+     stroke="#388e3c"
+     stroke-width="2.5"
+     id="circle28" />
+  <polygon
+     fill="#388e3c"
+     opacity="0.6"
+     points="76,156.5 76,168.5 86,162.5"
+     id="polygon28" />
+  <rect
+     fill="#ffffff"
+     height="50"
+     rx="8"
+     ry="8"
+     stroke="#0f3460"
+     stroke-width="2"
+     width="140"
+     x="125"
+     y="137.5"
+     id="rect29" />
+  <circle
+     cx="135"
+     cy="147.5"
+     fill="none"
+     r="4"
+     stroke="#0f3460"
+     stroke-width="1"
+     id="circle29" />
+  <line
+     stroke="#0f3460"
+     stroke-width="1"
+     x1="135"
+     x2="135"
+     y1="151.5"
+     y2="157.5"
+     id="line29" />
+  <line
+     stroke="#0f3460"
+     stroke-width="1"
+     x1="131"
+     x2="139"
+     y1="154.5"
+     y2="154.5"
+     id="line30" />
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="195.0"
+     y="151.5"
+     id="text30">Fill Section 1:</text>
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="195.0"
+     y="165.5"
+     id="text31">Personal Info,</text>
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="195.0"
+     y="179.5"
+     id="text32">Symptoms</text>
+  <line
+     marker-end="url(#id46)"
+     stroke="#6c757d"
+     stroke-dasharray="none"
+     stroke-width="1.5"
+     x1="94"
+     x2="125"
+     y1="162.5"
+     y2="162.5"
+     id="line32" />
+  <polygon
+     fill="#fff8e1"
+     points="300,142.5 320,162.5 300,182.5 280,162.5"
+     stroke="#f57c00"
+     stroke-width="2"
+     id="polygon32" />
+  <line
+     stroke="#f57c00"
+     stroke-width="2.5"
+     x1="293"
+     x2="307"
+     y1="155.5"
+     y2="169.5"
+     id="line33" />
+  <line
+     stroke="#f57c00"
+     stroke-width="2.5"
+     x1="307"
+     x2="293"
+     y1="155.5"
+     y2="169.5"
+     id="line34" />
+  <text
+     fill="#6c757d"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="9"
+     font-style="italic"
+     text-anchor="middle"
+     x="300"
+     y="198.5"
+     id="text34">Valid?</text>
+  <line
+     marker-end="url(#id47)"
+     stroke="#6c757d"
+     stroke-dasharray="none"
+     stroke-width="1.5"
+     x1="265"
+     x2="280"
+     y1="162.5"
+     y2="162.5"
+     id="line35" />
+  <polyline
+     fill="none"
+     marker-end="url(#id48)"
+     points="300,142.5 300,112.5 195,112.5 195,137.5"
+     stroke="#e94560"
+     stroke-dasharray="none"
+     stroke-width="1.5"
+     id="polyline35" />
+  <text
+     fill="#f57c00"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="9px"
+     font-weight="600"
+     text-anchor="start"
+     x="282.88348"
+     y="126.16116"
+     id="text35">No</text>
+  <rect
+     fill="#f3e5f5"
+     height="50"
+     rx="8"
+     ry="8"
+     stroke="#7b1fa2"
+     stroke-width="2"
+     width="120"
+     x="355"
+     y="137.5"
+     id="rect35" />
+  <circle
+     cx="367"
+     cy="149.5"
+     fill="none"
+     r="5"
+     stroke="#7b1fa2"
+     stroke-width="1.5"
+     id="circle35" />
+  <circle
+     cx="367"
+     cy="149.5"
+     fill="#7b1fa2"
+     r="2"
+     id="circle36" />
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="415.0"
+     y="158.5"
+     id="text36">Submit Section</text>
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="415.0"
+     y="172.5"
+     id="text37">1</text>
+  <line
+     marker-end="url(#id49)"
+     stroke="#6c757d"
+     stroke-dasharray="none"
+     stroke-width="1.5"
+     x1="320"
+     x2="355"
+     y1="162.5"
+     y2="162.5"
+     id="line37" />
+  <text
+     fill="#f57c00"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="9px"
+     font-weight="600"
+     text-anchor="middle"
+     x="334.46164"
+     y="158.08058"
+     id="text38">Yes</text>
+  <path
+     d="M495,132.5 L540,132.5 L550,142.5 L550,192.5 L495,192.5 Z"
+     fill="#e3f2fd"
+     stroke="#1976d2"
+     stroke-width="1.5"
+     id="path38" />
+  <path
+     d="M540,132.5 L540,142.5 L550,142.5"
+     fill="none"
+     stroke="#1976d2"
+     stroke-width="1.5"
+     id="path39" />
+  <text
+     fill="#1976d2"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="9px"
+     text-anchor="middle"
+     x="520.84271"
+     y="111.48253"
+     id="text39">Section 1</text>
+  <text
+     fill="#1976d2"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="9px"
+     text-anchor="middle"
+     x="520.84271"
+     y="123.48253"
+     id="text40">Data</text>
+  <polyline
+     fill="none"
+     marker-end="url(#id61)"
+     points="550,192.5 575,212.5 575,445.0 800,445.0 800,495.0"
+     stroke="#1976d2"
+     stroke-dasharray="6, 3"
+     stroke-width="1.5"
+     id="polyline64"
+     style="display:inline" />
+  <line
+     marker-end="url(#id50)"
+     stroke="#1976d2"
+     stroke-dasharray="6,3"
+     stroke-width="1.5"
+     x1="475"
+     x2="495"
+     y1="162.5"
+     y2="162.5"
+     id="line40" />
+  <polyline
+     fill="none"
+     marker-end="url(#id62)"
+     points="510,347.5 535,367.5 535,465.0 785,465.0 785,495.0"
+     stroke="#1976d2"
+     stroke-dasharray="6, 3"
+     stroke-width="1.5"
+     id="polyline65"
+     style="display:inline" />
+  <rect
+     fill="#ffffff"
+     height="50"
+     rx="8"
+     ry="8"
+     stroke="#0f3460"
+     stroke-width="2"
+     width="140"
+     x="775"
+     y="137.5"
+     id="rect40" />
+  <circle
+     cx="785"
+     cy="147.5"
+     fill="none"
+     r="4"
+     stroke="#0f3460"
+     stroke-width="1"
+     id="circle40" />
+  <line
+     stroke="#0f3460"
+     stroke-width="1"
+     x1="785"
+     x2="785"
+     y1="151.5"
+     y2="157.5"
+     id="line41" />
+  <line
+     stroke="#0f3460"
+     stroke-width="1"
+     x1="781"
+     x2="789"
+     y1="154.5"
+     y2="154.5"
+     id="line42" />
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="845.0"
+     y="158.5"
+     id="text42">Receive Complete</text>
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="845.0"
+     y="172.5"
+     id="text43">Medical Record</text>
+  <circle
+     cx="950"
+     cy="162.5"
+     fill="#ffebee"
+     r="14"
+     stroke="#e94560"
+     stroke-width="3.5"
+     id="circle43" />
+  <rect
+     fill="#e94560"
+     height="7"
+     opacity="0.7"
+     rx="1"
+     ry="1"
+     width="7"
+     x="946.5"
+     y="159.0"
+     id="rect43" />
+  <line
+     marker-end="url(#id51)"
+     stroke="#6c757d"
+     stroke-dasharray="none"
+     stroke-width="1.5"
+     x1="915"
+     x2="936"
+     y1="162.5"
+     y2="162.5"
+     id="line43" />
+  <rect
+     fill="#ffffff"
+     height="50"
+     rx="8"
+     ry="8"
+     stroke="#0f3460"
+     stroke-width="2"
+     width="140"
+     x="125"
+     y="292.5"
+     id="rect44" />
+  <circle
+     cx="135"
+     cy="302.5"
+     fill="none"
+     r="4"
+     stroke="#0f3460"
+     stroke-width="1"
+     id="circle44" />
+  <line
+     stroke="#0f3460"
+     stroke-width="1"
+     x1="135"
+     x2="135"
+     y1="306.5"
+     y2="312.5"
+     id="line44" />
+  <line
+     stroke="#0f3460"
+     stroke-width="1"
+     x1="131"
+     x2="139"
+     y1="309.5"
+     y2="309.5"
+     id="line45" />
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="195.0"
+     y="313.5"
+     id="text45">Record Vital Signs</text>
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="195.0"
+     y="327.5"
+     id="text46">(BP, BMI, Sugar)</text>
+  <polyline
+     fill="none"
+     marker-end="url(#id52)"
+     points="415,187.5 415,272.5 195,272.5 195,292.5"
+     stroke="#0f3460"
+     stroke-dasharray="6,3"
+     stroke-width="1.5"
+     id="polyline46" />
+  <rect
+     fill="#f3e5f5"
+     height="50"
+     rx="8"
+     ry="8"
+     stroke="#7b1fa2"
+     stroke-width="2"
+     width="130"
+     x="300"
+     y="292.5"
+     id="rect46" />
+  <circle
+     cx="312"
+     cy="304.5"
+     fill="none"
+     r="5"
+     stroke="#7b1fa2"
+     stroke-width="1.5"
+     id="circle46" />
+  <circle
+     cx="312"
+     cy="304.5"
+     fill="#7b1fa2"
+     r="2"
+     id="circle47" />
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="365.0"
+     y="313.5"
+     id="text47">Store Vitals in</text>
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="365.0"
+     y="327.5"
+     id="text48">System</text>
+  <line
+     marker-end="url(#id53)"
+     stroke="#6c757d"
+     stroke-dasharray="none"
+     stroke-width="1.5"
+     x1="265"
+     x2="300"
+     y1="317.5"
+     y2="317.5"
+     id="line48" />
+  <path
+     d="M455,287.5 L500,287.5 L510,297.5 L510,347.5 L455,347.5 Z"
+     fill="#e3f2fd"
+     stroke="#1976d2"
+     stroke-width="1.5"
+     id="path48" />
+  <path
+     d="M500,287.5 L500,297.5 L510,297.5"
+     fill="none"
+     stroke="#1976d2"
+     stroke-width="1.5"
+     id="path49" />
+  <text
+     fill="#1976d2"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="9px"
+     text-anchor="middle"
+     x="482.5"
+     y="265.5"
+     id="text49">Vital</text>
+  <text
+     fill="#1976d2"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="9px"
+     text-anchor="middle"
+     x="482.5"
+     y="277.5"
+     id="text50">Signs Data</text>
+  <line
+     marker-end="url(#id54)"
+     stroke="#1976d2"
+     stroke-dasharray="6,3"
+     stroke-width="1.5"
+     x1="430"
+     x2="455"
+     y1="317.5"
+     y2="317.5"
+     id="line50" />
+  <rect
+     fill="#ffffff"
+     height="55"
+     rx="8"
+     ry="8"
+     stroke="#0f3460"
+     stroke-width="2"
+     width="150"
+     x="125"
+     y="490.0"
+     id="rect50" />
+  <circle
+     cx="135"
+     cy="500.0"
+     fill="none"
+     r="4"
+     stroke="#0f3460"
+     stroke-width="1"
+     id="circle50" />
+  <line
+     stroke="#0f3460"
+     stroke-width="1"
+     x1="135"
+     x2="135"
+     y1="504.0"
+     y2="510.0"
+     id="line51" />
+  <line
+     stroke="#0f3460"
+     stroke-width="1"
+     x1="131"
+     x2="139"
+     y1="507.0"
+     y2="507.0"
+     id="line52" />
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="200.0"
+     y="513.5"
+     id="text52">Review Section 1 +</text>
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="200.0"
+     y="527.5"
+     id="text53">Vital Signs Data</text>
+  <polyline
+     fill="none"
+     marker-end="url(#id55)"
+     points="522,192.5 522,460.0 200,460.0 200,490.0"
+     stroke="#1976d2"
+     stroke-dasharray="6,3"
+     stroke-width="1.5"
+     id="polyline53" />
+  <polyline
+     fill="none"
+     marker-end="url(#id56)"
+     points="482,347.5 482,450.0 225,450.0 225,490.0"
+     stroke="#1976d2"
+     stroke-dasharray="6,3"
+     stroke-width="1.5"
+     id="polyline54" />
+  <rect
+     fill="#ffffff"
+     height="50"
+     rx="8"
+     ry="8"
+     stroke="#0f3460"
+     stroke-width="2"
+     width="130"
+     x="310"
+     y="495.0"
+     id="rect54" />
+  <circle
+     cx="320"
+     cy="505.0"
+     fill="none"
+     r="4"
+     stroke="#0f3460"
+     stroke-width="1"
+     id="circle54" />
+  <line
+     stroke="#0f3460"
+     stroke-width="1"
+     x1="320"
+     x2="320"
+     y1="509.0"
+     y2="515.0"
+     id="line54" />
+  <line
+     stroke="#0f3460"
+     stroke-width="1"
+     x1="316"
+     x2="324"
+     y1="512.0"
+     y2="512.0"
+     id="line55" />
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="375.0"
+     y="516.0"
+     id="text55">Conduct</text>
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="375.0"
+     y="530.0"
+     id="text56">Examination</text>
+  <line
+     marker-end="url(#id57)"
+     stroke="#6c757d"
+     stroke-dasharray="none"
+     stroke-width="1.5"
+     x1="275"
+     x2="310"
+     y1="520.0"
+     y2="520.0"
+     id="line56" />
+  <rect
+     fill="#ffffff"
+     height="50"
+     rx="8"
+     ry="8"
+     stroke="#0f3460"
+     stroke-width="2"
+     width="140"
+     x="475"
+     y="495.0"
+     id="rect56" />
+  <circle
+     cx="485"
+     cy="505.0"
+     fill="none"
+     r="4"
+     stroke="#0f3460"
+     stroke-width="1"
+     id="circle56" />
+  <line
+     stroke="#0f3460"
+     stroke-width="1"
+     x1="485"
+     x2="485"
+     y1="509.0"
+     y2="515.0"
+     id="line57" />
+  <line
+     stroke="#0f3460"
+     stroke-width="1"
+     x1="481"
+     x2="489"
+     y1="512.0"
+     y2="512.0"
+     id="line58" />
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="545.0"
+     y="509.0"
+     id="text58">Complete Section</text>
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="545.0"
+     y="523.0"
+     id="text59">2: Diagnosis &amp;</text>
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="545.0"
+     y="537.0"
+     id="text60">Notes</text>
+  <line
+     marker-end="url(#id58)"
+     stroke="#6c757d"
+     stroke-dasharray="none"
+     stroke-width="1.5"
+     x1="440"
+     x2="475"
+     y1="520.0"
+     y2="520.0"
+     id="line60" />
+  <path
+     d="M640,490.0 L685,490.0 L695,500.0 L695,550.0 L640,550.0 Z"
+     fill="#e3f2fd"
+     stroke="#1976d2"
+     stroke-width="1.5"
+     id="path60" />
+  <path
+     d="M685,490.0 L685,500.0 L695,500.0"
+     fill="none"
+     stroke="#1976d2"
+     stroke-width="1.5"
+     id="path61" />
+  <text
+     fill="#1976d2"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="9"
+     text-anchor="middle"
+     x="667.5"
+     y="564.0"
+     id="text61">Section 2</text>
+  <text
+     fill="#1976d2"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="9"
+     text-anchor="middle"
+     x="667.5"
+     y="576.0"
+     id="text62">Data</text>
+  <line
+     marker-end="url(#id59)"
+     stroke="#1976d2"
+     stroke-dasharray="6,3"
+     stroke-width="1.5"
+     x1="615"
+     x2="640"
+     y1="520.0"
+     y2="520.0"
+     id="line62" />
+  <rect
+     fill="#f3e5f5"
+     height="50"
+     rx="8"
+     ry="8"
+     stroke="#7b1fa2"
+     stroke-width="2"
+     width="140"
+     x="735"
+     y="495.0"
+     id="rect62" />
+  <circle
+     cx="747"
+     cy="507.0"
+     fill="none"
+     r="5"
+     stroke="#7b1fa2"
+     stroke-width="1.5"
+     id="circle62" />
+  <circle
+     cx="747"
+     cy="507.0"
+     fill="#7b1fa2"
+     r="2"
+     id="circle63" />
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="805.0"
+     y="516.0"
+     id="text63">Compile Complete</text>
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="805.0"
+     y="530.0"
+     id="text64">Medical Record</text>
+  <line
+     marker-end="url(#id60)"
+     stroke="#6c757d"
+     stroke-dasharray="none"
+     stroke-width="1.5"
+     x1="695"
+     x2="735"
+     y1="520.0"
+     y2="520.0"
+     id="line64" />
+  <text
+     fill="#f57c00"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="9"
+     font-weight="600"
+     text-anchor="start"
+     x="682.5"
+     y="363.75"
+     id="text65">Section 1</text>
+  <text
+     fill="#f57c00"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="9"
+     font-weight="600"
+     text-anchor="start"
+     x="677.5"
+     y="441.25"
+     id="text66">Vitals</text>
+  <rect
+     fill="#f3e5f5"
+     height="50"
+     rx="8"
+     ry="8"
+     stroke="#7b1fa2"
+     stroke-width="2"
+     width="130"
+     x="910"
+     y="495.0"
+     id="rect66" />
+  <circle
+     cx="922"
+     cy="507.0"
+     fill="none"
+     r="5"
+     stroke="#7b1fa2"
+     stroke-width="1.5"
+     id="circle66" />
+  <circle
+     cx="922"
+     cy="507.0"
+     fill="#7b1fa2"
+     r="2"
+     id="circle67" />
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="975.0"
+     y="516.0"
+     id="text67">Generate</text>
+  <text
+     fill="#1a1a2e"
+     font-family="Helvetica, Arial, sans-serif"
+     font-size="11"
+     font-weight="500"
+     text-anchor="middle"
+     x="975.0"
+     y="530.0"
+     id="text68">Prescription</text>
+  <line
+     marker-end="url(#id63)"
+     stroke="#6c757d"
+     stroke-dasharray="none"
+     stroke-width="1.5"
+     x1="875"
+     x2="910"
+     y1="520.0"
+     y2="520.0"
+     id="line68" />
+  <g
+     id="g77"
+     transform="translate(0,-94)">
+    <text
+       fill="#1976d2"
+       font-family="Helvetica, Arial, sans-serif"
+       font-size="9px"
+       text-anchor="middle"
+       x="812.53491"
+       y="347.88943"
+       id="text69">Complete</text>
+    <text
+       fill="#1976d2"
+       font-family="Helvetica, Arial, sans-serif"
+       font-size="9px"
+       text-anchor="middle"
+       x="812.53491"
+       y="359.88943"
+       id="text70">Medical</text>
+    <text
+       fill="#1976d2"
+       font-family="Helvetica, Arial, sans-serif"
+       font-size="9px"
+       text-anchor="middle"
+       x="812.53491"
+       y="371.88943"
+       id="text71">Record</text>
+  </g>
+  <g
+     id="g76">
+    <path
+       d="m 782.53489,283.88945 h 50 l 10,10 v 40 h -60 z"
+       fill="#e3f2fd"
+       stroke="#1976d2"
+       stroke-width="1.5"
+       id="path68" />
+    <path
+       d="m 832.53489,283.88945 v 10 h 10"
+       fill="none"
+       stroke="#1976d2"
+       stroke-width="1.5"
+       id="path69" />
+  </g>
+  <line
+     marker-end="url(#id64)"
+     stroke="#1976d2"
+     stroke-dasharray="6, 3"
+     stroke-width="1.5"
+     x1="811.45892"
+     x2="811.45892"
+     y1="493.93054"
+     y2="334.93051"
+     id="line71" />
+  <polyline
+     fill="none"
+     marker-end="url(#id65)"
+     points="975,495.0 975,222.5 845,222.5 845,187.5"
+     stroke="#0f3460"
+     stroke-dasharray="6,3"
+     stroke-width="1.5"
+     id="polyline71" />
+  <g
+     id="g73"
+     transform="translate(143.63107,-72.920387)">
+    <path
+       d="m 930,560 h 40 l 10,10 v 40 h -50 z"
+       fill="#e3f2fd"
+       stroke="#1976d2"
+       stroke-width="1.5"
+       id="path71" />
+    <path
+       d="m 970,560 v 10 h 10"
+       fill="none"
+       stroke="#1976d2"
+       stroke-width="1.5"
+       id="path72" />
+    <text
+       fill="#1976d2"
+       font-family="Helvetica, Arial, sans-serif"
+       font-size="9px"
+       text-anchor="middle"
+       x="955"
+       y="624"
+       id="text72">Prescription</text>
+  </g>
+  <polyline
+     fill="none"
+     marker-end="url(#id66)"
+     points="975,545.0 955,560.0"
+     stroke="#1976d2"
+     stroke-dasharray="6, 3"
+     stroke-width="1.5"
+     id="polyline72"
+     transform="matrix(-1.0598704,-0.58869847,0.77709642,-0.80291721,1650.8085,1528.6357)" />
+</svg>

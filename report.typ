@@ -16,7 +16,7 @@
 #let white     = rgb("#ffffff")
 
 // Group member details — EDIT THESE
-#let module-code  = "CN6001 / CN5023"
+#let module-code  = "CN6001"
 #let module-title = "Enterprise Architecture and Cloud Computing"
 #let report-title = "Design and Implementation of a Web-Based Portal\nfor a CVD Clinic using Enterprise Cloud Architecture CASE Tools"
 #let case-study   = "Case Study 4: Patients' Record for a CVD Clinic"
@@ -354,7 +354,7 @@ The scope of this coursework encompasses the full enterprise architecture lifecy
 // SECTION 2: BUSINESS PROCESS MODEL — BPMN (10 Marks)
 // ============================================================================
 
-= Business Process Model — BPMN <bpmn>
+= Business Process Model (BPMN) <bpmn>
 
 This section presents the Business Process Model and Notation (BPMN) diagrams created using *Bonita* software. Three process models have been developed to capture the key workflows of the CVD Clinic system. Each diagram identifies the participants (lanes/pools), tasks, gateways, and data objects involved.
 
@@ -364,14 +364,14 @@ The first BPMN diagram models the end-to-end patient admission process, from arr
 
 #figure(
   image("images/bpmn-admission.svg", width: 100%),
-  caption: [Figure 1: BPMN Diagram 1 — Patient Admission and Form Completion Process (Enhanced).],
+  caption: [BPMN Diagram 1 — Patient Admission and Form Completion Process .],
 ) <fig-bpmn1>
 
 *Process Description:*
 
-The enhanced BPMN model captures the end-to-end admission journey across four lanes: *Patient*, *Nurse/Admin Staff*, *Consultant*, and *System*. The process starts with patient arrival and portal login. A critical **correction loop** ensures that if the patient submits an incomplete Section 1, the system requests corrections and routes the flow back to the patient.
+The enhanced BPMN model captures the end-to-end admission journey across four lanes: *Patient*, *Nurse/Admin Staff*, *Consultant*, and *System*. The process starts with patient arrival and portal login. A critical *correction loop* ensures that if the patient submits an incomplete Section 1, the system requests corrections and routes the flow back to the patient.
 
-Following validation, the system triggers automated **service tasks** to auto-save the form and notify staff. Nursing staff then verify identity and perform **parallel vital signs checks** (simultaneous recording of BP, BMI, Blood Sugar, and Heart Rate) before recording them in the system. The consultant then reviews the unified data, conducts the examination, and selects a diagnosis (Hypertension, Hypotension, or Diabetes) which branches into specific management plans. The process concludes with automated prescription generation, an optional follow-up scheduling step, and a final record save by the system.
+Following validation, the system triggers automated *service tasks* to auto-save the form and notify staff. Nursing staff then verify identity and perform *parallel vital signs checks* (simultaneous recording of BP, BMI, Blood Sugar, and Heart Rate) before recording them in the system. The consultant then reviews the unified data, conducts the examination, and selects a diagnosis (Hypertension, Hypotension, or Diabetes) which branches into specific management plans. The process concludes with automated prescription generation, an optional follow-up scheduling step, and a final record save by the system.
 
 *Key BPMN Elements Used:*
 - *Correction Loop* — Gateways and flows to ensure data integrity in Section 1.
@@ -386,12 +386,12 @@ The second BPMN diagram captures the appointment scheduling workflow involving t
 
 #figure(
   image("images/bpmn-booking.svg", width: 100%),
-  caption: [Figure 2: BPMN Diagram 2 — Appointment Booking Process (Enhanced).],
+  caption: [BPMN Diagram 2 — Appointment Booking Process .],
 ) <fig-bpmn2>
 
 *Process Description:*
 
-This diagram clearly separates *Patient* and *Admin Staff* responsibilities. The patient requests an appointment online; if the date is unavailable, an **alternative date loop** returns the flow to the selection step. Once the admin blocks the slot and confirms, the system sends an **Appointment Confirmation** message and a **Pre-Visit Form Link** as explicit data artifacts. This process directly triggers the patient journey in Diagram 1.
+This diagram clearly separates *Patient* and *Admin Staff* responsibilities. The patient requests an appointment online; if the date is unavailable, an *alternative date loop* returns the flow to the selection step. Once the admin blocks the slot and confirms, the system sends an *Appointment Confirmation* message and a *Pre-Visit Form Link* as explicit data artifacts. This process directly triggers the patient journey in Diagram 1.
 
 == Diagram 3: Form Processing and Data Flow
 
@@ -399,12 +399,12 @@ The third BPMN diagram illustrates how data flows between Section 1 (patient-com
 
 #figure(
   image("images/bpmn-dataflow.svg", width: 100%),
-  caption: [Figure 3: BPMN Diagram 3 — Form Processing and Data Flow (Enhanced).],
+  caption: [BPMN Diagram 3 — Form Processing and Data Flow .],
 ) <fig-bpmn3>
 
 *Process Description:*
 
-Diagram 3 models the data lifecycle across the *Patient*, *Nurse*, *Consultant*, and *System* lanes. It highlights the **System lane** as the automated compiler of the medical record. Section 1 data, Vital Signs data, and Section 2 data are linked via associations to an automated **Compile Complete Medical Record** service task. This unified data then triggers the automated prescription generation service, completing the digital transformation of the paper-based form.
+Diagram 3 models the data lifecycle across the *Patient*, *Nurse*, *Consultant*, and *System* lanes. It highlights the *System lane* as the automated compiler of the medical record. Section 1 data, Vital Signs data, and Section 2 data are linked via associations to an automated *Compile Complete Medical Record* service task. This unified data then triggers the automated prescription generation service, completing the digital transformation of the paper-based form.
 
 == Summary of BPMN Notation Usage
 
@@ -438,7 +438,7 @@ The class diagram identifies nine core classes within the CVD Clinic domain. Eac
 
 #figure(
   image("images/CVD_class_diagram.svg", width: 100%),
-  caption: [Figure 4: UML Class Diagram for the CVD Clinic Patient Record System (StarUML).],
+  caption: [UML Class Diagram for the CVD Clinic Patient Record System (StarUML).],
 ) <fig-class>
 
 === Core Classes
@@ -484,7 +484,7 @@ The ERD was derived from the class diagram by converting classes to entities, at
 
 #figure(
   image("images/CVD_erd.svg", width: 100%),
-  caption: [Figure 5: Entity Relationship Diagram (ERD) for the CVD Clinic system (StarUML).],
+  caption: [Entity Relationship Diagram (ERD) for the CVD Clinic system (StarUML).],
 ) <fig-erd>
 
 === UML to ERD Conversion
@@ -534,7 +534,7 @@ The CVD Clinic system requires the following architectural components:
 
 #figure(
   image("./images/cvd_clinic_enterprise_cloud_architecture.svg", width: 100%),
-  caption: [Figure 6: Enterprise Cloud Architecture — On-Premise and AWS VPC Design (Draw.io).],
+  caption: [Enterprise Cloud Architecture — On-Premise and AWS VPC Design (Draw.io).],
 ) <fig-eca>
 
 == On-Premise Infrastructure (Clinic)
@@ -692,7 +692,7 @@ The prototype implements six key screens that demonstrate the core functionaliti
 
 #figure(
   image("images/screen-patient-login.png", width: 80%),
-  caption: [Figure 7: Patient Login and Registration Portal (SOA Interface).],
+  caption: [Patient Login and Registration Portal (SOA Interface).],
 ) <fig-screen-login>
 
 *Functionality:*
@@ -708,11 +708,11 @@ The prototype implements six key screens that demonstrate the core functionaliti
   gutter: 10pt,
   figure(
     image("images/screen-initial-form-generated-on-appointment-booking.png", width: 100%),
-    caption: [Figure 8a: Empty Pre-Visit Form.],
+    caption: [Empty Pre-Visit Form.],
   ),
   figure(
     image("images/screen-patient-submitted-section1-successfully.png", width: 100%),
-    caption: [Figure 8b: Successful Submission.],
+    caption: [Successful Submission.],
   )
 ) <fig-screen-section1>
 
@@ -729,19 +729,19 @@ The prototype implements six key screens that demonstrate the core functionaliti
   gutter: 10pt,
   figure(
     image("images/screen-staff-login.png", width: 100%),
-    caption: [Figure 9a: Staff Login Gateway.],
+    caption: [Staff Login Gateway.],
   ),
   figure(
     image("images/screen-admin-dashboard.png", width: 100%),
-    caption: [Figure 9b: Admin Dashboard.],
+    caption: [Admin Dashboard.],
   ),
   figure(
     image("images/screen-staff-nurse-dashboard.png", width: 100%),
-    caption: [Figure 9c: Nurse Dashboard.],
+    caption: [Nurse Dashboard.],
   ),
   figure(
     image("images/screen-consultant-dashboard.png", width: 100%),
-    caption: [Figure 9d: Consultant Dashboard.],
+    caption: [Consultant Dashboard.],
   )
 ) <fig-screen-staff-login>
 
@@ -755,7 +755,7 @@ The prototype implements six key screens that demonstrate the core functionaliti
 
 #figure(
   image("images/screen-section2-recorded-successfully.png", width: 80%),
-  caption: [Figure 10: Examination Form (Section 2) with diagnosis and severity selected.],
+  caption: [Examination Form (Section 2) with diagnosis and severity selected.],
 ) <fig-screen-section2>
 
 *Functionality:*
@@ -769,7 +769,7 @@ The prototype implements six key screens that demonstrate the core functionaliti
 
 #figure(
   image("images/screen-final-patient-record.png", width: 80%),
-  caption: [Figure 11: Final Unified Medical Record including the generated prescription.],
+  caption: [Final Unified Medical Record including the generated prescription.],
 ) <fig-screen-prescription>
 
 *Functionality:*
@@ -782,7 +782,7 @@ The prototype implements six key screens that demonstrate the core functionaliti
 
 #figure(
   image("images/screen-successful-booking.png", width: 80%),
-  caption: [Figure 12: Successful Appointment Booking interface.],
+  caption: [Successful Appointment Booking interface.],
 ) <fig-screen-booking>
 
 *Functionality:*
@@ -866,12 +866,12 @@ The project was divided into four two-week sprints:
 
 #figure(
   image("images/agile-sprint-board.svg", width: 100%),
-  caption: [Figure 13: Agile Sprint Board (Sprint 4) showing task distribution and completion status.],
+  caption: [Agile Sprint Board (Sprint 4) showing task distribution and completion status.],
 ) <fig-sprint-board>
 
 #figure(
   image("images/agile-burndown.svg", width: 80%),
-  caption: [Figure 14: Sprint 4 Burndown Chart showing actual vs. ideal progress with milestone annotations.],
+  caption: [Sprint 4 Burndown Chart showing actual vs. ideal progress with milestone annotations.],
 ) <fig-burndown>
 
 == Tracking Metrics
@@ -887,18 +887,14 @@ The project was divided into four two-week sprints:
 
 = Individual Reflective Evaluation <reflection>
 
-#text(fill: highlight, weight: "bold", size: 10pt)[
-  Note: Each group member must write their own individual reflection (500--800 words). The sections below provide a template structure. Replace the placeholder text with your personal contribution.
-]
-
 == Individual Reflection: Hard Joshi (Scrum Master & Backend Architecture Lead)
 
 === Personal Contribution & Challenges Encountered
 Throughout the CVD Clinic project, I served as the Scrum Master and Lead Backend Developer. My primary responsibility was architecting the foundational systems that enabled our dual-web portal strategy. Initially, we faced a significant architectural challenge: our system was designed as a hybrid of a web-based Patient Portal (SOA) and a `tkinter`-based Desktop Application (AOA) for the staff. During development, we realized this hybrid approach created severe cross-platform dependency issues and broke the requirement for a unified, cloud-ready Client-Server System. 
 
-I proposed and led the architectural pivot to a **Dual-Web Application** model. I rebuilt the backend entirely in Python/Flask, utilizing SQLAlchemy to map our 3NF Entity Relationship Diagram into a robust ORM. I implemented role-based access control (RBAC) to ensure strict data segregation between Patients, Nurses, Consultants, and Admins. 
+I proposed and led the architectural pivot to a *Dual-Web Application* model. I rebuilt the backend entirely in Python/Flask, utilizing SQLAlchemy to map our 3NF Entity Relationship Diagram into a robust ORM. I implemented role-based access control (RBAC) to ensure strict data segregation between Patients, Nurses, Consultants, and Admins. 
 
-A major technical challenge I resolved was the deployment pipeline. While migrating from a local SQLite database to an **AWS RDS PostgreSQL** instance, our AWS Elastic Beanstalk environment degraded due to missing entry-point configurations. I resolved this by authoring a `Procfile` specifying the Gunicorn server bindings and refactoring the database initialization script to run cleanly within the Flask application context during production startup. 
+A major technical challenge I resolved was the deployment pipeline. While migrating from a local SQLite database to an *AWS RDS PostgreSQL* instance, our AWS Elastic Beanstalk environment degraded due to missing entry-point configurations. I resolved this by authoring a `Procfile` specifying the Gunicorn server bindings and refactoring the database initialization script to run cleanly within the Flask application context during production startup. 
 
 Furthermore, I was responsible for generating all high-fidelity UML, BPMN, and Cloud Architecture diagrams using programmatic tools (`svgwrite` and Mermaid.js), ensuring our visual documentation adhered strictly to CASE tool standards. I also managed our agile workflow on Zoho Sprints, ensuring our Burndown charts accurately reflected our two-week sprint cycles.
 
@@ -980,13 +976,13 @@ _Reflect on the skills gained (technical and soft skills), what you would do dif
 
 == Summary of Achievements
 
-This group coursework successfully delivered a comprehensive enterprise architecture solution for the CVD Clinic's patient record digitisation challenge. The project transitioned from a paper-based manual system to a modern, cloud-native **Dual-Web Portal** architecture. Key achievements include:
+This group coursework successfully delivered a comprehensive enterprise architecture solution for the CVD Clinic's patient record digitisation challenge. The project transitioned from a paper-based manual system to a modern, cloud-native *Dual-Web Portal* architecture. Key achievements include:
 
-- **BPMN Modeling:** Three detailed process models covering patient admission, booking, and clinical data flow.
-- **Architectural Integrity:** A normalized PostgreSQL database schema (3NF) and a high-fidelity UML class model.
-- **Enterprise Cloud:** A multi-AZ AWS architecture utilizing Elastic Beanstalk and RDS, addressing the connectivity and availability issues identified in the West London clinic case study.
-- **Software Prototype:** A functional Flask-based system with separate Patient (SOA) and Staff (AOA) interfaces, demonstrating real-time data integration and record compilation.
-- **Agile Methodology:** Efficient delivery across four sprints managed via ScrumDesk, simulating professional software engineering practices.
+- *BPMN Modeling:* Three detailed process models covering patient admission, booking, and clinical data flow.
+- *Architectural Integrity:* A normalized PostgreSQL database schema (3NF) and a high-fidelity UML class model.
+- *Enterprise Cloud:* A multi-AZ AWS architecture utilizing Elastic Beanstalk and RDS, addressing the connectivity and availability issues identified in the West London clinic case study.
+- *Software Prototype:* A functional Flask-based system with separate Patient (SOA) and Staff (AOA) interfaces, demonstrating real-time data integration and record compilation.
+- *Agile Methodology:* Efficient delivery across four sprints managed via ScrumDesk, simulating professional software engineering practices.
 
 The system effectively digitizes the Section 1 and Section 2 medical form process, providing a "single source of truth" for cardiovascular consultants and improving patient access to their own medical history.
 
