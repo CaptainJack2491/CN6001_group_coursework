@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Login - CVD Clinic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <h1>Staff Terminal (AOA Interface)</h1>
+        <a href="/" style="color: white; font-size: 0.9rem;">Patient Portal</a>
+    </nav>
+
+    <div class="container" style="max-width: 500px;">
+        <div class="card">
+            <h2>Staff Access</h2>
+            {% if error %}
+            <div class="error-msg">{{ error }}</div>
+            {% endif %}
+            <form action="/staff/login" method="POST">
+                <div class="form-group">
+                    <label>Role</label>
+                    <select name="role" style="width:100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #d4d1ca;">
+                        <option value="nurse">Registered Nurse</option>
+                        <option value="consultant">Cardiovascular Consultant</option>
+                        <option value="admin">Admin Staff</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Staff ID</label>
+                    <input type="text" name="user_id" placeholder="e.g. N001, C001" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" required>
+                </div>
+                <button type="submit" style="width: 100%;">Login to Terminal</button>
+            </form>
+            <div style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+                Demo IDs: C001, N001, A001 | Password: 123
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -29,3 +29,10 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.bak
+
+# Scripts and Virtual Env
+scripts/
+venv/
+env/
+*.db
+*.sqlite3

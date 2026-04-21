@@ -26,10 +26,10 @@
 #let submission-date = "1 May 2026"
 
 #let members = (
-  (name: "Member 1 Name", id: "Student ID 1", role: "Role 1"),
-  (name: "Member 2 Name", id: "Student ID 2", role: "Role 2"),
-  (name: "Member 3 Name", id: "Student ID 3", role: "Role 3"),
-  (name: "Member 4 Name", id: "Student ID 4", role: "Role 4"),
+  (name: "Hard Joshi", id: "2512658", role: "Scrum Master & Lead Developer"),
+  (name: "Jayrup Nakawala", id: "2313621", role: "Product Owner & Cardiovascular Consultant"),
+  (name: "Fatema Doctor", id: "2604383", role: "Frontend Developer & Nurse"),
+  (name: "Sangeet Kaur", id: "2280454", role: "QA, Database & Admin Staff"),
 )
 
 // ---------------------------------------------------------------------------
@@ -364,20 +364,21 @@ The first BPMN diagram models the end-to-end patient admission process, from arr
 
 #figure(
   image("images/bpmn-admission.svg", width: 100%),
-  caption: [Figure 1: BPMN Diagram 1 — Patient Admission and Form Completion Process (Bonita).],
+  caption: [Figure 1: BPMN Diagram 1 — Patient Admission and Form Completion Process (Enhanced).],
 ) <fig-bpmn1>
 
 *Process Description:*
 
-The patient arrives at the clinic and either logs into the existing portal or registers as a new patient. They then complete Section 1 of the medical form online, providing personal information, symptoms, current medications, allergies, and lifestyle factors. A form validation gateway checks whether all required fields are completed; if not, the patient is prompted to fill in missing information. Once submitted, nursing staff verify the patient's identity, record vital signs (blood pressure, BMI, heart rate, blood sugar), and enter these into the system. The patient is then directed to the consultant, who reviews the Section 1 data, conducts the examination, completes Section 2 (diagnosis, clinical notes, severity), generates a prescription, schedules a follow-up if necessary, and saves the complete medical record.
+The enhanced BPMN model captures the end-to-end admission journey across four lanes: *Patient*, *Nurse/Admin Staff*, *Consultant*, and *System*. The process starts with patient arrival and portal login. A critical **correction loop** ensures that if the patient submits an incomplete Section 1, the system requests corrections and routes the flow back to the patient.
+
+Following validation, the system triggers automated **service tasks** to auto-save the form and notify staff. Nursing staff then verify identity and perform **parallel vital signs checks** (simultaneous recording of BP, BMI, Blood Sugar, and Heart Rate) before recording them in the system. The consultant then reviews the unified data, conducts the examination, and selects a diagnosis (Hypertension, Hypotension, or Diabetes) which branches into specific management plans. The process concludes with automated prescription generation, an optional follow-up scheduling step, and a final record save by the system.
 
 *Key BPMN Elements Used:*
-- *Start/End Events* — Patient arrival and consultation completion
-- *User Tasks* — Form filling, vital signs recording, clinical examination
-- *Service Tasks* — Auto-save form, send email confirmation
-- *Exclusive Gateways* — Form validation, diagnosis type (Hypertension/Hypotension/Diabetes)
-- *Parallel Gateways* — Simultaneous BP and BMI recording
-- *Data Objects* — Patient Form, Medical Record, Prescription
+- *Correction Loop* — Gateways and flows to ensure data integrity in Section 1.
+- *Service Tasks* — Automated actions (gear icon) for auto-save, notifications, and PDF generation.
+- *Parallel Gateways (+)* — Modeling the simultaneous recording of multiple vital signs.
+- *Data Objects* — Explicitly attached Patient Form, Medical Record, and Prescription artifacts.
+- *Lanes* — Dedicated swimlanes for Patient, Nurse/Admin, Consultant, and System.
 
 == Diagram 2: Appointment Booking Process
 
@@ -385,12 +386,12 @@ The second BPMN diagram captures the appointment scheduling workflow involving t
 
 #figure(
   image("images/bpmn-booking.svg", width: 100%),
-  caption: [Figure 2: BPMN Diagram 2 — Appointment Booking Process (Bonita).],
+  caption: [Figure 2: BPMN Diagram 2 — Appointment Booking Process (Enhanced).],
 ) <fig-bpmn2>
 
 *Process Description:*
 
-The patient initiates an appointment request through the online portal. Administrative staff check the consultant's schedule and available time slots. An exclusive gateway determines whether the preferred date is available — if not, the patient selects an alternative date. Once confirmed, the admin blocks the appointment slot, sends a confirmation email/SMS to the patient, and dispatches a pre-visit form link for the patient to complete Section 1 in advance of their visit.
+This diagram clearly separates *Patient* and *Admin Staff* responsibilities. The patient requests an appointment online; if the date is unavailable, an **alternative date loop** returns the flow to the selection step. Once the admin blocks the slot and confirms, the system sends an **Appointment Confirmation** message and a **Pre-Visit Form Link** as explicit data artifacts. This process directly triggers the patient journey in Diagram 1.
 
 == Diagram 3: Form Processing and Data Flow
 
@@ -398,12 +399,12 @@ The third BPMN diagram illustrates how data flows between Section 1 (patient-com
 
 #figure(
   image("images/bpmn-dataflow.svg", width: 100%),
-  caption: [Figure 3: BPMN Diagram 3 — Form Processing and Data Flow (Bonita).],
+  caption: [Figure 3: BPMN Diagram 3 — Form Processing and Data Flow (Enhanced).],
 ) <fig-bpmn3>
 
 *Process Description:*
 
-This diagram models the data lifecycle from initial patient form submission through clinical assessment to complete medical record compilation. Section 1 data (symptoms, medical history) flows from the patient to the system. The nurse adds vital signs data. The consultant then accesses the combined data, performs the examination, and populates Section 2 (clinical notes, diagnosis, severity). The system combines all data objects — Section 1, vital signs, and Section 2 — into a unified Medical Record, which triggers the prescription generation service task.
+Diagram 3 models the data lifecycle across the *Patient*, *Nurse*, *Consultant*, and *System* lanes. It highlights the **System lane** as the automated compiler of the medical record. Section 1 data, Vital Signs data, and Section 2 data are linked via associations to an automated **Compile Complete Medical Record** service task. This unified data then triggers the automated prescription generation service, completing the digital transformation of the paper-based form.
 
 == Summary of BPMN Notation Usage
 
@@ -412,12 +413,12 @@ This diagram models the data lifecycle from initial patient form submission thro
     columns: (auto, 1fr),
     [*BPMN Element*], [*Application in CVD Clinic*],
     [Start/End Events], [Patient arrives $arrow.r$ Consultation complete],
-    [User Tasks], [Fill form, Record vitals, Clinical examination],
-    [Service Tasks], [Auto-save, Email confirmation, PDF generation],
-    [Exclusive Gateways], [Form complete? Diagnosis type?],
-    [Parallel Gateways], [Simultaneous BP + BMI checks],
+    [User Tasks], [Verify Identity, Conduct Examination, Complete Section 2],
+    [Service Tasks], [Auto-save, Send Notification, PDF Generation, Save Record],
+    [Exclusive Gateways], [Section 1 Valid? Diagnosis Type? Follow-up Required?],
+    [Parallel Gateways], [Simultaneous BP, BMI, Sugar, and Heart Rate checks],
     [Data Objects], [Patient Form, Medical Record, Prescription],
-    [Pools/Lanes], [Patient, Nurse, Consultant, Admin],
+    [Pools/Lanes], [Patient, Nurse/Admin Staff, Consultant, System],
   ),
   caption: [Summary of BPMN elements used across the three process models.],
 ) <tab-bpmn-elements>
@@ -436,7 +437,7 @@ This section presents the object-oriented class model and its corresponding Enti
 The class diagram identifies nine core classes within the CVD Clinic domain. Each class includes its attributes (with types), operations (with parameters), and the associations/cardinalities between classes.
 
 #figure(
-  image("images/class-diagram.svg", width: 100%),
+  image("images/CVD_class_diagram.svg", width: 100%),
   caption: [Figure 4: UML Class Diagram for the CVD Clinic Patient Record System (StarUML).],
 ) <fig-class>
 
@@ -482,7 +483,7 @@ The following associations have been identified between the domain classes:
 The ERD was derived from the class diagram by converting classes to entities, attributes to columns, and associations to foreign key relationships, following standard UML-to-ERD transformation principles.
 
 #figure(
-  image("images/erd.svg", width: 100%),
+  image("images/CVD_erd.svg", width: 100%),
   caption: [Figure 5: Entity Relationship Diagram (ERD) for the CVD Clinic system (StarUML).],
 ) <fig-erd>
 
@@ -532,7 +533,7 @@ The CVD Clinic system requires the following architectural components:
 + *Backup & Disaster Recovery* — Automated backups with multi-region redundancy.
 
 #figure(
-  image("images/eca-diagram.svg", width: 80%),
+  image("./images/cvd_clinic_enterprise_cloud_architecture.svg", width: 100%),
   caption: [Figure 6: Enterprise Cloud Architecture — On-Premise and AWS VPC Design (Draw.io).],
 ) <fig-eca>
 
@@ -621,9 +622,9 @@ This section documents the implementation of the Client-Server System (CSS) prot
     columns: (auto, 1fr),
     [*Layer*], [*Technology*],
     [Frontend], [HTML5, CSS3, JavaScript (responsive design)],
-    [Backend], [PHP / Node.js (server-side logic)],
-    [Database], [MySQL (hosted on AWS RDS)],
-    [Hosting], [AWS EC2 instances within VPC],
+    [Backend], [Python Flask (REST API, Dual Web Portal)],
+    [Database], [PostgreSQL (hosted on AWS RDS)],
+    [Hosting], [AWS EC2 instances via Elastic Beanstalk],
     [Version Control], [Git / GitHub],
   ),
   caption: [Technology stack used for the prototype implementation.],
@@ -661,11 +662,11 @@ CREATE TABLE Consultants (
 
 CREATE TABLE MedicalForms (
     formID VARCHAR(20) PRIMARY KEY,
-    patientID VARCHAR(20),
+    appointmentID VARCHAR(20),
     formType VARCHAR(50),
     status VARCHAR(20) DEFAULT 'Draft',
     createdDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (patientID) REFERENCES Patients(patientID)
+    FOREIGN KEY (appointmentID) REFERENCES Appointments(appointmentID)
 );
 
 CREATE TABLE Appointments (
@@ -689,30 +690,10 @@ The prototype implements six key screens that demonstrate the core functionaliti
 
 === Screen 1: Patient Login / Registration
 
-#block(
-  fill: light-bg,
-  radius: 6pt,
-  inset: 16pt,
-  width: 100%,
-)[
-  #align(center)[
-    #text(fill: muted, size: 10pt, style: "italic")[
-      // Replace with: #figure(image("images/screen-login.png", width: 80%), caption: [...])
-      #block(
-  fill: light-bg,
-  radius: 6pt,
-  inset: 16pt,
-  width: 100%,
-)[
-  #align(center)[
-    #text(fill: muted, size: 10pt, style: "italic")[
-      [Insert Screenshot — Patient Login / Registration Page]
-    ]
-  ]
-]
-    ]
-  ]
-]
+#figure(
+  image("images/screen-login.png", width: 80%),
+  caption: [Figure 7: Patient Login and Registration Portal (SOA Interface).],
+) <fig-screen-login>
 
 *Functionality:*
 - Patient registration with email, password, and personal details
@@ -755,30 +736,10 @@ The prototype implements six key screens that demonstrate the core functionaliti
 
 === Screen 3: Staff Dashboard
 
-#block(
-  fill: light-bg,
-  radius: 6pt,
-  inset: 16pt,
-  width: 100%,
-)[
-  #align(center)[
-    #text(fill: muted, size: 10pt, style: "italic")[
-      // Replace with: #figure(image("images/screen-dashboard.png", width: 80%), caption: [...])
-      #block(
-  fill: light-bg,
-  radius: 6pt,
-  inset: 16pt,
-  width: 100%,
-)[
-  #align(center)[
-    #text(fill: muted, size: 10pt, style: "italic")[
-      [Insert Screenshot — Staff / Consultant Dashboard]
-    ]
-  ]
-]
-    ]
-  ]
-]
+#figure(
+  image("images/screen-staff-login.png", width: 80%),
+  caption: [Figure 9: Staff Dashboard (AOA Interface) showing current appointments.],
+) <fig-screen-staff-login>
 
 *Functionality:*
 - Today's appointments list with patient details, type, and status
@@ -909,10 +870,10 @@ This section documents the use of *Agile ScrumDesk* software for managing the gr
   table(
     columns: (auto, auto, 1fr),
     [*Team Member*], [*Scrum Role*], [*Responsibilities*],
-    [Member 1], [Scrum Master], [Facilitate daily standups, remove blockers, ensure sprint goals are met],
-    [Member 2], [Product Owner], [Prioritise user stories, define acceptance criteria, accept completed work],
-    [Member 3], [Developer], [Frontend development (HTML/CSS/JS), UI design, responsive layouts],
-    [Member 4], [Developer / QA], [Backend development (PHP/Node.js), database, testing],
+    [Hard Joshi], [Scrum Master], [Facilitate daily standups, remove blockers, ensure sprint goals are met],
+    [Jayrup Nakawala], [Product Owner], [Prioritise user stories, define acceptance criteria, accept completed work],
+    [Fatema Doctor], [Developer], [Frontend development (HTML/CSS/JS), UI design, responsive layouts],
+    [Sangeet Kaur], [Developer / QA], [Backend development (Python/Flask), database, testing],
   ),
   caption: [Team roles and responsibilities within the Scrum framework.],
 ) <tab-roles>
@@ -1007,7 +968,7 @@ _Describe the specific modules, diagrams, and tasks you personally worked on. De
   width: 100%,
 )[
   #text(fill: muted, style: "italic", size: 10pt)[
-    "I was responsible for designing the database schema and implementing the patient registration module. I created the ERD in StarUML and built the MySQL database with all tables and relationships. I also developed the PHP scripts for CRUD operations on patient data. The main challenge I encountered was managing the many-to-many relationship between Patients and Consultants, which I resolved by using the Appointments table as a junction table..."
+    "I was responsible for designing the database schema and implementing the patient registration module. I created the ERD in StarUML and built the PostgreSQL database with all tables and relationships. I also developed the Python Flask API for CRUD operations on patient data. The main challenge I encountered was managing the relationships between the dual-web portals..."
   ]
 ]
 
@@ -1065,13 +1026,15 @@ _Reflect on the skills gained (technical and soft skills), what you would do dif
 
 == Summary of Achievements
 
-This group coursework successfully delivered a comprehensive enterprise architecture solution for the CVD Clinic's patient record digitisation challenge. The following deliverables were completed:
+This group coursework successfully delivered a comprehensive enterprise architecture solution for the CVD Clinic's patient record digitisation challenge. The project transitioned from a paper-based manual system to a modern, cloud-native **Dual-Web Portal** architecture. Key achievements include:
 
-- *Three BPMN process models* created using Bonita, covering patient admission, appointment booking, and form processing workflows.
-- *A complete UML class diagram and ERD* designed in StarUML, identifying nine core classes and their relational database equivalents.
-- *An Enterprise Cloud Architecture model* designed in Draw.io, specifying the on-premise and AWS cloud infrastructure with VPC, security, and GDPR compliance.
-- *A working web portal prototype* with six functional screens (login, pre-visit form, staff dashboard, examination form, prescription generation, appointment booking), connected to a MySQL database backend.
-- *Agile project management* via ScrumDesk across four sprints, with documented user stories, task boards, and burndown charts.
+- **BPMN Modeling:** Three detailed process models covering patient admission, booking, and clinical data flow.
+- **Architectural Integrity:** A normalized PostgreSQL database schema (3NF) and a high-fidelity UML class model.
+- **Enterprise Cloud:** A multi-AZ AWS architecture utilizing Elastic Beanstalk and RDS, addressing the connectivity and availability issues identified in the West London clinic case study.
+- **Software Prototype:** A functional Flask-based system with separate Patient (SOA) and Staff (AOA) interfaces, demonstrating real-time data integration and record compilation.
+- **Agile Methodology:** Efficient delivery across four sprints managed via ScrumDesk, simulating professional software engineering practices.
+
+The system effectively digitizes the Section 1 and Section 2 medical form process, providing a "single source of truth" for cardiovascular consultants and improving patient access to their own medical history.
 
 == Challenges and Solutions
 

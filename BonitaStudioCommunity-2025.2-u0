@@ -1,0 +1,33 @@
+# Project Implementation Walkthrough
+
+We have successfully completed the next major milestones for your coursework: The Enterprise Cloud Architecture (ECA), the Dual-Interface Software Prototype, and the Agile Project Management setup. Here is a summary of what has been implemented and how to use it.
+
+## 1. Enterprise Cloud Architecture (Case Study 4)
+The architecture addresses the clinic's core connectivity and security problems. 
+- **Documentation:** The full explanation is available in [architecture/CVD_ECA_Architecture.md](file:///Users/hardjoshi/Desktop/Code/CN6001_group_coursework/architecture/CVD_ECA_Architecture.md).
+- **Diagrams:** A beautiful Mermaid JS diagram is embedded directly in the markdown. 
+- **SVG Generation:** If you want an actual SVG file for your report, I have created a Python script for you. Run the following command from your terminal:
+  ```bash
+  python3 scripts/generate_eca_diagram.py
+  ```
+
+## 2. Software Prototype (Client-Server System)
+We have built a fully functional backend and two distinct interfaces connected to a database, strictly following your coursework requirements.
+
+> [!TIP]
+> **How to Run the Prototype:**
+> 1. Ensure you have the required packages installed (`pip install flask flask-sqlalchemy customtkinter requests`).
+> 2. Start the Backend Server: `python3 prototype/app.py`. This will automatically create the `cvd_clinic.db` SQLite database if it doesn't exist and run the server on `http://127.0.0.1:5000`.
+> 3. Open the **Patient Web Portal (SOA)** by navigating to `http://127.0.0.1:5000` in your browser. You can register a patient and book appointments.
+> 4. While the server is running, open a new terminal tab and start the **Staff Terminal (AOA)** by running `python3 prototype/desktop_app.py`. You will see the scheduled appointments appear in the GUI!
+
+### Interface Highlights:
+- **Web Portal (SOA):** Built with premium, aesthetic CSS. It handles patient registration, appointment booking, and "Section One" form submission.
+- **Desktop Application (AOA):** Built using `customtkinter` for a sleek, system-native look. It allows nurses to enter vitals and consultants to finalize "Section Two" of the form.
+
+## 3. Agile Project Management
+To fulfill the ScrumDesk requirement, you now have everything you need prepared in the `agile_management/` folder.
+- **Scrum Backlog:** [scrum_backlog.csv](file:///Users/hardjoshi/Desktop/Code/CN6001_group_coursework/agile_management/scrum_backlog.csv) is ready to be imported directly into ScrumDesk, pre-populated with Epics, User Stories, and Story points.
+- **Roles & Sprints:** [roles_and_sprints.md](file:///Users/hardjoshi/Desktop/Code/CN6001_group_coursework/agile_management/roles_and_sprints.md) contains the assignments and the 3-Sprint structure you can copy into your final report.
+
+Your project repository is now highly structured, clean, and ready for you to take screenshots of the running software for your final academic submission!
