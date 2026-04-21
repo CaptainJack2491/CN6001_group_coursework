@@ -16,6 +16,17 @@ app.secret_key = 'supersecretkey_cvd_clinic' # Needed for sessions
 
 db.init_app(app)
 
+# Ensure tables are created (and default staff exists) on startup
+with app.app_context():
+    db.create_all()
+    # Check if we need to seed the staff
+    if not Consultant.query.get("C001"):
+        c = Consultant(consultantID="C001", firstName="Jayrup", lastName="Nakawala", specialization="Cardiology", password="123")
+        n = Nurse(nurseID="N001", firstName="Fatema", lastName="Doctor", registrationNo="REG123", password="123")
+        a = AdminStaff(adminID="A001", firstName="Sangeet", lastName="Kaur", role="Admin", password="123")
+        db.session.add_all([c, n, a])
+        db.session.commit()
+
 # ---------------------------------------------------------
 # Patient Portal (SOA) Routes
 # ---------------------------------------------------------
@@ -223,18 +234,6 @@ def api_finalize_consultation():
 # ---------------------------------------------------------
 # Database Initialization
 # ---------------------------------------------------------
-def init_db():
-    with app.app_context():
-        db.drop_all() # Reset for clean dual-interface setup
-        db.create_all()
-        # Create default staff
-        c = Consultant(consultantID="C001", firstName="Jayrup", lastName="Nakawala", specialization="Cardiology", password="123")
-        n = Nurse(nurseID="N001", firstName="Fatema", lastName="Doctor", registrationNo="REG123", password="123")
-        a = AdminStaff(adminID="A001", firstName="Sangeet", lastName="Kaur", role="Admin", password="123")
-        db.session.add_all([c, n, a])
-        db.session.commit()
-
 if __name__ == '__main__':
-    if not os.path.exists('cvd_clinic.db'):
-        init_db()
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=True, host='0.0.0.0', port=port)

@@ -94,10 +94,10 @@
 #set table(
   stroke: 0.5pt + muted,
   inset: 8pt,
+  fill: (x, y) => if y == 0 { accent } else { none }
 )
 
 #show table.cell.where(y: 0): set text(weight: "bold", fill: white)
-#show table.cell.where(y: 0): set table.cell(fill: accent)
 
 // Raw code styling
 #show raw.where(block: true): block.with(
@@ -493,7 +493,7 @@ The following table describes how each class was mapped to a relational entity:
 
 #figure(
   table(
-    columns: (auto, auto, auto, 1fr),
+    columns: (15%, 20%, 30%, 35%),
     [*Entity*], [*Primary Key*], [*Foreign Keys*], [*Description*],
     [Patients], [patientID], [—], [All patient demographics and contact information],
     [Consultants], [consultantID], [—], [Staff details, specialisation, licence],
@@ -691,7 +691,7 @@ The prototype implements six key screens that demonstrate the core functionaliti
 === Screen 1: Patient Login / Registration
 
 #figure(
-  image("images/screen-login.png", width: 80%),
+  image("images/screen-patient-login.png", width: 80%),
   caption: [Figure 7: Patient Login and Registration Portal (SOA Interface).],
 ) <fig-screen-login>
 
@@ -703,30 +703,18 @@ The prototype implements six key screens that demonstrate the core functionaliti
 
 === Screen 2: Pre-Visit Form (Section 1)
 
-#block(
-  fill: light-bg,
-  radius: 6pt,
-  inset: 16pt,
-  width: 100%,
-)[
-  #align(center)[
-    #text(fill: muted, size: 10pt, style: "italic")[
-      // Replace with: #figure(image("images/screen-section1.png", width: 80%), caption: [...])
-      #block(
-  fill: light-bg,
-  radius: 6pt,
-  inset: 16pt,
-  width: 100%,
-)[
-  #align(center)[
-    #text(fill: muted, size: 10pt, style: "italic")[
-      [Insert Screenshot — Pre-Visit Form (Section 1)]
-    ]
-  ]
-]
-    ]
-  ]
-]
+#grid(
+  columns: (1fr, 1fr),
+  gutter: 10pt,
+  figure(
+    image("images/screen-initial-form-generated-on-appointment-booking.png", width: 100%),
+    caption: [Figure 8a: Empty Pre-Visit Form.],
+  ),
+  figure(
+    image("images/screen-patient-submitted-section1-successfully.png", width: 100%),
+    caption: [Figure 8b: Successful Submission.],
+  )
+) <fig-screen-section1>
 
 *Functionality:*
 - Drop-down menus for symptoms (reducing manual entry errors)
@@ -736,9 +724,25 @@ The prototype implements six key screens that demonstrate the core functionaliti
 
 === Screen 3: Staff Dashboard
 
-#figure(
-  image("images/screen-staff-login.png", width: 80%),
-  caption: [Figure 9: Staff Dashboard (AOA Interface) showing current appointments.],
+#grid(
+  columns: (1fr, 1fr),
+  gutter: 10pt,
+  figure(
+    image("images/screen-staff-login.png", width: 100%),
+    caption: [Figure 9a: Staff Login Gateway.],
+  ),
+  figure(
+    image("images/screen-admin-dashboard.png", width: 100%),
+    caption: [Figure 9b: Admin Dashboard.],
+  ),
+  figure(
+    image("images/screen-staff-nurse-dashboard.png", width: 100%),
+    caption: [Figure 9c: Nurse Dashboard.],
+  ),
+  figure(
+    image("images/screen-consultant-dashboard.png", width: 100%),
+    caption: [Figure 9d: Consultant Dashboard.],
+  )
 ) <fig-screen-staff-login>
 
 *Functionality:*
@@ -749,30 +753,10 @@ The prototype implements six key screens that demonstrate the core functionaliti
 
 === Screen 4: Examination Form (Section 2)
 
-#block(
-  fill: light-bg,
-  radius: 6pt,
-  inset: 16pt,
-  width: 100%,
-)[
-  #align(center)[
-    #text(fill: muted, size: 10pt, style: "italic")[
-      // Replace with: #figure(image("images/screen-section2.png", width: 80%), caption: [...])
-      #block(
-  fill: light-bg,
-  radius: 6pt,
-  inset: 16pt,
-  width: 100%,
-)[
-  #align(center)[
-    #text(fill: muted, size: 10pt, style: "italic")[
-      [Insert Screenshot — Examination Form (Section 2)]
-    ]
-  ]
-]
-    ]
-  ]
-]
+#figure(
+  image("images/screen-section2-recorded-successfully.png", width: 80%),
+  caption: [Figure 10: Examination Form (Section 2) with diagnosis and severity selected.],
+) <fig-screen-section2>
 
 *Functionality:*
 - Read-only display of Section 1 (patient data) for consultant review
@@ -783,30 +767,10 @@ The prototype implements six key screens that demonstrate the core functionaliti
 
 === Screen 5: Prescription Generation
 
-#block(
-  fill: light-bg,
-  radius: 6pt,
-  inset: 16pt,
-  width: 100%,
-)[
-  #align(center)[
-    #text(fill: muted, size: 10pt, style: "italic")[
-      // Replace with: #figure(image("images/screen-prescription.png", width: 80%), caption: [...])
-      #block(
-  fill: light-bg,
-  radius: 6pt,
-  inset: 16pt,
-  width: 100%,
-)[
-  #align(center)[
-    #text(fill: muted, size: 10pt, style: "italic")[
-      [Insert Screenshot — Prescription Generation]
-    ]
-  ]
-]
-    ]
-  ]
-]
+#figure(
+  image("images/screen-final-patient-record.png", width: 80%),
+  caption: [Figure 11: Final Unified Medical Record including the generated prescription.],
+) <fig-screen-prescription>
 
 *Functionality:*
 - Pre-populated patient and consultant details
@@ -816,30 +780,10 @@ The prototype implements six key screens that demonstrate the core functionaliti
 
 === Screen 6: Appointment Booking
 
-#block(
-  fill: light-bg,
-  radius: 6pt,
-  inset: 16pt,
-  width: 100%,
-)[
-  #align(center)[
-    #text(fill: muted, size: 10pt, style: "italic")[
-      // Replace with: #figure(image("images/screen-appointment.png", width: 80%), caption: [...])
-      #block(
-  fill: light-bg,
-  radius: 6pt,
-  inset: 16pt,
-  width: 100%,
-)[
-  #align(center)[
-    #text(fill: muted, size: 10pt, style: "italic")[
-      [Insert Screenshot — Appointment Booking]
-    ]
-  ]
-]
-    ]
-  ]
-]
+#figure(
+  image("images/screen-successful-booking.png", width: 80%),
+  caption: [Figure 12: Successful Appointment Booking interface.],
+) <fig-screen-booking>
 
 *Functionality:*
 - Date picker with available slot display
@@ -920,23 +864,15 @@ The project was divided into four two-week sprints:
 
 == ScrumDesk Dashboard
 
-#block(
-  fill: light-bg,
-  radius: 6pt,
-  inset: 16pt,
-  width: 100%,
-)[
-  #align(center)[
-    #text(fill: muted, size: 10pt, style: "italic")[
-      // Replace with actual ScrumDesk screenshots:
-      // #figure(image("images/scrumdesk-board.png", width: 100%), caption: [...])
-      // #figure(image("images/scrumdesk-burndown.png", width: 100%), caption: [...])
-      #text(fill: muted, size: 10pt, style: "italic")[
-      [Insert ScrumDesk Dashboard Screenshots — Sprint Board, Burndown Chart, Team Assignments]
-    ]
-    ]
-  ]
-]
+#figure(
+  image("images/agile-sprint-board.svg", width: 100%),
+  caption: [Figure 13: Agile Sprint Board (Sprint 4) showing task distribution and completion status.],
+) <fig-sprint-board>
+
+#figure(
+  image("images/agile-burndown.svg", width: 80%),
+  caption: [Figure 14: Sprint 4 Burndown Chart showing actual vs. ideal progress with milestone annotations.],
+) <fig-burndown>
 
 == Tracking Metrics
 
@@ -955,22 +891,19 @@ The project was divided into four two-week sprints:
   Note: Each group member must write their own individual reflection (500--800 words). The sections below provide a template structure. Replace the placeholder text with your personal contribution.
 ]
 
-== Personal Contribution
+== Individual Reflection: Hard Joshi (Scrum Master & Backend Architecture Lead)
 
-// ---- REPLACE THIS WITH YOUR INDIVIDUAL TEXT ----
+=== Personal Contribution & Challenges Encountered
+Throughout the CVD Clinic project, I served as the Scrum Master and Lead Backend Developer. My primary responsibility was architecting the foundational systems that enabled our dual-web portal strategy. Initially, we faced a significant architectural challenge: our system was designed as a hybrid of a web-based Patient Portal (SOA) and a `tkinter`-based Desktop Application (AOA) for the staff. During development, we realized this hybrid approach created severe cross-platform dependency issues and broke the requirement for a unified, cloud-ready Client-Server System. 
 
-_Describe the specific modules, diagrams, and tasks you personally worked on. Detail the challenges you faced and how you resolved them. For example:_
+I proposed and led the architectural pivot to a **Dual-Web Application** model. I rebuilt the backend entirely in Python/Flask, utilizing SQLAlchemy to map our 3NF Entity Relationship Diagram into a robust ORM. I implemented role-based access control (RBAC) to ensure strict data segregation between Patients, Nurses, Consultants, and Admins. 
 
-#block(
-  fill: light-bg,
-  radius: 6pt,
-  inset: 12pt,
-  width: 100%,
-)[
-  #text(fill: muted, style: "italic", size: 10pt)[
-    "I was responsible for designing the database schema and implementing the patient registration module. I created the ERD in StarUML and built the PostgreSQL database with all tables and relationships. I also developed the Python Flask API for CRUD operations on patient data. The main challenge I encountered was managing the relationships between the dual-web portals..."
-  ]
-]
+A major technical challenge I resolved was the deployment pipeline. While migrating from a local SQLite database to an **AWS RDS PostgreSQL** instance, our AWS Elastic Beanstalk environment degraded due to missing entry-point configurations. I resolved this by authoring a `Procfile` specifying the Gunicorn server bindings and refactoring the database initialization script to run cleanly within the Flask application context during production startup. 
+
+Furthermore, I was responsible for generating all high-fidelity UML, BPMN, and Cloud Architecture diagrams using programmatic tools (`svgwrite` and Mermaid.js), ensuring our visual documentation adhered strictly to CASE tool standards. I also managed our agile workflow on Zoho Sprints, ensuring our Burndown charts accurately reflected our two-week sprint cycles.
+
+=== Application of Enterprise Architecture Concepts
+This project solidified my understanding of Enterprise Architecture, specifically the transition from monolithic local applications to scalable, cloud-deployed service-oriented architectures. Designing the AWS VPC, configuring security groups for the RDS instance, and managing state across dual-portals taught me the practical realities of building fault-tolerant enterprise systems. If we were to continue developing this system, my next step would be implementing a CI/CD pipeline using GitHub Actions and Docker containerization to automate our deployment process and eliminate "it works on my machine" discrepancies.
 
 == Cloud Technology Analysis
 
@@ -1180,30 +1113,30 @@ CREATE TABLE MedicalRecords (
 
 == Appendix B: Additional Screenshots
 
-#block(
-  fill: light-bg,
-  radius: 6pt,
-  inset: 16pt,
-  width: 100%,
-)[
-  #align(center)[
-    #text(fill: muted, size: 10pt, style: "italic")[
-      \[Insert additional prototype screenshots, error handling screens, mobile views, etc.\]
-    ]
-  ]
-]
+#grid(
+  columns: (1fr, 1fr),
+  gutter: 10pt,
+  figure(
+    image("images/screen-error-handling-wrong-password.png", width: 100%),
+    caption: [Appendix B.1: Incorrect Credentials],
+  ),
+  figure(
+    image("images/screen-error-handling-duplicate-booking.png", width: 100%),
+    caption: [Appendix B.2: Duplicate Appointments],
+  )
+)
+#figure(
+  image("images/screen-error-handling-cannot-submit-incomplete-section2.png", width: 50%),
+  caption: [Appendix B.3: Form Validation on Section 2],
+)
 
 == Appendix C: Test Evidence
 
-#block(
-  fill: light-bg,
-  radius: 6pt,
-  inset: 16pt,
-  width: 100%,
-)[
-  #align(center)[
-    #text(fill: muted, size: 10pt, style: "italic")[
-      \[Insert screenshots of test execution results, browser console outputs, database query results\]
-    ]
-  ]
-]
+#figure(
+  image("images/screen-vitals-sucessfully-recorded.png", width: 80%),
+  caption: [Appendix C.1: Test Evidence - Successful vitals entry by Nursing Staff],
+)
+#figure(
+  image("images/screen-patient-form-reflecting-updated-vitals.png", width: 80%),
+  caption: [Appendix C.2: Test Evidence - Medical record accurately reflecting updated vitals],
+)
