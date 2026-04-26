@@ -560,7 +560,7 @@ The cloud infrastructure is organised within an AWS Virtual Private Cloud (VPC) 
     [Public Subnet 1], [Web Tier], [EC2 Instance — Patient Portal (frontend)],
     [Public Subnet 2], [Web Tier], [EC2 Instance — Staff Portal (frontend)],
     [Private Subnet 1], [Application Tier], [EC2 Instance — Business logic, form validation, API],
-    [Private Subnet 2], [Database Tier], [RDS (MySQL/PostgreSQL) — Encrypted patient data, forms, audit logs],
+    [Private Subnet 2], [Database Tier], [RDS (PostgreSQL) — Encrypted patient data, forms, audit logs],
     [Management Subnet], [Admin], [Bastion Host — Secure SSH access for administration],
   ),
   caption: [AWS VPC subnet structure for the CVD Clinic system.],
@@ -629,6 +629,23 @@ This section documents the implementation of the Client-Server System (CSS) prot
   ),
   caption: [Technology stack used for the prototype implementation.],
 ) <tab-tech-stack>
+
+== Architectural Strategy: Dual-SOA vs. Hybrid AOA/SOA
+
+The original project brief suggested a hybrid architecture comprising an Application-Oriented Architecture (AOA) desktop client for staff and a Service-Oriented Architecture (SOA) portal for patients. However, following an architectural review focusing on cloud-native requirements, the team elected to implement a *Dual-SOA (Service-Oriented Architecture)* model. This strategic pivot was driven by the following technical and operational considerations:
+
+- *Cloud-Native Scalability & Statelessness:* By standardizing on a web-based client for both portals, we achieved a fully *stateless* application tier. This allows for horizontal scaling via *AWS Auto-Scaling Groups (ASG)* and load distribution through an *Application Load Balancer (ALB)*. A traditional AOA desktop application would have introduced persistent state management challenges and increased the operational complexity of the cloud environment.
+- *Unified API Surface & RBAC:* The Dual-SOA approach allows both the Patient and Staff interfaces to interact with a single, unified Flask backend. This ensures a consistent implementation of *Role-Based Access Control (RBAC)* and form validation logic. By utilizing *SQLAlchemy* as the Object-Relational Mapper (ORM), we maintain a strict separation of concerns and ensure that both interfaces operate on a synchronized, real-time data layer in *RDS PostgreSQL*.
+- *Operational Interoperability:* Standardizing on *HTTPS/TLS 1.3* for all client-server communication ensures that the Staff Portal is accessible from any clinical terminal (consultant PCs, nurse tablets) without local software dependencies. This eliminates the "DLL hell" and cross-platform compatibility issues inherent in distributing AOA desktop binaries across a diverse clinical hardware estate.
+- *Simplified CI/CD Lifecycle:* Managing two web-based portals within a single stack allows for a more streamlined Continuous Integration and Deployment (CI/CD) pipeline. Updates to the clinical workflow are pushed to a single containerized environment in *AWS Elastic Beanstalk*, ensuring that both staff and patients always interact with the most current version of the system.
+
+While the interfaces remain logically distinct (Staff Dashboard vs. Patient Portal), this unified technical framework fulfills the enterprise requirements for high availability, centralized security management, and rapid clinical deployment.
+
+#figure(
+  image("images/architectural_pivot_strategy.svg", width: 90%),
+  caption: [Architectural Evolution — Transition from Hybrid AOA/SOA Requirements to Implemented Dual-SOA Strategy.],
+) <fig-pivot-strategy>
+
 
 == Database Implementation
 
@@ -794,10 +811,10 @@ The prototype implements six key screens that demonstrate the core functionaliti
 
 == Key Implementation Features
 
-- *Security* — Passwords hashed using bcrypt; prepared statements to prevent SQL injection; HTTPS enforced.
+- *Security* — Passwords hashed using bcrypt; parameterized queries via SQLAlchemy to prevent SQL injection; HTTPS enforced.
 - *Responsive Design* — Mobile-friendly layout for patient access from smartphones and tablets.
 - *Error Handling* — User-friendly error messages with server-side validation fallback.
-- *Database Connectivity* — PDO (PHP Data Objects) or equivalent ORM for secure database access.
+- *Database Connectivity* — SQLAlchemy Object-Relational Mapper (ORM) for secure and abstract database interactions.
 
 
 // ============================================================================
@@ -896,8 +913,6 @@ I proposed and led the architectural pivot to a *Dual-Web Application* model. I 
 
 A major technical challenge I resolved was the deployment pipeline. While migrating from a local SQLite database to an *AWS RDS PostgreSQL* instance, our AWS Elastic Beanstalk environment degraded due to missing entry-point configurations. I resolved this by authoring a `Procfile` specifying the Gunicorn server bindings and refactoring the database initialization script to run cleanly within the Flask application context during production startup. 
 
-Furthermore, I was responsible for generating all high-fidelity UML, BPMN, and Cloud Architecture diagrams using programmatic tools (`svgwrite` and Mermaid.js), ensuring our visual documentation adhered strictly to CASE tool standards. I also managed our agile workflow on Zoho Sprints, ensuring our Burndown charts accurately reflected our two-week sprint cycles.
-
 === Application of Enterprise Architecture Concepts
 This project solidified my understanding of Enterprise Architecture, specifically the transition from monolithic local applications to scalable, cloud-deployed service-oriented architectures. Designing the AWS VPC, configuring security groups for the RDS instance, and managing state across dual-portals taught me the practical realities of building fault-tolerant enterprise systems. If we were to continue developing this system, my next step would be implementing a CI/CD pipeline using GitHub Actions and Docker containerization to automate our deployment process and eliminate "it works on my machine" discrepancies.
 
@@ -924,23 +939,33 @@ Testing the deployed Elastic Beanstalk environment was my biggest challenge. I a
 
 == Cloud Technology Analysis
 
-Evaluate the cloud technologies used for the design and implementation of the CSS. Compare AWS and Azure based on the following criteria:
+Evaluate the cloud technologies used for the design and implementation of the CSS. After comparing Amazon Web Services (AWS) and Microsoft Azure, our team selected AWS as the primary provider for our infrastructure due to its extensive service offerings and the practical experience gained during the module's lab sessions.
 
 #figure(
   table(
-    columns: (auto, 1fr, 1fr, auto),
+    columns: (auto, 1fr, 1fr, 1fr),
     [*Criteria*], [*AWS*], [*Azure*], [*Our Choice*],
-    [Pricing Model], [Pay-as-you-go, complex calculator], [Similar, integrated cost management], [AWS / Azure],
-    [Database Service], [RDS (MySQL, PostgreSQL)], [Azure SQL Database], [—],
-    [Security], [IAM, KMS, WAF, CloudTrail], [Azure AD, Key Vault, Sentinel], [—],
-    [Documentation], [Extensive, community-driven], [Good, Microsoft Learn], [—],
-    [Learning Curve], [Steeper for beginners], [Easier for .NET developers], [—],
-    [Free Tier], [12-month free tier, generous], [12-month free tier, comparable], [—],
+    [Pricing Model], [Pay-as-you-go, Tiered Pricing], [Similar, Integrated Management], [AWS],
+    [Database Service], [RDS (PostgreSQL, Multi-AZ)], [Azure SQL Database], [AWS],
+    [Security], [IAM, KMS, WAF, CloudTrail], [Azure AD, Key Vault, Sentinel], [AWS],
+    [Documentation], [Extensive, community-driven], [Good, Microsoft Learn], [AWS],
+    [Learning Curve], [Steeper for beginners], [Easier for .NET developers], [AWS],
+    [Free Tier], [12-month free tier, generous], [12-month free tier, comparable], [AWS],
   ),
   caption: [Comparison of AWS vs. Azure cloud platforms.],
 ) <tab-cloud-compare>
 
-_Support your analysis with references to practical lab exercises conducted during the module (e.g., Week 5 AWS VPC lab, Week 7 Azure security lab)._
+=== Analysis and Lab References
+
+The decision to adopt AWS for the CVD Clinic system is supported by the following practical applications and lab exercises conducted throughout the semester:
+
+- *VPC and Networking:* The secure network architecture designed in @fig-eca was informed by the *Week 3 AWS Foundations Lab*, where we implemented a Virtual Private Cloud (VPC) with public and private subnets, configuring Security Groups to restrict database access.
+- *Database Implementation:* Our use of AWS RDS (PostgreSQL) for patient records was validated during the *Week 9 (Task 4a) Data Engineering Lab*. In this exercise, we explored querying large datasets using *AWS Athena* and managing data schemas, which directly applied to our 3NF database design.
+- *Security and Access Control:* We utilized *AWS IAM* for role-based access control, referencing the techniques learned in the *Week 3 and Week 5 practicals*. While Azure IAM was explored in *Week 7*, we found AWS's policy-based approach more suitable for our dual-portal security requirements.
+- *Generative AI Integration:* The proposed future improvement of automated medical summaries was inspired by *Task 4b: AWS Generative AI Foundations*. This lab demonstrated how AWS Bedrock and SageMaker can be integrated into enterprise workflows to enhance clinical productivity.
+
+By leveraging the AWS ecosystem, we ensured that the CVD Clinic prototype is not only functional but also aligned with modern enterprise cloud standards for scalability and high availability.
+
 
 == Testing Conducted
 
@@ -963,10 +988,6 @@ Develop a test plan and document the results of testing carried out on the proto
   caption: [Test plan with results for the CVD Clinic prototype.],
 ) <tab-tests>
 
-== Learning Outcomes
-
-_Reflect on the skills gained (technical and soft skills), what you would do differently, and how this project prepares you for industry practice._
-
 
 // ============================================================================
 // SECTION 8: GROUP CONCLUSION (10 Marks)
@@ -981,7 +1002,7 @@ This group coursework successfully delivered a comprehensive enterprise architec
 - *BPMN Modeling:* Three detailed process models covering patient admission, booking, and clinical data flow.
 - *Architectural Integrity:* A normalized PostgreSQL database schema (3NF) and a high-fidelity UML class model.
 - *Enterprise Cloud:* A multi-AZ AWS architecture utilizing Elastic Beanstalk and RDS, addressing the connectivity and availability issues identified in the West London clinic case study.
-- *Software Prototype:* A functional Flask-based system with separate Patient (SOA) and Staff (AOA) interfaces, demonstrating real-time data integration and record compilation.
+- *Software Prototype:* A functional Flask-based system with a unified Dual-SOA architecture for both Patient and Staff interfaces, demonstrating real-time data integration and record compilation.
 - *Agile Methodology:* Efficient delivery across four sprints managed via ScrumDesk, simulating professional software engineering practices.
 
 The system effectively digitizes the Section 1 and Section 2 medical form process, providing a "single source of truth" for cardiovascular consultants and improving patient access to their own medical history.
@@ -992,8 +1013,8 @@ The system effectively digitizes the Section 1 and Section 2 medical form proces
   table(
     columns: (1fr, 1fr),
     [*Challenge*], [*Solution*],
-    [Database connection configuration across environments], [Used PDO with prepared statements and environment-specific configuration files],
-    [Complex form validation with interdependent fields], [Implemented both client-side (JavaScript) and server-side (PHP) validation layers],
+    [Database connection configuration across environments], [Used SQLAlchemy with environment-specific configuration files and connection strings],
+    [Complex form validation with interdependent fields], [Implemented both client-side (JavaScript) and server-side (Flask/Python) validation layers],
     [Team coordination across different schedules], [Regular standups via ScrumDesk; shared GitHub repository with branch-per-feature workflow],
     [Ensuring GDPR compliance in cloud architecture], [Restricted data residency to AWS eu-west-2 (London); implemented encryption at rest and in transit],
   ),
