@@ -1,440 +1,437 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
-xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
-xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
-xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-id="Definitions_3"
-targetNamespace="http://bpmn.io/schema/bpmn">
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_3" targetNamespace="http://bpmn.io/schema/bpmn">
 
-<collaboration id="Collaboration_3">
-<participant id="Participant_System" name="CVD Clinic System" processRef="Process_FormFlow"/>
-<participant id="Participant_ExternalPatient" name="Patient (External)" processRef="Process_ExternalPatient"/>
-<participant id="Participant_ExternalConsultant" name="Consultant (External)" processRef="Process_ExternalConsultant"/>
+  <collaboration id="Collaboration_3">
+    <participant id="Participant_Patient3" name="Patient" processRef="Process_Patient3"/>
+    <participant id="Participant_Nurse" name="Nurse / Admin" processRef="Process_NurseAdmin"/>
+    <participant id="Participant_Consultant3" name="Consultant" processRef="Process_Consultant3"/>
 
-<messageFlow id="MF_FormAvailable" sourceRef="Service_MakeAvailable" targetRef="Start_PatientNotified"/>
-<messageFlow id="MF_Section1Submitted" sourceRef="User_PatientCreatesSection1" targetRef="Catch_Section1Received"/>
-<messageFlow id="MF_AssignedToConsultant" sourceRef="Service_AssignToConsultant" targetRef="Start_ConsultantNotified"/>
-<messageFlow id="MF_ProcessComplete" sourceRef="Service_NotifyPatientComplete" targetRef="Start_PatientFormComplete"/>
-</collaboration>
+    <!-- Message Flows -->
+    <messageFlow id="MF_PatientArrives" sourceRef="Start_CheckIn" targetRef="Catch_PatientArrives"/>
+    <messageFlow id="MF_VitalsReady" sourceRef="Task_RecordVitals" targetRef="Catch_VitalsReceived"/>
+    <messageFlow id="MF_EscortToConsultant" sourceRef="User_EscortPatient" targetRef="Catch_PatientArrivedConsultant"/>
+    <messageFlow id="MF_PrescriptionReady" sourceRef="Task_GeneratePrescription" targetRef="Catch_ReceivePrescription"/>
+    <messageFlow id="MF_Section1Data" sourceRef="User_FillSection1" targetRef="Task_ReviewSection1"/>
+  </collaboration>
 
-<!-- Main System Process -->
-<process id="Process_FormFlow" isExecutable="false">
-<startEvent id="Start_FormProcess" name="New Form&#10;Process Started"/>
-<sequenceFlow id="Flow_50" sourceRef="Start_FormProcess" targetRef="Service_CreateFormInstance"/>
+  <!-- Patient Process -->
+  <process id="Process_Patient3" isExecutable="false">
+    <startEvent id="Start_CheckIn" name="Check In&#10;at Clinic"/>
+    <sequenceFlow id="Flow_P1" sourceRef="Start_CheckIn" targetRef="User_WaitVitals"/>
 
-<!-- Service task - automated form instance creation -->
-<serviceTask id="Service_CreateFormInstance" name="Create Form Instance&#10;(Generate Form ID)"/>
-<sequenceFlow id="Flow_51" sourceRef="Service_CreateFormInstance" targetRef="Service_AttachSection1Template"/>
+    <userTask id="User_WaitVitals" name="Wait for&#10;Vital Signs Check"/>
+    <sequenceFlow id="Flow_P2" sourceRef="User_WaitVitals" targetRef="User_WaitConsultation"/>
 
-<!-- Service task - automated template attachment -->
-<serviceTask id="Service_AttachSection1Template" name="Attach Section 1 Template&#10;(Patient Input Fields)"/>
-<sequenceFlow id="Flow_52" sourceRef="Service_AttachSection1Template" targetRef="Service_MakeAvailable"/>
+    <userTask id="User_WaitConsultation" name="Wait for&#10;Consultation"/>
+    <sequenceFlow id="Flow_P3" sourceRef="User_WaitConsultation" targetRef="User_Consultation"/>
 
-<!-- Service task - automated system action to publish to portal -->
-<serviceTask id="Service_MakeAvailable" name="Make Available to&#10;Patient Portal"/>
-<sequenceFlow id="Flow_53" sourceRef="Service_MakeAvailable" targetRef="Catch_WaitForSection1"/>
+    <userTask id="User_Consultation" name="Consultation with&#10;Specialist"/>
+    <sequenceFlow id="Flow_P4" sourceRef="User_Consultation" targetRef="Catch_ReceivePrescription"/>
 
-<!-- Intermediate catch - wait for Section 1 completion -->
-<intermediateCatchEvent id="Catch_WaitForSection1" name="Wait for&#10;Section 1 Completion">
-<messageEventDefinition id="MsgDef_Section1"/>
-</intermediateCatchEvent>
-<sequenceFlow id="Flow_54" sourceRef="Catch_WaitForSection1" targetRef="Service_ValidateSection1"/>
+    <intermediateCatchEvent id="Catch_ReceivePrescription" name="Receive&#10;Prescription">
+      <messageEventDefinition id="MsgDef_Prescription"/>
+    </intermediateCatchEvent>
+    <sequenceFlow id="Flow_P5" sourceRef="Catch_ReceivePrescription" targetRef="User_FillSection1"/>
 
-<!-- Service task - automated validation -->
-<serviceTask id="Service_ValidateSection1" name="Validate Section 1&#10;(Required Fields Check)"/>
-<sequenceFlow id="Flow_55" sourceRef="Service_ValidateSection1" targetRef="Gateway_Section1Valid"/>
+    <userTask id="User_FillSection1" name="Fill Section 1&#10;(Symptoms, History)"/>
+    <sequenceFlow id="Flow_P6" sourceRef="User_FillSection1" targetRef="End_PatientComplete"/>
 
-<exclusiveGateway id="Gateway_Section1Valid" name="Section 1 Valid?"/>
-<sequenceFlow id="Flow_56" name="No" sourceRef="Gateway_Section1Valid" targetRef="User_RequestCorrections">
-<conditionExpression xsi:type="tFormalExpression">${!section1Valid}</conditionExpression>
-</sequenceFlow>
-<sequenceFlow id="Flow_57" name="Yes" sourceRef="Gateway_Section1Valid" targetRef="Service_SaveSection1Data">
-<conditionExpression xsi:type="tFormalExpression">${section1Valid}</conditionExpression>
-</sequenceFlow>
+    <endEvent id="End_PatientComplete" name="Visit&#10;Complete"/>
+  </process>
 
-<!-- User task - staff requests corrections -->
-<userTask id="User_RequestCorrections" name="Request Corrections&#10;from Patient"/>
-<sequenceFlow id="Flow_58" sourceRef="User_RequestCorrections" targetRef="Catch_WaitForSection1"/>
+  <!-- Nurse / Admin Process -->
+  <process id="Process_NurseAdmin" isExecutable="false">
+    <intermediateCatchEvent id="Catch_PatientArrives" name="Patient&#10;Arrives">
+      <messageEventDefinition id="MsgDef_PatientArrives"/>
+    </intermediateCatchEvent>
+    <sequenceFlow id="Flow_N1" sourceRef="Catch_PatientArrives" targetRef="User_VerifyIdentity"/>
 
-<!-- Service task - automated database save -->
-<serviceTask id="Service_SaveSection1Data" name="Save Section 1 Data&#10;(Patient Database)"/>
-<sequenceFlow id="Flow_59" sourceRef="Service_SaveSection1Data" targetRef="Service_AttachSection2Template"/>
+    <userTask id="User_VerifyIdentity" name="Verify Patient&#10;Identity"/>
+    <sequenceFlow id="Flow_N2" sourceRef="User_VerifyIdentity" targetRef="User_RecordVitals"/>
 
-<!-- Service task - automated template attachment -->
-<serviceTask id="Service_AttachSection2Template" name="Attach Section 2 Template&#10;(Clinical Assessment Fields)"/>
-<sequenceFlow id="Flow_60" sourceRef="Service_AttachSection2Template" targetRef="Service_AssignToConsultant"/>
+    <userTask id="User_RecordVitals" name="Record Vital Signs&#10;(BP, BMI, Blood Sugar)"/>
+    <sequenceFlow id="Flow_N3" sourceRef="User_RecordVitals" targetRef="Task_RecordVitalsSystem"/>
 
-<!-- Service task - automated work queue assignment -->
-<serviceTask id="Service_AssignToConsultant" name="Assign to Consultant&#10;(Add to Work Queue)"/>
-<sequenceFlow id="Flow_61" sourceRef="Service_AssignToConsultant" targetRef="Catch_WaitForSection2"/>
+    <serviceTask id="Task_RecordVitalsSystem" name="Save Vital Signs&#10;to System"/>
+    <sequenceFlow id="Flow_N4" sourceRef="Task_RecordVitalsSystem" targetRef="User_EscortPatient"/>
 
-<!-- Intermediate catch - wait for Section 2 completion -->
-<intermediateCatchEvent id="Catch_WaitForSection2" name="Wait for&#10;Section 2 Completion">
-<messageEventDefinition id="MsgDef_Section2"/>
-</intermediateCatchEvent>
-<sequenceFlow id="Flow_62" sourceRef="Catch_WaitForSection2" targetRef="Service_ValidateSection2"/>
+    <userTask id="User_EscortPatient" name="Escort Patient to&#10;Consultant"/>
+    <sequenceFlow id="Flow_N5" sourceRef="User_EscortPatient" targetRef="End_NurseComplete"/>
 
-<!-- Service task - automated validation -->
-<serviceTask id="Service_ValidateSection2" name="Validate Section 2&#10;(Clinical Notes, Diagnosis)"/>
-<sequenceFlow id="Flow_63" sourceRef="Service_ValidateSection2" targetRef="Gateway_Section2Valid"/>
+    <endEvent id="End_NurseComplete" name="Handover&#10;Complete"/>
+  </process>
 
-<exclusiveGateway id="Gateway_Section2Valid" name="Section 2 Valid?"/>
-<sequenceFlow id="Flow_64a" name="No" sourceRef="Gateway_Section2Valid" targetRef="User_RequestSection2Corr">
-<conditionExpression xsi:type="tFormalExpression">${!section2Valid}</conditionExpression>
-</sequenceFlow>
-<sequenceFlow id="Flow_64b" name="Yes" sourceRef="Gateway_Section2Valid" targetRef="Service_SaveSection2Data">
-<conditionExpression xsi:type="tFormalExpression">${section2Valid}</conditionExpression>
-</sequenceFlow>
+  <!-- Consultant Process -->
+  <process id="Process_Consultant3" isExecutable="false">
+    <intermediateCatchEvent id="Catch_PatientArrivedConsultant" name="Patient&#10;Arrived">
+      <messageEventDefinition id="MsgDef_PatientHere"/>
+    </intermediateCatchEvent>
+    <sequenceFlow id="Flow_C1" sourceRef="Catch_PatientArrivedConsultant" targetRef="Gateway_ParallelReview"/>
 
-<!-- User task - staff requests corrections -->
-<userTask id="User_RequestSection2Corr" name="Request Section 2&#10;Corrections from Consultant"/>
-<sequenceFlow id="Flow_64c" sourceRef="User_RequestSection2Corr" targetRef="Catch_WaitForSection2"/>
+    <!-- Parallel Gateway: Review Section 1 AND Vital Signs simultaneously -->
+    <parallelGateway id="Gateway_ParallelReview" name="Review Section 1&#10;&amp; Vitals in Parallel"/>
+    <sequenceFlow id="Flow_C2a" sourceRef="Gateway_ParallelReview" targetRef="Task_ReviewSection1"/>
+    <sequenceFlow id="Flow_C2b" sourceRef="Gateway_ParallelReview" targetRef="Task_ReviewVitals"/>
 
-<!-- Service task - automated database save -->
-<serviceTask id="Service_SaveSection2Data" name="Save Section 2 Data&#10;(Clinical Database)"/>
-<sequenceFlow id="Flow_65" sourceRef="Service_SaveSection2Data" targetRef="Service_MergeSections"/>
+    <userTask id="Task_ReviewSection1" name="Review Section 1&#10;(Patient Data)"/>
+    <sequenceFlow id="Flow_C3" sourceRef="Task_ReviewSection1" targetRef="Gateway_JoinReview"/>
 
-<!-- Service task - automated data merge -->
-<serviceTask id="Service_MergeSections" name="Merge Section 1 + Section 2&#10;(Create Complete Record)"/>
-<sequenceFlow id="Flow_66" sourceRef="Service_MergeSections" targetRef="Service_UpdateMedicalRecord"/>
+    <userTask id="Task_ReviewVitals" name="Review Vital Signs&#10;(BP, BMI, Sugar)"/>
+    <sequenceFlow id="Flow_C4" sourceRef="Task_ReviewVitals" targetRef="Gateway_JoinReview"/>
 
-<!-- Service task - automated record update -->
-<serviceTask id="Service_UpdateMedicalRecord" name="Update Patient&#10;Medical Record"/>
-<sequenceFlow id="Flow_67" sourceRef="Service_UpdateMedicalRecord" targetRef="Service_GeneratePrescriptionData"/>
+    <parallelGateway id="Gateway_JoinReview"/>
+    <sequenceFlow id="Flow_C5" sourceRef="Gateway_JoinReview" targetRef="User_ConductExam"/>
 
-<!-- Service task - automated prescription generation -->
-<serviceTask id="Service_GeneratePrescriptionData" name="Generate Prescription&#10;(if required)"/>
-<sequenceFlow id="Flow_68" sourceRef="Service_GeneratePrescriptionData" targetRef="Service_NotifyPatientComplete"/>
+    <userTask id="User_ConductExam" name="Conduct&#10;Examination"/>
+    <sequenceFlow id="Flow_C6" sourceRef="User_ConductExam" targetRef="User_CompleteSection2"/>
 
-<!-- Service task - automated notification -->
-<serviceTask id="Service_NotifyPatientComplete" name="Notify Patient&#10;(Form Complete)"/>
-<sequenceFlow id="Flow_69" sourceRef="Service_NotifyPatientComplete" targetRef="End_FormProcessComplete"/>
+    <userTask id="User_CompleteSection2" name="Complete Section 2&#10;(Diagnosis &amp; Notes)"/>
+    <sequenceFlow id="Flow_C7" sourceRef="User_CompleteSection2" targetRef="Gateway_Diagnosis"/>
 
-<endEvent id="End_FormProcessComplete" name="Medical Record&#10;Updated"/>
+    <!-- Exclusive Gateway: Diagnosis Type -->
+    <exclusiveGateway id="Gateway_Diagnosis" name="Diagnosis&#10;Type?"/>
+    <sequenceFlow id="Flow_C8a" name="Hypertension" sourceRef="Gateway_Diagnosis" targetRef="User_HypertensionPlan">
+      <conditionExpression xsi:type="tFormalExpression">${diagnosis == 'Hypertension'}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="Flow_C8b" name="Hypotension" sourceRef="Gateway_Diagnosis" targetRef="User_HypotensionPlan">
+      <conditionExpression xsi:type="tFormalExpression">${diagnosis == 'Hypotension'}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="Flow_C8c" name="Diabetes" sourceRef="Gateway_Diagnosis" targetRef="User_DiabetesPlan">
+      <conditionExpression xsi:type="tFormalExpression">${diagnosis == 'Diabetes'}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="Flow_C8d" name="General" sourceRef="Gateway_Diagnosis" targetRef="User_GeneralPlan">
+      <conditionExpression xsi:type="tFormalExpression">${diagnosis == 'General'}</conditionExpression>
+    </sequenceFlow>
 
-<!-- Data Objects -->
-<dataObject id="DataObject_Section1" name="Patient Section 1 Data"/>
-<dataObject id="DataObject_Section2" name="Consultant Section 2 Data"/>
-<dataObject id="DataObject_Complete" name="Complete Patient Record"/>
-<dataObject id="DataObject_Presc" name="Prescription Document"/>
+    <userTask id="User_HypertensionPlan" name="Hypertension&#10;Treatment Plan"/>
+    <sequenceFlow id="Flow_C9" sourceRef="User_HypertensionPlan" targetRef="Gateway_TreatmentJoin"/>
 
-<dataObjectReference id="DataObjectRef_Section1" dataObjectRef="DataObject_Section1" name="Section 1 Form"/>
-<dataObjectReference id="DataObjectRef_Section2" dataObjectRef="DataObject_Section2" name="Section 2 Form"/>
-<dataObjectReference id="DataObjectRef_Complete" dataObjectRef="DataObject_Complete" name="Complete Medical Record"/>
-<dataObjectReference id="DataObjectRef_Prescription" dataObjectRef="DataObject_Presc" name="Prescription"/>
+    <userTask id="User_HypotensionPlan" name="Hypotension&#10;Treatment Plan"/>
+    <sequenceFlow id="Flow_C10" sourceRef="User_HypotensionPlan" targetRef="Gateway_TreatmentJoin"/>
 
-</process>
+    <userTask id="User_DiabetesPlan" name="Diabetes&#10;Management Plan"/>
+    <sequenceFlow id="Flow_C11" sourceRef="User_DiabetesPlan" targetRef="Gateway_TreatmentJoin"/>
 
-<!-- External Patient Process -->
-<process id="Process_ExternalPatient" isExecutable="false">
-<startEvent id="Start_PatientNotified" name="Form Available&#10;Notification">
-<messageEventDefinition id="MsgDef_PatientNotified"/>
-</startEvent>
-<sequenceFlow id="Flow_70" sourceRef="Start_PatientNotified" targetRef="User_PatientCreatesSection1"/>
+    <userTask id="User_GeneralPlan" name="General&#10;Care Plan"/>
+    <sequenceFlow id="Flow_C12" sourceRef="User_GeneralPlan" targetRef="Gateway_TreatmentJoin"/>
 
-<!-- User task - patient actively fills form -->
-<userTask id="User_PatientCreatesSection1" name="Patient Fills Section 1&#10;(Submit Data)"/>
-<sequenceFlow id="Flow_71" sourceRef="User_PatientCreatesSection1" targetRef="End_PatientDone"/>
+    <!-- Converging Gateway -->
+    <exclusiveGateway id="Gateway_TreatmentJoin" name="Treatment&#10;Planned"/>
+    <sequenceFlow id="Flow_C13" sourceRef="Gateway_TreatmentJoin" targetRef="Task_GeneratePrescription"/>
 
-<endEvent id="End_PatientDone" name="Section 1&#10;Submitted"/>
+    <!-- Service Task: Auto-generate prescription -->
+    <serviceTask id="Task_GeneratePrescription" name="Generate&#10;Prescription"/>
+    <sequenceFlow id="Flow_C14" sourceRef="Task_GeneratePrescription" targetRef="User_ScheduleFollowup"/>
 
-<!-- Catch for final notification -->
-<startEvent id="Start_PatientFormComplete" name="Form Process&#10;Complete">
-<messageEventDefinition id="MsgDef_ProcessComplete"/>
-</startEvent>
-<sequenceFlow id="Flow_72" sourceRef="Start_PatientFormComplete" targetRef="End_PatientComplete"/>
+    <userTask id="User_ScheduleFollowup" name="Schedule&#10;Follow-up"/>
+    <sequenceFlow id="Flow_C15" sourceRef="User_ScheduleFollowup" targetRef="Task_SaveRecord"/>
 
-<endEvent id="End_PatientComplete" name="Patient&#10;Notified"/>
-</process>
+    <serviceTask id="Task_SaveRecord" name="Save Medical&#10;Record"/>
+    <sequenceFlow id="Flow_C16" sourceRef="Task_SaveRecord" targetRef="End_ConsultantComplete"/>
 
-<!-- External Consultant Process -->
-<process id="Process_ExternalConsultant" isExecutable="false">
-<startEvent id="Start_ConsultantNotified" name="Assigned to Review">
-<messageEventDefinition id="MsgDef_ConsultantNotified"/>
-</startEvent>
-<sequenceFlow id="Flow_80" sourceRef="Start_ConsultantNotified" targetRef="User_ConsultantReviews"/>
+    <endEvent id="End_ConsultantComplete" name="Consultation&#10;Complete"/>
 
-<!-- User task - consultant reviews patient data -->
-<userTask id="User_ConsultantReviews" name="Review Section 1&#10;(Patient Data)"/>
-<sequenceFlow id="Flow_81" sourceRef="User_ConsultantReviews" targetRef="User_ConsultantCreatesSection2"/>
+    <!-- Catch for vitals received -->
+    <intermediateCatchEvent id="Catch_VitalsReceived" name="Vital Signs&#10;Received">
+      <messageEventDefinition id="MsgDef_Vitals"/>
+    </intermediateCatchEvent>
+  </process>
 
-<!-- User task - consultant completes assessment -->
-<userTask id="User_ConsultantCreatesSection2" name="Complete Section 2&#10;(Clinical Assessment)"/>
-<sequenceFlow id="Flow_82" sourceRef="User_ConsultantCreatesSection2" targetRef="End_ConsultantDone"/>
+  <!-- Data Objects -->
+  <dataObject id="DataObject_Section1" name="Section 1 Form"/>
+  <dataObject id="DataObject_VitalSigns" name="Vital Signs Record"/>
+  <dataObject id="DataObject_Section2" name="Section 2 Form"/>
+  <dataObject id="DataObject_Prescription" name="Prescription"/>
 
-<endEvent id="End_ConsultantDone" name="Section 2&#10;Submitted"/>
-</process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_3">
+    <bpmndi:BPMNPlane id="BPMNPlane_3" bpmnElement="Collaboration_3">
 
-<bpmndi:BPMNDiagram id="BPMNDiagram_3">
-<bpmndi:BPMNPlane id="BPMNPlane_3" bpmnElement="Collaboration_3">
+      <!-- Patient Pool -->
+      <bpmndi:BPMNShape id="Participant_Patient3_di" bpmnElement="Participant_Patient3" isHorizontal="true">
+        <omgdc:Bounds x="0" y="0" width="1400" height="200"/>
+      </bpmndi:BPMNShape>
 
-<!-- System Pool -->
-<bpmndi:BPMNShape id="Participant_System_di" bpmnElement="Participant_System" isHorizontal="true">
-<omgdc:Bounds x="0" y="0" width="1500" height="450"/>
-</bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_CheckIn_di" bpmnElement="Start_CheckIn">
+        <omgdc:Bounds x="50" y="80" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="User_WaitVitals_di" bpmnElement="User_WaitVitals">
+        <omgdc:Bounds x="130" y="60" width="100" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="User_WaitConsultation_di" bpmnElement="User_WaitConsultation">
+        <omgdc:Bounds x="280" y="60" width="100" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="User_Consultation_di" bpmnElement="User_Consultation">
+        <omgdc:Bounds x="430" y="60" width="100" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Catch_ReceivePrescription_di" bpmnElement="Catch_ReceivePrescription">
+        <omgdc:Bounds x="580" y="70" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="User_FillSection1_di" bpmnElement="User_FillSection1">
+        <omgdc:Bounds x="660" y="60" width="100" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_PatientComplete_di" bpmnElement="End_PatientComplete">
+        <omgdc:Bounds x="810" y="80" width="36" height="36"/>
+      </bpmndi:BPMNShape>
 
-<bpmndi:BPMNShape id="Start_FormProcess_di" bpmnElement="Start_FormProcess">
-<omgdc:Bounds x="50" y="200" width="36" height="36"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Service_CreateFormInstance_di" bpmnElement="Service_CreateFormInstance">
-<omgdc:Bounds x="120" y="178" width="120" height="80"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Service_AttachSection1Template_di" bpmnElement="Service_AttachSection1Template">
-<omgdc:Bounds x="280" y="178" width="120" height="80"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Service_MakeAvailable_di" bpmnElement="Service_MakeAvailable">
-<omgdc:Bounds x="440" y="178" width="120" height="80"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Catch_WaitForSection1_di" bpmnElement="Catch_WaitForSection1">
-<omgdc:Bounds x="600" y="200" width="36" height="36"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Service_ValidateSection1_di" bpmnElement="Service_ValidateSection1">
-<omgdc:Bounds x="680" y="178" width="120" height="80"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Gateway_Section1Valid_di" bpmnElement="Gateway_Section1Valid" isMarkerVisible="true">
-<omgdc:Bounds x="840" y="195" width="50" height="50"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="User_RequestCorrections_di" bpmnElement="User_RequestCorrections">
-<omgdc:Bounds x="805" y="300" width="120" height="60"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Service_SaveSection1Data_di" bpmnElement="Service_SaveSection1Data">
-<omgdc:Bounds x="940" y="178" width="120" height="80"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Service_AttachSection2Template_di" bpmnElement="Service_AttachSection2Template">
-<omgdc:Bounds x="1100" y="178" width="120" height="80"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Service_AssignToConsultant_di" bpmnElement="Service_AssignToConsultant">
-<omgdc:Bounds x="1260" y="178" width="120" height="80"/>
-</bpmndi:BPMNShape>
+      <!-- Nurse Pool -->
+      <bpmndi:BPMNShape id="Participant_Nurse_di" bpmnElement="Participant_Nurse" isHorizontal="true">
+        <omgdc:Bounds x="0" y="220" width="1400" height="220"/>
+      </bpmndi:BPMNShape>
 
-<!-- Second Row -->
-<bpmndi:BPMNShape id="Catch_WaitForSection2_di" bpmnElement="Catch_WaitForSection2">
-<omgdc:Bounds x="50" y="350" width="36" height="36"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Service_ValidateSection2_di" bpmnElement="Service_ValidateSection2">
-<omgdc:Bounds x="120" y="328" width="120" height="80"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Gateway_Section2Valid_di" bpmnElement="Gateway_Section2Valid" isMarkerVisible="true">
-<omgdc:Bounds x="280" y="345" width="50" height="50"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="User_RequestSection2Corr_di" bpmnElement="User_RequestSection2Corr">
-<omgdc:Bounds x="245" y="420" width="120" height="50"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Service_SaveSection2Data_di" bpmnElement="Service_SaveSection2Data">
-<omgdc:Bounds x="370" y="328" width="120" height="80"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Service_MergeSections_di" bpmnElement="Service_MergeSections">
-<omgdc:Bounds x="530" y="328" width="120" height="80"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Service_UpdateMedicalRecord_di" bpmnElement="Service_UpdateMedicalRecord">
-<omgdc:Bounds x="690" y="328" width="120" height="80"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Service_GeneratePrescriptionData_di" bpmnElement="Service_GeneratePrescriptionData">
-<omgdc:Bounds x="850" y="328" width="120" height="80"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Service_NotifyPatientComplete_di" bpmnElement="Service_NotifyPatientComplete">
-<omgdc:Bounds x="1010" y="328" width="120" height="80"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="End_FormProcessComplete_di" bpmnElement="End_FormProcessComplete">
-<omgdc:Bounds x="1170" y="350" width="36" height="36"/>
-</bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Catch_PatientArrives_di" bpmnElement="Catch_PatientArrives">
+        <omgdc:Bounds x="120" y="320" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="User_VerifyIdentity_di" bpmnElement="User_VerifyIdentity">
+        <omgdc:Bounds x="200" y="300" width="100" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="User_RecordVitals_di" bpmnElement="User_RecordVitals">
+        <omgdc:Bounds x="350" y="300" width="120" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecordVitalsSystem_di" bpmnElement="Task_RecordVitalsSystem">
+        <omgdc:Bounds x="520" y="300" width="120" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="User_EscortPatient_di" bpmnElement="User_EscortPatient">
+        <omgdc:Bounds x="690" y="300" width="120" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_NurseComplete_di" bpmnElement="End_NurseComplete">
+        <omgdc:Bounds x="860" y="320" width="36" height="36"/>
+      </bpmndi:BPMNShape>
 
-<!-- Data Objects -->
-<bpmndi:BPMNShape id="DataObject_Section1Form_di" bpmnElement="DataObjectRef_Section1">
-<omgdc:Bounds x="980" y="100" width="36" height="50"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="DataObject_Section2Form_di" bpmnElement="DataObjectRef_Section2">
-<omgdc:Bounds x="320" y="250" width="36" height="50"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="DataObject_CompleteRecord_di" bpmnElement="DataObjectRef_Complete">
-<omgdc:Bounds x="560" y="250" width="36" height="50"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="DataObject_Prescription_di" bpmnElement="DataObjectRef_Prescription">
-<omgdc:Bounds x="880" y="250" width="36" height="50"/>
-</bpmndi:BPMNShape>
+      <!-- Consultant Pool -->
+      <bpmndi:BPMNShape id="Participant_Consultant3_di" bpmnElement="Participant_Consultant3" isHorizontal="true">
+        <omgdc:Bounds x="0" y="460" width="1400" height="400"/>
+      </bpmndi:BPMNShape>
 
-<!-- Patient Pool -->
-<bpmndi:BPMNShape id="Participant_ExternalPatient_di" bpmnElement="Participant_ExternalPatient" isHorizontal="true">
-<omgdc:Bounds x="0" y="480" width="600" height="180"/>
-</bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Catch_PatientArrivedConsultant_di" bpmnElement="Catch_PatientArrivedConsultant">
+        <omgdc:Bounds x="100" y="560" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ParallelReview_di" bpmnElement="Gateway_ParallelReview" isMarkerVisible="true">
+        <omgdc:Bounds x="180" y="550" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReviewSection1_di" bpmnElement="Task_ReviewSection1">
+        <omgdc:Bounds x="270" y="480" width="120" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReviewVitals_di" bpmnElement="Task_ReviewVitals">
+        <omgdc:Bounds x="270" y="600" width="120" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinReview_di" bpmnElement="Gateway_JoinReview" isMarkerVisible="true">
+        <omgdc:Bounds x="430" y="550" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="User_ConductExam_di" bpmnElement="User_ConductExam">
+        <omgdc:Bounds x="520" y="540" width="120" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="User_CompleteSection2_di" bpmnElement="User_CompleteSection2">
+        <omgdc:Bounds x="680" y="540" width="120" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Diagnosis_di" bpmnElement="Gateway_Diagnosis" isMarkerVisible="true">
+        <omgdc:Bounds x="840" y="550" width="50" height="50"/>
+      </bpmndi:BPMNShape>
 
-<bpmndi:BPMNShape id="Start_PatientNotified_di" bpmnElement="Start_PatientNotified">
-<omgdc:Bounds x="50" y="530" width="36" height="36"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="User_PatientCreatesSection1_di" bpmnElement="User_PatientCreatesSection1">
-<omgdc:Bounds x="140" y="508" width="120" height="80"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="End_PatientDone_di" bpmnElement="End_PatientDone">
-<omgdc:Bounds x="320" y="530" width="36" height="36"/>
-</bpmndi:BPMNShape>
+      <!-- Diagnosis branches -->
+      <bpmndi:BPMNShape id="User_HypertensionPlan_di" bpmnElement="User_HypertensionPlan">
+        <omgdc:Bounds x="930" y="470" width="120" height="60"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="User_HypotensionPlan_di" bpmnElement="User_HypotensionPlan">
+        <omgdc:Bounds x="930" y="545" width="120" height="60"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="User_DiabetesPlan_di" bpmnElement="User_DiabetesPlan">
+        <omgdc:Bounds x="930" y="620" width="120" height="60"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="User_GeneralPlan_di" bpmnElement="User_GeneralPlan">
+        <omgdc:Bounds x="1090" y="545" width="100" height="60"/>
+      </bpmndi:BPMNShape>
 
-<!-- Patient receives final notification -->
-<bpmndi:BPMNShape id="Start_PatientFormComplete_di" bpmnElement="Start_PatientFormComplete">
-<omgdc:Bounds x="450" y="530" width="36" height="36"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="End_PatientComplete_di" bpmnElement="End_PatientComplete">
-<omgdc:Bounds x="540" y="530" width="36" height="36"/>
-</bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_TreatmentJoin_di" bpmnElement="Gateway_TreatmentJoin" isMarkerVisible="true">
+        <omgdc:Bounds x="1100" y="470" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_GeneratePrescription_di" bpmnElement="Task_GeneratePrescription">
+        <omgdc:Bounds x="1190" y="470" width="100" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="User_ScheduleFollowup_di" bpmnElement="User_ScheduleFollowup">
+        <omgdc:Bounds x="500" y="680" width="120" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SaveRecord_di" bpmnElement="Task_SaveRecord">
+        <omgdc:Bounds x="660" y="680" width="120" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_ConsultantComplete_di" bpmnElement="End_ConsultantComplete">
+        <omgdc:Bounds x="820" y="695" width="36" height="36"/>
+      </bpmndi:BPMNShape>
 
-<!-- Consultant Pool -->
-<bpmndi:BPMNShape id="Participant_ExternalConsultant_di" bpmnElement="Participant_ExternalConsultant" isHorizontal="true">
-<omgdc:Bounds x="700" y="480" width="800" height="180"/>
-</bpmndi:BPMNShape>
+      <!-- Data Objects -->
+      <bpmndi:BPMNShape id="DataObject_Section1_di" bpmnElement="DataObject_Section1">
+        <omgdc:Bounds x="380" y="380" width="36" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObject_VitalSigns_di" bpmnElement="DataObject_VitalSigns">
+        <omgdc:Bounds x="380" y="470" width="36" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObject_Section2_di" bpmnElement="DataObject_Section2">
+        <omgdc:Bounds x="800" y="470" width="36" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObject_Prescription_di" bpmnElement="DataObject_Prescription">
+        <omgdc:Bounds x="1100" y="380" width="36" height="50"/>
+      </bpmndi:BPMNShape>
 
-<bpmndi:BPMNShape id="Start_ConsultantNotified_di" bpmnElement="Start_ConsultantNotified">
-<omgdc:Bounds x="750" y="530" width="36" height="36"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="User_ConsultantReviews_di" bpmnElement="User_ConsultantReviews">
-<omgdc:Bounds x="840" y="508" width="120" height="80"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="User_ConsultantCreatesSection2_di" bpmnElement="User_ConsultantCreatesSection2">
-<omgdc:Bounds x="1000" y="508" width="120" height="80"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="End_ConsultantDone_di" bpmnElement="End_ConsultantDone">
-<omgdc:Bounds x="1180" y="530" width="36" height="36"/>
-</bpmndi:BPMNShape>
+      <!-- Sequence Flows Patient -->
+      <bpmndi:BPMNEdge id="Flow_P1_di" bpmnElement="Flow_P1">
+        <omgdi:waypoint x="86" y="98"/>
+        <omgdi:waypoint x="130" y="95"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_P2_di" bpmnElement="Flow_P2">
+        <omgdi:waypoint x="180" y="95"/>
+        <omgdi:waypoint x="280" y="95"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_P3_di" bpmnElement="Flow_P3">
+        <omgdi:waypoint x="330" y="95"/>
+        <omgdi:waypoint x="430" y="95"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_P4_di" bpmnElement="Flow_P4">
+        <omgdi:waypoint x="480" y="95"/>
+        <omgdi:waypoint x="580" y="88"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_P5_di" bpmnElement="Flow_P5">
+        <omgdi:waypoint x="598" y="88"/>
+        <omgdi:waypoint x="660" y="95"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_P6_di" bpmnElement="Flow_P6">
+        <omgdi:waypoint x="710" y="95"/>
+        <omgdi:waypoint x="810" y="98"/>
+      </bpmndi:BPMNEdge>
 
-<!-- Sequence Flows -->
-<bpmndi:BPMNEdge id="Flow_50_di" bpmnElement="Flow_50">
-<omgdi:waypoint x="86" y="218"/>
-<omgdi:waypoint x="120" y="218"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_51_di" bpmnElement="Flow_51">
-<omgdi:waypoint x="180" y="218"/>
-<omgdi:waypoint x="280" y="218"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_52_di" bpmnElement="Flow_52">
-<omgdi:waypoint x="340" y="218"/>
-<omgdi:waypoint x="440" y="218"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_53_di" bpmnElement="Flow_53">
-<omgdi:waypoint x="500" y="218"/>
-<omgdi:waypoint x="600" y="218"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_54_di" bpmnElement="Flow_54">
-<omgdi:waypoint x="618" y="218"/>
-<omgdi:waypoint x="680" y="218"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_55_di" bpmnElement="Flow_55">
-<omgdi:waypoint x="740" y="218"/>
-<omgdi:waypoint x="840" y="220"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_56_di" bpmnElement="Flow_56">
-<omgdi:waypoint x="865" y="220"/>
-<omgdi:waypoint x="865" y="300"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_57_di" bpmnElement="Flow_57">
-<omgdi:waypoint x="890" y="220"/>
-<omgdi:waypoint x="940" y="218"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_58_di" bpmnElement="Flow_58">
-<omgdi:waypoint x="865" y="330"/>
-<omgdi:waypoint x="618" y="330"/>
-<omgdi:waypoint x="618" y="236"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_59_di" bpmnElement="Flow_59">
-<omgdi:waypoint x="1000" y="218"/>
-<omgdi:waypoint x="1100" y="218"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_60_di" bpmnElement="Flow_60">
-<omgdi:waypoint x="1160" y="218"/>
-<omgdi:waypoint x="1260" y="218"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_61_di" bpmnElement="Flow_61">
-<omgdi:waypoint x="1320" y="218"/>
-<omgdi:waypoint x="68" y="350"/>
-</bpmndi:BPMNEdge>
+      <!-- Sequence Flows Nurse -->
+      <bpmndi:BPMNEdge id="Flow_N1_di" bpmnElement="Flow_N1">
+        <omgdi:waypoint x="138" y="338"/>
+        <omgdi:waypoint x="200" y="335"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_N2_di" bpmnElement="Flow_N2">
+        <omgdi:waypoint x="250" y="335"/>
+        <omgdi:waypoint x="350" y="335"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_N3_di" bpmnElement="Flow_N3">
+        <omgdi:waypoint x="410" y="335"/>
+        <omgdi:waypoint x="520" y="335"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_N4_di" bpmnElement="Flow_N4">
+        <omgdi:waypoint x="580" y="335"/>
+        <omgdi:waypoint x="690" y="335"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_N5_di" bpmnElement="Flow_N5">
+        <omgdi:waypoint x="750" y="335"/>
+        <omgdi:waypoint x="860" y="338"/>
+      </bpmndi:BPMNEdge>
 
-<!-- Section 2 flows -->
-<bpmndi:BPMNEdge id="Flow_62_di" bpmnElement="Flow_62">
-<omgdi:waypoint x="86" y="368"/>
-<omgdi:waypoint x="120" y="368"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_63_di" bpmnElement="Flow_63">
-<omgdi:waypoint x="180" y="368"/>
-<omgdi:waypoint x="280" y="370"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_64a_di" bpmnElement="Flow_64a">
-<omgdi:waypoint x="305" y="370"/>
-<omgdi:waypoint x="305" y="420"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_64b_di" bpmnElement="Flow_64b">
-<omgdi:waypoint x="330" y="370"/>
-<omgdi:waypoint x="370" y="368"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_64c_di" bpmnElement="Flow_64c">
-<omgdi:waypoint x="305" y="445"/>
-<omgdi:waypoint x="68" y="445"/>
-<omgdi:waypoint x="68" y="386"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_65_di" bpmnElement="Flow_65">
-<omgdi:waypoint x="430" y="368"/>
-<omgdi:waypoint x="530" y="368"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_66_di" bpmnElement="Flow_66">
-<omgdi:waypoint x="590" y="368"/>
-<omgdi:waypoint x="690" y="368"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_67_di" bpmnElement="Flow_67">
-<omgdi:waypoint x="750" y="368"/>
-<omgdi:waypoint x="850" y="368"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_68_di" bpmnElement="Flow_68">
-<omgdi:waypoint x="910" y="368"/>
-<omgdi:waypoint x="1010" y="368"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_69_di" bpmnElement="Flow_69">
-<omgdi:waypoint x="1070" y="368"/>
-<omgdi:waypoint x="1170" y="368"/>
-</bpmndi:BPMNEdge>
+      <!-- Sequence Flows Consultant -->
+      <bpmndi:BPMNEdge id="Flow_C1_di" bpmnElement="Flow_C1">
+        <omgdi:waypoint x="118" y="578"/>
+        <omgdi:waypoint x="180" y="575"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_C2a_di" bpmnElement="Flow_C2a">
+        <omgdi:waypoint x="205" y="550"/>
+        <omgdi:waypoint x="205" y="515"/>
+        <omgdi:waypoint x="270" y="515"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_C2b_di" bpmnElement="Flow_C2b">
+        <omgdi:waypoint x="205" y="600"/>
+        <omgdi:waypoint x="205" y="635"/>
+        <omgdi:waypoint x="270" y="635"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_C3_di" bpmnElement="Flow_C3">
+        <omgdi:waypoint x="330" y="515"/>
+        <omgdi:waypoint x="405" y="515"/>
+        <omgdi:waypoint x="455" y="575"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_C4_di" bpmnElement="Flow_C4">
+        <omgdi:waypoint x="330" y="635"/>
+        <omgdi:waypoint x="405" y="635"/>
+        <omgdi:waypoint x="455" y="575"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_C5_di" bpmnElement="Flow_C5">
+        <omgdi:waypoint x="480" y="575"/>
+        <omgdi:waypoint x="520" y="575"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_C6_di" bpmnElement="Flow_C6">
+        <omgdi:waypoint x="580" y="575"/>
+        <omgdi:waypoint x="680" y="575"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_C7_di" bpmnElement="Flow_C7">
+        <omgdi:waypoint x="740" y="575"/>
+        <omgdi:waypoint x="840" y="575"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_C8a_di" bpmnElement="Flow_C8a">
+        <omgdi:waypoint x="865" y="550"/>
+        <omgdi:waypoint x="865" y="500"/>
+        <omgdi:waypoint x="930" y="500"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_C8b_di" bpmnElement="Flow_C8b">
+        <omgdi:waypoint x="865" y="575"/>
+        <omgdi:waypoint x="930" y="575"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_C8c_di" bpmnElement="Flow_C8c">
+        <omgdi:waypoint x="865" y="600"/>
+        <omgdi:waypoint x="865" y="650"/>
+        <omgdi:waypoint x="930" y="650"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_C8d_di" bpmnElement="Flow_C8d">
+        <omgdi:waypoint x="890" y="575"/>
+        <omgdi:waypoint x="1090" y="575"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_C9_di" bpmnElement="Flow_C9">
+        <omgdi:waypoint x="990" y="500"/>
+        <omgdi:waypoint x="1075" y="500"/>
+        <omgdi:waypoint x="1125" y="495"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_C10_di" bpmnElement="Flow_C10">
+        <omgdi:waypoint x="990" y="575"/>
+        <omgdi:waypoint x="1050" y="575"/>
+        <omgdi:waypoint x="1125" y="495"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_C11_di" bpmnElement="Flow_C11">
+        <omgdi:waypoint x="990" y="650"/>
+        <omgdi:waypoint x="1075" y="650"/>
+        <omgdi:waypoint x="1125" y="495"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_C12_di" bpmnElement="Flow_C12">
+        <omgdi:waypoint x="1140" y="575"/>
+        <omgdi:waypoint x="1125" y="495"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_C13_di" bpmnElement="Flow_C13">
+        <omgdi:waypoint x="1150" y="495"/>
+        <omgdi:waypoint x="1190" y="505"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_C14_di" bpmnElement="Flow_C14">
+        <omgdi:waypoint x="1190" y="505"/>
+        <omgdi:waypoint x="560" y="715"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_C15_di" bpmnElement="Flow_C15">
+        <omgdi:waypoint x="560" y="715"/>
+        <omgdi:waypoint x="660" y="715"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_C16_di" bpmnElement="Flow_C16">
+        <omgdi:waypoint x="720" y="715"/>
+        <omgdi:waypoint x="820" y="713"/>
+      </bpmndi:BPMNEdge>
 
-<!-- Patient Flows -->
-<bpmndi:BPMNEdge id="Flow_70_di" bpmnElement="Flow_70">
-<omgdi:waypoint x="86" y="548"/>
-<omgdi:waypoint x="140" y="548"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_71_di" bpmnElement="Flow_71">
-<omgdi:waypoint x="200" y="548"/>
-<omgdi:waypoint x="320" y="548"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_72_di" bpmnElement="Flow_72">
-<omgdi:waypoint x="486" y="548"/>
-<omgdi:waypoint x="540" y="548"/>
-</bpmndi:BPMNEdge>
+      <!-- Message Flows -->
+      <bpmndi:BPMNEdge id="MF_PatientArrives_di" bpmnElement="MF_PatientArrives">
+        <omgdi:waypoint x="68" y="116"/>
+        <omgdi:waypoint x="138" y="320"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_VitalsReady_di" bpmnElement="MF_VitalsReady">
+        <omgdi:waypoint x="580" y="370"/>
+        <omgdi:waypoint x="580" y="550"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_EscortToConsultant_di" bpmnElement="MF_EscortToConsultant">
+        <omgdi:waypoint x="750" y="370"/>
+        <omgdi:waypoint x="118" y="578"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_PrescriptionReady_di" bpmnElement="MF_PrescriptionReady">
+        <omgdi:waypoint x="1230" y="505"/>
+        <omgdi:waypoint x="598" y="88"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_Section1Data_di" bpmnElement="MF_Section1Data">
+        <omgdi:waypoint x="710" y="95"/>
+        <omgdi:waypoint x="330" y="515"/>
+      </bpmndi:BPMNEdge>
 
-<!-- Consultant Flows -->
-<bpmndi:BPMNEdge id="Flow_80_di" bpmnElement="Flow_80">
-<omgdi:waypoint x="786" y="548"/>
-<omgdi:waypoint x="840" y="548"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_81_di" bpmnElement="Flow_81">
-<omgdi:waypoint x="900" y="548"/>
-<omgdi:waypoint x="1000" y="548"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_82_di" bpmnElement="Flow_82">
-<omgdi:waypoint x="1060" y="548"/>
-<omgdi:waypoint x="1180" y="548"/>
-</bpmndi:BPMNEdge>
-
-<!-- Message Flows -->
-<bpmndi:BPMNEdge id="MF_FormAvailable_di" bpmnElement="MF_FormAvailable">
-<omgdi:waypoint x="500" y="258"/>
-<omgdi:waypoint x="86" y="530"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="MF_Section1Submitted_di" bpmnElement="MF_Section1Submitted">
-<omgdi:waypoint x="200" y="588"/>
-<omgdi:waypoint x="618" y="236"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="MF_AssignedToConsultant_di" bpmnElement="MF_AssignedToConsultant">
-<omgdi:waypoint x="1320" y="258"/>
-<omgdi:waypoint x="786" y="548"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="MF_ProcessComplete_di" bpmnElement="MF_ProcessComplete">
-<omgdi:waypoint x="1070" y="408"/>
-<omgdi:waypoint x="486" y="530"/>
-</bpmndi:BPMNEdge>
-
-</bpmndi:BPMNPlane>
-</bpmndi:BPMNDiagram>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
 </definitions>

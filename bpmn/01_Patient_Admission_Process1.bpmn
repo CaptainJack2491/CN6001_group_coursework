@@ -470,9 +470,10 @@ targetNamespace="http://bpmn.io/schema/bpmn">
         <omgdi:waypoint x="1210" y="668"/>
       </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_29_di" bpmnElement="Flow_29">
-  <omgdi:waypoint x="1210" y="688"/>
-  <omgdi:waypoint x="1110" y="730"/>
-</bpmndi:BPMNEdge>
+        <omgdi:waypoint x="1210" y="708"/>
+        <omgdi:waypoint x="1110" y="708"/>
+        <omgdi:waypoint x="1110" y="730"/>
+      </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_30_di" bpmnElement="Flow_30">
 <omgdi:waypoint x="1110" y="765"/>
 <omgdi:waypoint x="1228" y="763"/>
