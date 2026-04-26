@@ -1,0 +1,146 @@
+classDiagram
+    class Patient {
+        +String patientID
+        +String firstName
+        +String lastName
+        +Date dateOfBirth
+        +String gender
+        +String phoneNumber
+        +String email
+        +String address
+        +String emergencyContact
+        +String nhsNumber
+        +register()
+        +updateProfile()
+        +viewHistory()
+        +bookAppointment()
+    }
+
+    class MedicalForm {
+        <<abstract>>
+        +String formID
+        +String patientID
+        +String formType
+        +Date dateCreated
+        +String status
+        +submitForm()
+        +editForm()
+        +validateForm()
+    }
+
+    class SectionOne {
+        +String symptoms
+        +String currentMedications
+        +String allergies
+        +String familyHistory
+        +String lifestyleFactors
+        +String patientSignature
+        +autoFillFromHistory()
+        +validateRequiredFields()
+    }
+
+    class SectionTwo {
+        +String clinicalNotes
+        +String diagnosis
+        +String severity
+        +String consultantID
+        +Date examinationDate
+        +String consultantSignature
+        +addClinicalNotes()
+        +setDiagnosis()
+    }
+
+    class Consultant {
+        +String consultantID
+        +String name
+        +String specialization
+        +String licenseNumber
+        +String email
+        +String phone
+        +examinePatient()
+        +completeSectionTwo()
+        +generatePrescription()
+        +viewPatientHistory()
+    }
+
+    class VitalSigns {
+        +String vitalID
+        +String patientID
+        +DateTime recordedDate
+        +Integer bloodPressureSystolic
+        +Integer bloodPressureDiastolic
+        +Float bmi
+        +Float weight
+        +Float height
+        +Float bloodSugar
+        +Integer heartRate
+        +String recordedBy
+        +calculateBMI()
+        +flagAbnormalValues()
+        +compareWithPrevious()
+    }
+
+    class Prescription {
+        +String prescriptionID
+        +String patientID
+        +String consultantID
+        +Date issueDate
+        +String medications
+        +String dosage
+        +String frequency
+        +String duration
+        +String instructions
+        +String status
+        +generatePrescription()
+        +sendToPharmacy()
+        +emailToPatient()
+        +printPrescription()
+    }
+
+    class Appointment {
+        +String appointmentID
+        +String patientID
+        +String consultantID
+        +DateTime appointmentDate
+        +Integer duration
+        +String type
+        +String status
+        +String roomNumber
+        +scheduleAppointment()
+        +reschedule()
+        +cancel()
+        +sendReminder()
+    }
+
+    class MedicalRecord {
+        +String recordID
+        +String patientID
+        +String formID
+        +String vitalID
+        +String prescriptionID
+        +Date createdDate
+        +Date lastUpdated
+        +compileCompleteRecord()
+        +exportToPDF()
+        +shareWithSpecialist()
+    }
+
+    MedicalForm <|-- SectionOne : extends
+    MedicalForm <|-- SectionTwo : extends
+
+    Patient "1" --> "*" MedicalForm : has
+    Patient "1" --> "*" VitalSigns : has
+    Patient "1" --> "*" Prescription : receives
+    Patient "1" --> "*" Appointment : books
+    Patient "1" --> "1" MedicalRecord : has
+
+    Consultant "1" --> "*" MedicalForm : completes
+    Consultant "1" --> "*" Prescription : issues
+    Consultant "1" --> "*" Appointment : conducts
+
+    MedicalForm "1" --> "1" SectionOne : contains
+    MedicalForm "1" --> "1" SectionTwo : contains
+    MedicalForm "1" --> "*" Prescription : generates
+
+    Appointment "1" --> "1" MedicalForm : produces
+    VitalSigns "*" --> "1" MedicalRecord : recorded in

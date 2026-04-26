@@ -1,0 +1,43 @@
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+.ruff_cache/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+.DS_Store
+*.zip
+*.pdf
+BonitaStudioCommunity*
+
+# Typst and Quarto generated
+*.pdf
+# Exception for the course specification
+!CN6001  CN5023 Groupwork*.pdf
+!report.pdf
+
+# Editor directories and files
+.kilo/
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.bak
+
+# Scripts and Virtual Env
+scripts/
+venv/
+env/
+*.db
+*.sqlite3

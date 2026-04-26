@@ -1,0 +1,127 @@
+erDiagram
+    PATIENTS {
+        string patientID PK
+        string firstName
+        string lastName
+        date dateOfBirth
+        string gender
+        string phoneNumber
+        string email
+        text address
+        string emergencyContact
+        string nhsNumber
+        string passwordHash
+        date registrationDate
+    }
+
+    CONSULTANTS {
+        string consultantID PK
+        string firstName
+        string lastName
+        string specialization
+        string licenseNumber
+        string email
+        string passwordHash
+        string role
+    }
+
+    MEDICAL_FORMS {
+        string formID PK
+        string patientID FK
+        string formType
+        date dateCreated
+        string status
+    }
+
+    SECTION_ONE {
+        string sectionOneID PK
+        string formID FK
+        text symptoms
+        text currentMedications
+        text allergies
+        text familyHistory
+        string lifestyleSmoking
+        string lifestyleExercise
+        datetime submittedDate
+    }
+
+    SECTION_TWO {
+        string sectionTwoID PK
+        string formID FK
+        string consultantID FK
+        text clinicalNotes
+        string diagnosis
+        string severity
+        datetime completedDate
+        string consultantSignature
+    }
+
+    VITAL_SIGNS {
+        string vitalID PK
+        string patientID FK
+        string appointmentID FK
+        string recordedBy FK
+        int bpSystolic
+        int bpDiastolic
+        int heartRate
+        float weightKg
+        float heightCm
+        float bmi
+        float bloodSugar
+        datetime recordedDate
+    }
+
+    PRESCRIPTIONS {
+        string prescriptionID PK
+        string patientID FK
+        string consultantID FK
+        string formID FK
+        date issueDate
+        text medications
+        text dosage
+        text frequency
+        text duration
+        text instructions
+        string status
+    }
+
+    APPOINTMENTS {
+        string appointmentID PK
+        string patientID FK
+        string consultantID FK
+        date appointmentDate
+        time appointmentTime
+        int duration
+        string type
+        string status
+        string roomNumber
+    }
+
+    MEDICAL_RECORDS {
+        string recordID PK
+        string patientID FK
+        string formID FK
+        string vitalID FK
+        string prescriptionID FK
+        date createdDate
+        date lastUpdated
+    }
+
+    PATIENTS ||--o{ MEDICAL_FORMS : "submits"
+    PATIENTS ||--o{ VITAL_SIGNS : "has"
+    PATIENTS ||--o{ PRESCRIPTIONS : "receives"
+    PATIENTS ||--o{ APPOINTMENTS : "books"
+    PATIENTS ||--|| MEDICAL_RECORDS : "has"
+
+    CONSULTANTS ||--o{ SECTION_TWO : "completes"
+    CONSULTANTS ||--o{ PRESCRIPTIONS : "issues"
+    CONSULTANTS ||--o{ APPOINTMENTS : "conducts"
+
+    MEDICAL_FORMS ||--|| SECTION_ONE : "contains"
+    MEDICAL_FORMS ||--|| SECTION_TWO : "contains"
+    MEDICAL_FORMS ||--o{ PRESCRIPTIONS : "leads to"
+
+    APPOINTMENTS ||--o{ VITAL_SIGNS : "triggers"
+
+    MEDICAL_RECORDS }o--|| VITAL_SIGNS : "references"
+    MEDICAL_RECORDS }o--|| PRESCRIPTIONS : "references"

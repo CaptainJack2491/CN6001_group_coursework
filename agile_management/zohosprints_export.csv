@@ -1,0 +1,18 @@
+Item Name,Item Type,Description,Status,Estimation,Assignee,Sprint,Priority
+Enterprise Cloud Architecture Design,Epic,Design AWS VPC and On-Premise connectivity models.,Closed,13,Hard Joshi,Sprint 1,High
+Patient Portal (SOA) Web Implementation,Epic,Develop the Patient facing web portal for registration and appointment booking.,Closed,13,Fatema Doctor,Sprint 2,High
+Staff Portal (AOA) Web Implementation,Epic,Develop the web-based staff terminal for Consultants and Nurses.,Closed,13,Sangeet Kaur,Sprint 3,High
+Backend Data Engineering & PostgreSQL,Epic,Set up Flask API and RDS PostgreSQL integration based on 3NF ERD.,Closed,8,Hard Joshi,Sprint 1,High
+As a Patient I want to register an account so that I can access the clinic portal.,User Story,Implement secure registration with passphrase hashing.,Closed,3,Fatema Doctor,Sprint 1,Medium
+As a Patient I want to book an appointment online so that I don't have to call.,User Story,Implement datetime picker and booking logic.,Closed,5,Fatema Doctor,Sprint 2,Medium
+As a Patient I want to fill out Section One of the medical form before my visit.,User Story,Create form for symptoms and allergies linked to appointment ID.,Closed,3,Fatema Doctor,Sprint 2,Medium
+As a Nurse I want to record patient vital signs so the consultant has them ready.,User Story,Implement web interface for BP; BMI; Sugar; and Heart Rate.,Closed,3,Sangeet Kaur,Sprint 3,Medium
+As a Consultant I want to complete Section Two of the medical form with my diagnosis.,User Story,Implement diagnosis branching (Hypertension/Hypotension/Diabetes).,Closed,5,Jayrup Nakawala,Sprint 3,Medium
+Initialize Flask project and Database Schema,Task,Set up basic app.py and SQLAlchemy models.,Closed,2,Hard Joshi,Sprint 1,Low
+Design CSS Design System,Task,Implement premium CVD Clinic theme with glassmorphism and animations.,Closed,2,Fatema Doctor,Sprint 1,Medium
+Migrate SQLite to PostgreSQL RDS,Task,Configure environment variables for AWS RDS connectivity.,Closed,3,Hard Joshi,Sprint 4,High
+Unified Medical Record Compilation,Task,Logic to merge Section 1; Vitals; and Section 2 into a single view.,Closed,5,Sangeet Kaur,Sprint 4,High
+Generate High-Fidelity BPMN Diagrams,Task,Regenerate all 3 BPMN diagrams using CASE tool standards.,Closed,3,Hard Joshi,Sprint 4,High
+Final Technical Report Compilation,Task,Integrate all diagrams and tech specs into report.typ.,In Progress,5,Hard Joshi,Sprint 4,High
+Individual Reflective Evaluations,Task,Each member writes their 500-word reflection.,Open,8,Jayrup Nakawala,Sprint 4,Medium
+End-to-End System Validation on AWS,Task,Final testing of the live Elastic Beanstalk environment.,In Progress,3,Sangeet Kaur,Sprint 4,Low
