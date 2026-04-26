@@ -163,9 +163,15 @@ targetNamespace="http://bpmn.io/schema/bpmn">
 <sequenceFlow id="Flow_30" sourceRef="Task_SaveRecord" targetRef="End_Consultant"/>
 
 <endEvent id="End_Consultant" name="Consultation Complete"/>
-</process>
+  </process>
 
-<bpmndi:BPMNDiagram id="BPMNDiagram_1">
+  <!-- Data Objects (required by Case Study) -->
+  <dataObject id="DataObject_Section1" name="Section 1 Form"/>
+  <dataObject id="DataObject_VitalSigns" name="Vital Signs Record"/>
+  <dataObject id="DataObject_Section2" name="Section 2 Form"/>
+  <dataObject id="DataObject_Prescription" name="Prescription"/>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
 <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
 
 <!-- Patient Pool -->
@@ -294,10 +300,24 @@ targetNamespace="http://bpmn.io/schema/bpmn">
 <omgdc:Bounds x="1050" y="730" width="120" height="70"/>
 </bpmndi:BPMNShape>
 <bpmndi:BPMNShape id="End_Consultant_di" bpmnElement="End_Consultant">
-<omgdc:Bounds x="1210" y="745" width="36" height="36"/>
-</bpmndi:BPMNShape>
+        <omgdc:Bounds x="1210" y="745" width="36" height="36"/>
+      </bpmndi:BPMNShape>
 
-<!-- Sequence Flows Patient -->
+      <!-- Data Objects -->
+      <bpmndi:BPMNShape id="DataObject_Section1_di" bpmnElement="DataObject_Section1">
+        <omgdc:Bounds x="400" y="30" width="36" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObject_VitalSigns_di" bpmnElement="DataObject_VitalSigns">
+        <omgdc:Bounds x="750" y="300" width="36" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObject_Section2_di" bpmnElement="DataObject_Section2">
+        <omgdc:Bounds x="620" y="550" width="36" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObject_Prescription_di" bpmnElement="DataObject_Prescription">
+        <omgdc:Bounds x="1000" y="560" width="36" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Sequence Flows Patient -->
 <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
 <omgdi:waypoint x="86" y="118"/>
 <omgdi:waypoint x="120" y="118"/>
@@ -446,12 +466,12 @@ targetNamespace="http://bpmn.io/schema/bpmn">
 <omgdi:waypoint x="1050" y="668"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_28_di" bpmnElement="Flow_28">
-<omgdi:waypoint x="1110" y="668"/>
-<omgdi:waypoint x="1210" y="668"/>
-</bpmndi:BPMNEdge>
+        <omgdi:waypoint x="1170" y="668"/>
+        <omgdi:waypoint x="1210" y="668"/>
+      </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_29_di" bpmnElement="Flow_29">
-<omgdi:waypoint x="1270" y="668"/>
-<omgdi:waypoint x="1110" y="668"/>
+  <omgdi:waypoint x="1210" y="688"/>
+  <omgdi:waypoint x="1110" y="730"/>
 </bpmndi:BPMNEdge>
 <bpmndi:BPMNEdge id="Flow_30_di" bpmnElement="Flow_30">
 <omgdi:waypoint x="1110" y="765"/>

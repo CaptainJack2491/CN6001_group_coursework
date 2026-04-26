@@ -1,239 +1,407 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
-xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
-xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
-xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-id="Definitions_2"
-targetNamespace="http://bpmn.io/schema/bpmn">
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_2" targetNamespace="http://bpmn.io/schema/bpmn">
 
-<collaboration id="Collaboration_2">
-<participant id="Participant_Patient2" name="Patient" processRef="Process_PatientBooking"/>
-<participant id="Participant_Admin" name="Admin Staff" processRef="Process_AdminBooking"/>
-<!-- Message flows between pools -->
-<messageFlow id="MF_Request" sourceRef="Task_RequestAppointment" targetRef="Catch_AppointmentRequest"/>
-<messageFlow id="MF_Confirmation" sourceRef="Send_Confirmation" targetRef="Catch_ReceiveConfirmation"/>
-<messageFlow id="MF_FormLink" sourceRef="Send_FormLink" targetRef="Catch_FormLinkReceived"/>
-</collaboration>
+  <collaboration id="Collaboration_2">
+    <participant id="Participant_Patient2" name="Patient" processRef="Process_PatientBooking"/>
+    <participant id="Participant_Admin" name="Admin Staff" processRef="Process_AdminBooking"/>
+    <participant id="Participant_Consultant" name="Consultant" processRef="Process_ConsultantBooking"/>
+    <!-- Message flows between pools -->
+    <messageFlow id="MF_Request" sourceRef="Task_RequestAppointment" targetRef="Catch_AppointmentRequest"/>
+    <messageFlow id="MF_Confirmation" sourceRef="Send_Confirmation" targetRef="Catch_ReceiveConfirmation"/>
+    <messageFlow id="MF_FormLink" sourceRef="Send_FormLink" targetRef="Catch_FormLinkReceived"/>
+    <messageFlow id="MF_CalendarUpdate" sourceRef="Task_CheckSchedule" targetRef="Catch_CalendarRequest"/>
+    <messageFlow id="MF_ApproveSchedule" sourceRef="Task_ApproveSchedule" targetRef="Catch_ScheduleApproved"/>
+  </collaboration>
 
-<!-- Patient Booking Process -->
-<process id="Process_PatientBooking" isExecutable="false">
-<startEvent id="Start_Request" name="Request Appointment Online"/>
-<sequenceFlow id="Flow_30" sourceRef="Start_Request" targetRef="Task_RequestAppointment"/>
+  <!-- Patient Booking Process -->
+  <process id="Process_PatientBooking" isExecutable="false">
+    <startEvent id="Start_Request" name="Request Appointment&#10;(Date/Consultant Preference)"/>
+    <sequenceFlow id="Flow_30" sourceRef="Start_Request" targetRef="Task_RequestAppointment"/>
 
-<userTask id="Task_RequestAppointment" name="Request Appointment Online&#10;(Select preferred date)"/>
-<sequenceFlow id="Flow_31" sourceRef="Task_RequestAppointment" targetRef="Gateway_DateAvailable"/>
+    <userTask id="Task_RequestAppointment" name="Request Appointment&#10;(Select preferred date)"/>
+    <sequenceFlow id="Flow_31" sourceRef="Task_RequestAppointment" targetRef="Gateway_DateAvailable"/>
 
-<exclusiveGateway id="Gateway_DateAvailable" name="Preferred Date Available?"/>
-<sequenceFlow id="Flow_32" name="No" sourceRef="Gateway_DateAvailable" targetRef="Task_SelectAlternative">
-<conditionExpression xsi:type="tFormalExpression">${!dateAvailable}</conditionExpression>
-</sequenceFlow>
-<sequenceFlow id="Flow_33" name="Yes" sourceRef="Gateway_DateAvailable" targetRef="Task_ConfirmAppointment">
-<conditionExpression xsi:type="tFormalExpression">${dateAvailable}</conditionExpression>
-</sequenceFlow>
+    <exclusiveGateway id="Gateway_DateAvailable" name="Slot&#10;Available?"/>
+    <sequenceFlow id="Flow_32" name="No" sourceRef="Gateway_DateAvailable" targetRef="Task_SelectAlternative">
+      <conditionExpression xsi:type="tFormalExpression">${!dateAvailable}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="Flow_33" name="Yes" sourceRef="Gateway_DateAvailable" targetRef="Task_ConfirmAppointment">
+      <conditionExpression xsi:type="tFormalExpression">${dateAvailable}</conditionExpression>
+    </sequenceFlow>
 
-<userTask id="Task_SelectAlternative" name="Select Alternative Date"/>
-<sequenceFlow id="Flow_34" sourceRef="Task_SelectAlternative" targetRef="Task_RequestAppointment"/>
+    <userTask id="Task_SelectAlternative" name="Select Alternative&#10;Date/Time"/>
+    <sequenceFlow id="Flow_34" sourceRef="Task_SelectAlternative" targetRef="Task_RequestAppointment"/>
 
-<userTask id="Task_ConfirmAppointment" name="Confirm Appointment"/>
-<sequenceFlow id="Flow_35" sourceRef="Task_ConfirmAppointment" targetRef="Catch_ReceiveConfirmation"/>
+    <userTask id="Task_ConfirmAppointment" name="Confirm Booking"/>
+    <sequenceFlow id="Flow_35" sourceRef="Task_ConfirmAppointment" targetRef="Catch_ReceiveConfirmation"/>
 
-<!-- Receive task - patient waits for confirmation email/SMS -->
-<intermediateCatchEvent id="Catch_ReceiveConfirmation" name="Receive&#10;Confirmation">
-<messageEventDefinition id="MsgDef_Confirmation"/>
-</intermediateCatchEvent>
-<sequenceFlow id="Flow_36" sourceRef="Catch_ReceiveConfirmation" targetRef="End_BookingComplete"/>
+    <!-- Receive task - patient waits for confirmation email/SMS -->
+    <intermediateCatchEvent id="Catch_ReceiveConfirmation" name="Receive&#10;Confirmation Email/SMS">
+      <messageEventDefinition id="MsgDef_Confirmation"/>
+    </intermediateCatchEvent>
+    <sequenceFlow id="Flow_36" sourceRef="Catch_ReceiveConfirmation" targetRef="Task_CompletePreVisitForms"/>
 
-<endEvent id="End_BookingComplete" name="Appointment Confirmed"/>
+    <userTask id="Task_CompletePreVisitForms" name="Complete Pre-Visit Forms&#10;(Section 1)"/>
+    <sequenceFlow id="Flow_37" sourceRef="Task_CompletePreVisitForms" targetRef="Catch_TimerReminder"/>
 
-<!-- Catch for Pre-Visit Form notification -->
-<intermediateCatchEvent id="Catch_FormLinkReceived" name="Receive&#10;Pre-Visit Form Link">
-<messageEventDefinition id="MsgDef_FormLink"/>
-</intermediateCatchEvent>
-<sequenceFlow id="Flow_37" sourceRef="Catch_FormLinkReceived" targetRef="Task_CompletePreVisitForms"/>
+    <!-- Timer event - 24 hours before appointment -->
+    <intermediateCatchEvent id="Catch_TimerReminder" name="24hr&#10;Reminder">
+      <timerEventDefinition id="TimerDef_Reminder"/>
+    </intermediateCatchEvent>
+    <sequenceFlow id="Flow_38" sourceRef="Catch_TimerReminder" targetRef="End_BookingComplete"/>
 
-<userTask id="Task_CompletePreVisitForms" name="Complete Pre-Visit Forms&#10;(Section 1)"/>
-<sequenceFlow id="Flow_38" sourceRef="Task_CompletePreVisitForms" targetRef="End_FormsComplete"/>
+    <endEvent id="End_BookingComplete" name="Appointment&#10;Confirmed"/>
+  </process>
 
-<endEvent id="End_FormsComplete" name="Ready for Visit"/>
-</process>
+  <!-- Admin Staff Process -->
+  <process id="Process_AdminBooking" isExecutable="false">
+    <!-- Intermediate catch - triggered by message from Patient request -->
+    <intermediateCatchEvent id="Catch_AppointmentRequest" name="Appointment&#10;Request Received">
+      <messageEventDefinition id="MsgDef_Request"/>
+    </intermediateCatchEvent>
+    <sequenceFlow id="Flow_40" sourceRef="Catch_AppointmentRequest" targetRef="Task_CheckSchedule"/>
 
-<!-- Admin Staff Process -->
-<process id="Process_AdminBooking" isExecutable="false">
-<!-- Intermediate catch - triggered by message from Patient request -->
-<intermediateCatchEvent id="Catch_AppointmentRequest" name="Appointment&#10;Request Received">
-<messageEventDefinition id="MsgDef_Request"/>
-</intermediateCatchEvent>
-<sequenceFlow id="Flow_40" sourceRef="Catch_AppointmentRequest" targetRef="Task_CheckSchedule"/>
+    <userTask id="Task_CheckSchedule" name="Check Consultant&#10;Calendar"/>
+    <sequenceFlow id="Flow_41" sourceRef="Task_CheckSchedule" targetRef="Gateway_FreeSlot"/>
 
-<userTask id="Task_CheckSchedule" name="Check Consultant Schedule"/>
-<sequenceFlow id="Flow_41" sourceRef="Task_CheckSchedule" targetRef="Task_BlockSlot"/>
+    <exclusiveGateway id="Gateway_FreeSlot" name="Requested Slot&#10;Free?"/>
+    <sequenceFlow id="Flow_42" name="No" sourceRef="Gateway_FreeSlot" targetRef="User_NotifyPatient">
+      <conditionExpression xsi:type="tFormalExpression">${!slotFree}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="Flow_43" name="Yes" sourceRef="Gateway_FreeSlot" targetRef="Gateway_ParallelBlock"/>
 
-<!-- Service task - automated slot blocking -->
-<serviceTask id="Task_BlockSlot" name="Block Appointment Slot"/>
-<sequenceFlow id="Flow_42" sourceRef="Task_BlockSlot" targetRef="Send_Confirmation"/>
+    <userTask id="User_NotifyPatient" name="Notify Patient&#10;(Alternative Needed)"/>
+    <sequenceFlow id="Flow_44" sourceRef="User_NotifyPatient" targetRef="End_AdminNoSlot"/>
 
-<!-- Send task - automated email/SMS sending -->
-<sendTask id="Send_Confirmation" name="Send Confirmation Email/SMS"/>
-<sequenceFlow id="Flow_43" sourceRef="Send_Confirmation" targetRef="Send_FormLink"/>
+    <endEvent id="End_AdminNoSlot" name="Slot Not&#10;Available"/>
 
-<!-- Send task - automated form link sending -->
-<sendTask id="Send_FormLink" name="Send Pre-Visit Form Link"/>
-<sequenceFlow id="Flow_44" sourceRef="Send_FormLink" targetRef="End_AdminComplete"/>
+    <!-- Parallel Gateway: Admin blocks slot AND sends form link simultaneously -->
+    <parallelGateway id="Gateway_ParallelBlock" name="Block &amp; Send&#10;Simultaneously?"/>
+    <sequenceFlow id="Flow_45a" sourceRef="Gateway_ParallelBlock" targetRef="Task_BlockSlot"/>
+    <sequenceFlow id="Flow_45b" sourceRef="Gateway_ParallelBlock" targetRef="Task_PrepareFormLink"/>
 
-<endEvent id="End_AdminComplete" name="Booking Processed"/>
-</process>
+    <serviceTask id="Task_BlockSlot" name="Block Appointment&#10;Slot"/>
+    <sequenceFlow id="Flow_46" sourceRef="Task_BlockSlot" targetRef="Gateway_JoinBlock"/>
 
-<bpmndi:BPMNDiagram id="BPMNDiagram_2">
-<bpmndi:BPMNPlane id="BPMNPlane_2" bpmnElement="Collaboration_2">
+    <userTask id="Task_PrepareFormLink" name="Prepare Section 1&#10;Form Link"/>
+    <sequenceFlow id="Flow_47" sourceRef="Task_PrepareFormLink" targetRef="Gateway_JoinBlock"/>
 
-<!-- Patient Pool -->
-<bpmndi:BPMNShape id="Participant_Patient2_di" bpmnElement="Participant_Patient2" isHorizontal="true">
-<omgdc:Bounds x="0" y="0" width="1000" height="320"/>
-</bpmndi:BPMNShape>
+    <!-- Join gateway after parallel tasks -->
+    <parallelGateway id="Gateway_JoinBlock"/>
+    <sequenceFlow id="Flow_48" sourceRef="Gateway_JoinBlock" targetRef="Send_Confirmation"/>
 
-<bpmndi:BPMNShape id="Start_Request_di" bpmnElement="Start_Request">
-<omgdc:Bounds x="50" y="100" width="36" height="36"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_RequestAppointment_di" bpmnElement="Task_RequestAppointment">
-<omgdc:Bounds x="120" y="78" width="140" height="80"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Gateway_DateAvailable_di" bpmnElement="Gateway_DateAvailable" isMarkerVisible="true">
-<omgdc:Bounds x="300" y="95" width="50" height="50"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_SelectAlternative_di" bpmnElement="Task_SelectAlternative">
-<omgdc:Bounds x="265" y="200" width="120" height="60"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_ConfirmAppointment_di" bpmnElement="Task_ConfirmAppointment">
-<omgdc:Bounds x="400" y="78" width="120" height="80"/>
-</bpmndi:BPMNShape>
+    <!-- Send task - automated email/SMS sending -->
+    <sendTask id="Send_Confirmation" name="Send Confirmation&#10;(Email/SMS)"/>
+    <sequenceFlow id="Flow_49" sourceRef="Send_Confirmation" targetRef="Send_FormLink"/>
 
-<!-- Receive event for confirmation -->
-<bpmndi:BPMNShape id="Catch_ReceiveConfirmation_di" bpmnElement="Catch_ReceiveConfirmation">
-<omgdc:Bounds x="560" y="100" width="36" height="36"/>
-</bpmndi:BPMNShape>
+    <!-- Send task - automated form link sending -->
+    <sendTask id="Send_FormLink" name="Send Section 1&#10;Form Link"/>
+    <sequenceFlow id="Flow_50" sourceRef="Send_FormLink" targetRef="End_AdminComplete"/>
 
-<bpmndi:BPMNShape id="End_BookingComplete_di" bpmnElement="End_BookingComplete">
-<omgdc:Bounds x="720" y="100" width="36" height="36"/>
-</bpmndi:BPMNShape>
+    <endEvent id="End_AdminComplete" name="Booking Processed"/>
+  </process>
 
-<!-- Pre-visit forms flow (lower in Patient pool) -->
-<bpmndi:BPMNShape id="Catch_FormLinkReceived_di" bpmnElement="Catch_FormLinkReceived">
-<omgdc:Bounds x="400" y="240" width="36" height="36"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_CompletePreVisitForms_di" bpmnElement="Task_CompletePreVisitForms">
-<omgdc:Bounds x="480" y="218" width="140" height="80"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="End_FormsComplete_di" bpmnElement="End_FormsComplete">
-<omgdc:Bounds x="680" y="238" width="36" height="36"/>
-</bpmndi:BPMNShape>
+  <!-- Consultant Process -->
+  <process id="Process_ConsultantBooking" isExecutable="false">
+    <!-- Intermediate catch - consultant notified of new appointment -->
+    <intermediateCatchEvent id="Catch_CalendarRequest" name="Schedule&#10;Update Received">
+      <messageEventDefinition id="MsgDef_CalendarUpdate"/>
+    </intermediateCatchEvent>
+    <sequenceFlow id="Flow_60" sourceRef="Catch_CalendarRequest" targetRef="Task_ViewAppointments"/>
 
-<!-- Admin Pool -->
-<bpmndi:BPMNShape id="Participant_Admin_di" bpmnElement="Participant_Admin" isHorizontal="true">
-<omgdc:Bounds x="0" y="340" width="1000" height="220"/>
-</bpmndi:BPMNShape>
+    <userTask id="Task_ViewAppointments" name="View Scheduled&#10;Appointments"/>
+    <sequenceFlow id="Flow_61" sourceRef="Task_ViewAppointments" targetRef="Gateway_Clashes"/>
 
-<!-- Receive event for appointment request -->
-<bpmndi:BPMNShape id="Catch_AppointmentRequest_di" bpmnElement="Catch_AppointmentRequest">
-<omgdc:Bounds x="120" y="440" width="36" height="36"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_CheckSchedule_di" bpmnElement="Task_CheckSchedule">
-<omgdc:Bounds x="200" y="418" width="120" height="80"/>
-</bpmndi:BPMNShape>
-<bpmndi:BPMNShape id="Task_BlockSlot_di" bpmnElement="Task_BlockSlot">
-<omgdc:Bounds x="360" y="418" width="120" height="80"/>
-</bpmndi:BPMNShape>
+    <exclusiveGateway id="Gateway_Clashes" name="Any&#10;Clashes?"/>
+    <sequenceFlow id="Flow_62" name="Yes (Conflict)" sourceRef="Gateway_Clashes" targetRef="User_ResolveClash">
+      <conditionExpression xsi:type="tFormalExpression">${hasClash}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="Flow_63" name="No (Clear)" sourceRef="Gateway_Clashes" targetRef="Task_ApproveSchedule">
+      <conditionExpression xsi:type="tFormalExpression">${!hasClash}</conditionExpression>
+    </sequenceFlow>
 
-<!-- Send task for confirmation -->
-<bpmndi:BPMNShape id="Send_Confirmation_di" bpmnElement="Send_Confirmation">
-<omgdc:Bounds x="520" y="418" width="120" height="80"/>
-</bpmndi:BPMNShape>
+    <userTask id="User_ResolveClash" name="Resolve Schedule&#10;Conflict"/>
+    <sequenceFlow id="Flow_64" sourceRef="User_ResolveClash" targetRef="End_ConsultantConflict"/>
 
-<!-- Send task for form link -->
-<bpmndi:BPMNShape id="Send_FormLink_di" bpmnElement="Send_FormLink">
-<omgdc:Bounds x="680" y="418" width="140" height="80"/>
-</bpmndi:BPMNShape>
+    <endEvent id="End_ConsultantConflict" name="Conflict&#10;Detected"/>
 
-<bpmndi:BPMNShape id="End_AdminComplete_di" bpmnElement="End_AdminComplete">
-<omgdc:Bounds x="860" y="438" width="36" height="36"/>
-</bpmndi:BPMNShape>
+    <userTask id="Task_ApproveSchedule" name="Approve Schedule"/>
+    <sequenceFlow id="Flow_65" sourceRef="Task_ApproveSchedule" targetRef="Catch_ScheduleApproved"/>
 
-<!-- Sequence Flows -->
-<bpmndi:BPMNEdge id="Flow_30_di" bpmnElement="Flow_30">
-<omgdi:waypoint x="86" y="118"/>
-<omgdi:waypoint x="120" y="118"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_31_di" bpmnElement="Flow_31">
-<omgdi:waypoint x="260" y="118"/>
-<omgdi:waypoint x="300" y="120"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_32_di" bpmnElement="Flow_32">
-<omgdi:waypoint x="325" y="120"/>
-<omgdi:waypoint x="325" y="200"/>
-<omgdi:waypoint x="325" y="230"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_33_di" bpmnElement="Flow_33">
-<omgdi:waypoint x="350" y="120"/>
-<omgdi:waypoint x="400" y="118"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_34_di" bpmnElement="Flow_34">
-<omgdi:waypoint x="325" y="230"/>
-<omgdi:waypoint x="180" y="230"/>
-<omgdi:waypoint x="180" y="118"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_35_di" bpmnElement="Flow_35">
-<omgdi:waypoint x="460" y="118"/>
-<omgdi:waypoint x="560" y="118"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_36_di" bpmnElement="Flow_36">
-<omgdi:waypoint x="578" y="118"/>
-<omgdi:waypoint x="720" y="118"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_37_di" bpmnElement="Flow_37">
-<omgdi:waypoint x="418" y="258"/>
-<omgdi:waypoint x="480" y="258"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_38_di" bpmnElement="Flow_38">
-<omgdi:waypoint x="560" y="258"/>
-<omgdi:waypoint x="680" y="256"/>
-</bpmndi:BPMNEdge>
+    <!-- Receive approval confirmation -->
+    <intermediateCatchEvent id="Catch_ScheduleApproved" name="Approval&#10;Confirmed">
+      <messageEventDefinition id="MsgDef_Approve"/>
+    </intermediateCatchEvent>
+    <sequenceFlow id="Flow_66" sourceRef="Catch_ScheduleApproved" targetRef="End_ConsultantComplete"/>
 
-<!-- Admin Flows -->
-<bpmndi:BPMNEdge id="Flow_40_di" bpmnElement="Flow_40">
-<omgdi:waypoint x="138" y="458"/>
-<omgdi:waypoint x="200" y="458"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_41_di" bpmnElement="Flow_41">
-<omgdi:waypoint x="260" y="458"/>
-<omgdi:waypoint x="360" y="458"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_42_di" bpmnElement="Flow_42">
-<omgdi:waypoint x="420" y="458"/>
-<omgdi:waypoint x="520" y="458"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_43_di" bpmnElement="Flow_43">
-<omgdi:waypoint x="580" y="458"/>
-<omgdi:waypoint x="680" y="458"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="Flow_44_di" bpmnElement="Flow_44">
-<omgdi:waypoint x="760" y="458"/>
-<omgdi:waypoint x="860" y="456"/>
-</bpmndi:BPMNEdge>
+    <endEvent id="End_ConsultantComplete" name="Schedule&#10;Approved"/>
+  </process>
 
-<!-- Message Flows -->
-<bpmndi:BPMNEdge id="MF_Request_di" bpmnElement="MF_Request">
-<omgdi:waypoint x="190" y="158"/>
-<omgdi:waypoint x="138" y="440"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="MF_Confirmation_di" bpmnElement="MF_Confirmation">
-<omgdi:waypoint x="580" y="498"/>
-<omgdi:waypoint x="580" y="136"/>
-</bpmndi:BPMNEdge>
-<bpmndi:BPMNEdge id="MF_FormLink_di" bpmnElement="MF_FormLink">
-<omgdi:waypoint x="750" y="498"/>
-<omgdi:waypoint x="418" y="258"/>
-</bpmndi:BPMNEdge>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_2">
+    <bpmndi:BPMNPlane id="BPMNPlane_2" bpmnElement="Collaboration_2">
 
-</bpmndi:BPMNPlane>
-</bpmndi:BPMNDiagram>
+      <!-- Patient Pool -->
+      <bpmndi:BPMNShape id="Participant_Patient2_di" bpmnElement="Participant_Patient2" isHorizontal="true">
+        <omgdc:Bounds x="0" y="0" width="1200" height="300"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Start_Request_di" bpmnElement="Start_Request">
+        <omgdc:Bounds x="50" y="120" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RequestAppointment_di" bpmnElement="Task_RequestAppointment">
+        <omgdc:Bounds x="120" y="95" width="120" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DateAvailable_di" bpmnElement="Gateway_DateAvailable" isMarkerVisible="true">
+        <omgdc:Bounds x="280" y="110" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SelectAlternative_di" bpmnElement="Task_SelectAlternative">
+        <omgdc:Bounds x="245" y="210" width="120" height="60"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ConfirmAppointment_di" bpmnElement="Task_ConfirmAppointment">
+        <omgdc:Bounds x="370" y="95" width="120" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Receive event for confirmation -->
+      <bpmndi:BPMNShape id="Catch_ReceiveConfirmation_di" bpmnElement="Catch_ReceiveConfirmation">
+        <omgdc:Bounds x="530" y="110" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_CompletePreVisitForms_di" bpmnElement="Task_CompletePreVisitForms">
+        <omgdc:Bounds x="600" y="95" width="140" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Timer event -->
+      <bpmndi:BPMNShape id="Catch_TimerReminder_di" bpmnElement="Catch_TimerReminder">
+        <omgdc:Bounds x="780" y="110" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="End_BookingComplete_di" bpmnElement="End_BookingComplete">
+        <omgdc:Bounds x="870" y="110" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Admin Pool -->
+      <bpmndi:BPMNShape id="Participant_Admin_di" bpmnElement="Participant_Admin" isHorizontal="true">
+        <omgdc:Bounds x="0" y="320" width="1200" height="280"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Receive event for appointment request -->
+      <bpmndi:BPMNShape id="Catch_AppointmentRequest_di" bpmnElement="Catch_AppointmentRequest">
+        <omgdc:Bounds x="120" y="420" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CheckSchedule_di" bpmnElement="Task_CheckSchedule">
+        <omgdc:Bounds x="200" y="400" width="120" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_FreeSlot_di" bpmnElement="Gateway_FreeSlot" isMarkerVisible="true">
+        <omgdc:Bounds x="360" y="405" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="User_NotifyPatient_di" bpmnElement="User_NotifyPatient">
+        <omgdc:Bounds x="360" y="490" width="120" height="60"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_AdminNoSlot_di" bpmnElement="End_AdminNoSlot">
+        <omgdc:Bounds x="530" y="500" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ParallelBlock_di" bpmnElement="Gateway_ParallelBlock" isMarkerVisible="true">
+        <omgdc:Bounds x="450" y="405" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_BlockSlot_di" bpmnElement="Task_BlockSlot">
+        <omgdc:Bounds x="530" y="340" width="120" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PrepareFormLink_di" bpmnElement="Task_PrepareFormLink">
+        <omgdc:Bounds x="530" y="450" width="120" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinBlock_di" bpmnElement="Gateway_JoinBlock" isMarkerVisible="true">
+        <omgdc:Bounds x="690" y="405" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Send task for confirmation -->
+      <bpmndi:BPMNShape id="Send_Confirmation_di" bpmnElement="Send_Confirmation">
+        <omgdc:Bounds x="770" y="400" width="120" height="70"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Send task for form link -->
+      <bpmndi:BPMNShape id="Send_FormLink_di" bpmnElement="Send_FormLink">
+        <omgdc:Bounds x="930" y="400" width="120" height="70"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="End_AdminComplete_di" bpmnElement="End_AdminComplete">
+        <omgdc:Bounds x="1090" y="415" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Consultant Pool -->
+      <bpmndi:BPMNShape id="Participant_Consultant_di" bpmnElement="Participant_Consultant" isHorizontal="true">
+        <omgdc:Bounds x="0" y="620" width="1200" height="180"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Catch_CalendarRequest_di" bpmnElement="Catch_CalendarRequest">
+        <omgdc:Bounds x="120" y="690" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ViewAppointments_di" bpmnElement="Task_ViewAppointments">
+        <omgdc:Bounds x="200" y="680" width="120" height="60"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Clashes_di" bpmnElement="Gateway_Clashes" isMarkerVisible="true">
+        <omgdc:Bounds x="360" y="685" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="User_ResolveClash_di" bpmnElement="User_ResolveClash">
+        <omgdc:Bounds x="360" y="770" width="120" height="60"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_ConsultantConflict_di" bpmnElement="End_ConsultantConflict">
+        <omgdc:Bounds x="530" y="780" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApproveSchedule_di" bpmnElement="Task_ApproveSchedule">
+        <omgdc:Bounds x="450" y="680" width="120" height="60"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Catch_ScheduleApproved_di" bpmnElement="Catch_ScheduleApproved">
+        <omgdc:Bounds x="610" y="690" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_ConsultantComplete_di" bpmnElement="End_ConsultantComplete">
+        <omgdc:Bounds x="700" y="690" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Sequence Flows Patient -->
+      <bpmndi:BPMNEdge id="Flow_30_di" bpmnElement="Flow_30">
+        <omgdi:waypoint x="86" y="138"/>
+        <omgdi:waypoint x="120" y="135"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_31_di" bpmnElement="Flow_31">
+        <omgdi:waypoint x="240" y="135"/>
+        <omgdi:waypoint x="280" y="135"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_32_di" bpmnElement="Flow_32">
+        <omgdi:waypoint x="305" y="135"/>
+        <omgdi:waypoint x="305" y="210"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_33_di" bpmnElement="Flow_33">
+        <omgdi:waypoint x="330" y="135"/>
+        <omgdi:waypoint x="370" y="135"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_34_di" bpmnElement="Flow_34">
+        <omgdi:waypoint x="305" y="240"/>
+        <omgdi:waypoint x="180" y="240"/>
+        <omgdi:waypoint x="180" y="135"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_35_di" bpmnElement="Flow_35">
+        <omgdi:waypoint x="430" y="135"/>
+        <omgdi:waypoint x="530" y="128"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_36_di" bpmnElement="Flow_36">
+        <omgdi:waypoint x="548" y="128"/>
+        <omgdi:waypoint x="600" y="135"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_37_di" bpmnElement="Flow_37">
+        <omgdi:waypoint x="670" y="135"/>
+        <omgdi:waypoint x="780" y="128"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_38_di" bpmnElement="Flow_38">
+        <omgdi:waypoint x="798" y="128"/>
+        <omgdi:waypoint x="870" y="128"/>
+      </bpmndi:BPMNEdge>
+
+      <!-- Sequence Flows Admin -->
+      <bpmndi:BPMNEdge id="Flow_40_di" bpmnElement="Flow_40">
+        <omgdi:waypoint x="138" y="438"/>
+        <omgdi:waypoint x="200" y="435"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_41_di" bpmnElement="Flow_41">
+        <omgdi:waypoint x="260" y="435"/>
+        <omgdi:waypoint x="360" y="430"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_42_di" bpmnElement="Flow_42">
+        <omgdi:waypoint x="385" y="430"/>
+        <omgdi:waypoint x="385" y="490"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_43_di" bpmnElement="Flow_43">
+        <omgdi:waypoint x="410" y="430"/>
+        <omgdi:waypoint x="450" y="430"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_44_di" bpmnElement="Flow_44">
+        <omgdi:waypoint x="420" y="520"/>
+        <omgdi:waypoint x="530" y="518"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_45a_di" bpmnElement="Flow_45a">
+        <omgdi:waypoint x="475" y="405"/>
+        <omgdi:waypoint x="475" y="375"/>
+        <omgdi:waypoint x="530" y="375"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_45b_di" bpmnElement="Flow_45b">
+        <omgdi:waypoint x="475" y="455"/>
+        <omgdi:waypoint x="475" y="485"/>
+        <omgdi:waypoint x="530" y="485"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_46_di" bpmnElement="Flow_46">
+        <omgdi:waypoint x="590" y="375"/>
+        <omgdi:waypoint x="665" y="375"/>
+        <omgdi:waypoint x="715" y="430"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_47_di" bpmnElement="Flow_47">
+        <omgdi:waypoint x="590" y="485"/>
+        <omgdi:waypoint x="665" y="485"/>
+        <omgdi:waypoint x="715" y="430"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_48_di" bpmnElement="Flow_48">
+        <omgdi:waypoint x="740" y="430"/>
+        <omgdi:waypoint x="770" y="435"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_49_di" bpmnElement="Flow_49">
+        <omgdi:waypoint x="830" y="435"/>
+        <omgdi:waypoint x="930" y="435"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_50_di" bpmnElement="Flow_50">
+        <omgdi:waypoint x="990" y="435"/>
+        <omgdi:waypoint x="1090" y="433"/>
+      </bpmndi:BPMNEdge>
+
+      <!-- Sequence Flows Consultant -->
+      <bpmndi:BPMNEdge id="Flow_60_di" bpmnElement="Flow_60">
+        <omgdi:waypoint x="138" y="708"/>
+        <omgdi:waypoint x="200" y="710"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_61_di" bpmnElement="Flow_61">
+        <omgdi:waypoint x="260" y="710"/>
+        <omgdi:waypoint x="360" y="710"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_62_di" bpmnElement="Flow_62">
+        <omgdi:waypoint x="385" y="710"/>
+        <omgdi:waypoint x="385" y="770"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_63_di" bpmnElement="Flow_63">
+        <omgdi:waypoint x="410" y="710"/>
+        <omgdi:waypoint x="450" y="710"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_64_di" bpmnElement="Flow_64">
+        <omgdi:waypoint x="420" y="800"/>
+        <omgdi:waypoint x="530" y="798"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_65_di" bpmnElement="Flow_65">
+        <omgdi:waypoint x="510" y="710"/>
+        <omgdi:waypoint x="610" y="708"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_66_di" bpmnElement="Flow_66">
+        <omgdi:waypoint x="628" y="708"/>
+        <omgdi:waypoint x="700" y="708"/>
+      </bpmndi:BPMNEdge>
+
+      <!-- Message Flows -->
+      <bpmndi:BPMNEdge id="MF_Request_di" bpmnElement="MF_Request">
+        <omgdi:waypoint x="180" y="175"/>
+        <omgdi:waypoint x="138" y="420"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_Confirmation_di" bpmnElement="MF_Confirmation">
+        <omgdi:waypoint x="830" y="470"/>
+        <omgdi:waypoint x="548" y="136"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_FormLink_di" bpmnElement="MF_FormLink">
+        <omgdi:waypoint x="990" y="470"/>
+        <omgdi:waypoint x="600" y="175"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_CalendarUpdate_di" bpmnElement="MF_CalendarUpdate">
+        <omgdi:waypoint x="260" y="435"/>
+        <omgdi:waypoint x="138" y="708"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MF_ApproveSchedule_di" bpmnElement="MF_ApproveSchedule">
+        <omgdi:waypoint x="510" y="710"/>
+        <omgdi:waypoint x="628" y="708"/>
+      </bpmndi:BPMNEdge>
+
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
 </definitions>
