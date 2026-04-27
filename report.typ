@@ -829,12 +829,12 @@ This section documents the use of *Agile ScrumDesk* software for managing the gr
 
 #figure(
   table(
-    columns: (auto, auto, 1fr),
+    columns: (auto, auto, auto),
     [*Team Member*], [*Scrum Role*], [*Responsibilities*],
-    [Hard Joshi], [Scrum Master], [Facilitate daily standups, remove blockers, ensure sprint goals are met],
-    [Jayrup Nakawala], [Product Owner], [Prioritise user stories, define acceptance criteria, accept completed work],
-    [Fatema Doctor], [Developer], [Frontend development (HTML/CSS/JS), UI design, responsive layouts],
-    [Sangeet Kaur], [Developer / QA], [Backend development (Python/Flask), database, testing],
+    [Hard Joshi], [Scrum Master & Lead Developer], [Facilitate daily standups, architect backend systems, remove blockers, ensure sprint goals are met],
+    [Jayrup Nakawala], [Product Owner & Cardiovascular Consultant], [Prioritise user stories, define acceptance criteria, translate clinical workflows into technical requirements],
+    [Fatema Doctor], [Frontend Developer & Nurse], [Frontend development (HTML/CSS/JS), UI design, responsive layouts, ensure patient-facing forms are clinically appropriate],
+    [Sangeet Kaur], [QA, Database & Admin Staff], [Backend development (Python/Flask), database schema design, testing, build Admin and Nurse dashboards],
   ),
   caption: [Team roles and responsibilities within the Scrum framework.],
 ) <tab-roles>
@@ -951,7 +951,7 @@ Moving from SQLite to AWS RDS PostgreSQL drew directly on the Week 9 Data Engine
 
 == Cloud Technology Analysis
 
-Evaluate the cloud technologies used for the design and implementation of the CSS. After comparing Amazon Web Services (AWS) and Microsoft Azure, our team selected AWS as the primary provider for our infrastructure due to its extensive service offerings and the practical experience gained during the module's lab sessions.
+After comparing Amazon Web Services (AWS) and Microsoft Azure, our team selected AWS as the primary provider for our infrastructure due to its extensive service offerings and the practical experience gained during the module's lab sessions. The following table summarises the key criteria that informed this decision:
 
 #figure(
   table(
@@ -1189,4 +1189,23 @@ CREATE TABLE MedicalRecords (
 #figure(
   image("images/screen-patient-form-reflecting-updated-vitals.png", width: 80%),
   caption: [Appendix C.2: Test Evidence - Medical record accurately reflecting updated vitals],
+)
+
+== Appendix D: Revised BPMN Diagrams
+
+The following diagrams represent updated versions of the BPMN models, revised to improve clarity and completeness following feedback from the module tutors.
+
+#figure(
+  image("latest bpmn/01_Patient_Admission_Process1-1.0.jpeg", width: 100%),
+  caption: [Appendix D.1: Revised BPMN Diagram — Patient Admission and Form Completion Process.],
+)
+
+#figure(
+  image("latest bpmn/02_Appointment_Booking_Process1-1.0.jpeg", width: 100%),
+  caption: [Appendix D.2: Revised BPMN Diagram — Appointment Booking Process.],
+)
+
+#figure(
+  image("latest bpmn/03_Form_Processing_DataFlow.jpeg", width: 100%),
+  caption: [Appendix D.3: Revised BPMN Diagram — Form Processing and Data Flow.],
 )
