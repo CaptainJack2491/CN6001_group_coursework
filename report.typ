@@ -358,7 +358,7 @@ The scope of this coursework encompasses the full enterprise architecture lifecy
 
 This section presents the Business Process Model and Notation (BPMN) diagrams created using *Bonita* software. Three process models have been developed to capture the key workflows of the CVD Clinic system. Each diagram identifies the participants (lanes/pools), tasks, gateways, and data objects involved.
 
-#text(size: 9pt, style: "italic", fill: muted)[*Note:* The images used in this section are enhanced to match the theme and provide better quality; the original versions can be found in Appendix D.]
+#text(size: 9pt, style: "italic", fill: muted)[*Note:* The images used in this section are enhanced to match the theme and provide better quality; the original screenshots from Bonita software can be found in Appendix D.]
 
 == Diagram 1: Patient Admission and Form Completion
 
