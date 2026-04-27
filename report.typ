@@ -981,7 +981,7 @@ By leveraging the AWS ecosystem, we ensured that the CVD Clinic prototype is not
 
 == Testing Conducted
 
-Develop a test plan and document the results of testing carried out on the prototype:
+Below is a summary of the testing conducted on the prototype:
 
 #figure(
   table(
